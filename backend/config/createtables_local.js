@@ -14,12 +14,28 @@ const createUsersTable = () => {
             { AttributeName: 'userId', KeyType: 'HASH' } // Partition key
         ],
         AttributeDefinitions: [
-            { AttributeName: 'userId', AttributeType: 'S' }
+            { AttributeName: 'userId', AttributeType: 'S' },
+            { AttributeName: 'email', AttributeType: 'S' }
         ],
         ProvisionedThroughput: {
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5
-        }
+        },
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'EmailIndex',
+                KeySchema: [
+                    { AttributeName: 'email', KeyType: 'HASH' }
+                ],
+                Projection: {
+                    ProjectionType: 'ALL'
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 5,
+                    WriteCapacityUnits: 5
+                }
+            }
+        ]
     };
     return dynamodb.createTable(params).promise();
 };
@@ -75,18 +91,6 @@ const createAttractionsTable = () => {
     return dynamodb.createTable(params).promise();
 };
 
-const createTables = async () => {
-    try {
-        await createUsersTable();
-        await createHotelsTable();
-        await createBookingsTable();
-        await createAttractionsTable();
-        console.log('Tables created successfully');
-    } catch (err) {
-        console.error('Error creating tables:', err);
-    }
-};
-
 const createCartsTable = () => {
     const params = {
         TableName: 'Carts',
@@ -118,6 +122,87 @@ const createCartsTable = () => {
         ]
     };
     return dynamodb.createTable(params).promise();
+};
+
+const createCommentsTable = () => {
+    const params = {
+        TableName: 'Comments',
+        KeySchema: [
+            { AttributeName: 'commentId', KeyType: 'HASH' } // Partition key
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'commentId', AttributeType: 'S' },
+            { AttributeName: 'itemId', AttributeType: 'S' }
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+        },
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'ItemIdIndex',
+                KeySchema: [
+                    { AttributeName: 'itemId', KeyType: 'HASH' }
+                ],
+                Projection: {
+                    ProjectionType: 'ALL'
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 5,
+                    WriteCapacityUnits: 5
+                }
+            }
+        ]
+    };
+    return dynamodb.createTable(params).promise();
+};
+
+const createFavoritesTable = () => {
+    const params = {
+        TableName: 'Favorites',
+        KeySchema: [
+            { AttributeName: 'favoriteId', KeyType: 'HASH' } // Partition key
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'favoriteId', AttributeType: 'S' },
+            { AttributeName: 'userId', AttributeType: 'S' }
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+        },
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'UserIdIndex',
+                KeySchema: [
+                    { AttributeName: 'userId', KeyType: 'HASH' }
+                ],
+                Projection: {
+                    ProjectionType: 'ALL'
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 5,
+                    WriteCapacityUnits: 5
+                }
+            }
+        ]
+    };
+    return dynamodb.createTable(params).promise();
+};
+
+const createTables = async () => {
+    try {
+        await createUsersTable();
+        await createHotelsTable();
+        await createBookingsTable();
+        await createAttractionsTable();
+        await createCartsTable();
+        await createCommentsTable();
+        await createFavoritesTable();
+        console.log('Tables created successfully');
+    } catch (err) {
+        console.error('Error creating tables:', err);
+    }
 };
 
 createTables();
