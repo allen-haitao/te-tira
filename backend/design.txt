@@ -82,3 +82,30 @@ Fields:
 	•	items (Array): An array of hotel items added to the cart.
 	•	totalPrice (Number): The total price of all items in the cart.
 	•	createdAt (String): The timestamp when the cart was created.
+
+Table Name: Comments
+
+Primary Key: commentId (String)
+
+Fields:
+
+	•	commentId (String): A unique identifier for each comment.
+	•	userId (String): The unique identifier of the user making the comment.
+	•	itemId (String): The unique identifier of the hotel ot attraction being commented on.
+	•   itemType (String): The type of the item (hotel or attraction).
+	•	comment (String): The content of the comment.
+	•	createdAt (String): The timestamp when the comment was created.
+
+
+Table Name: Favorites
+
+Primary Key: favoriteId (String)
+
+Fields:
+
+	•	favoriteId (String): A unique identifier for each favorite.
+	•	userId (String): The unique identifier of the user.
+	•	itemId (String): The unique identifier of the hotel or attraction.
+	•	itemType (String): The type of the item (hotel or attraction).
+	•	createdAt (String): The timestamp when the item was added to favorites.
+

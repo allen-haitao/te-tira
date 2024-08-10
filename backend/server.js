@@ -15,11 +15,17 @@ const authRoutes = require('./routes/auth');
 const hotelRoutes = require('./routes/hotels');
 const bookingRoutes = require('./routes/bookings');
 const attractionRoutes = require('./routes/attractions');
+const cartRoutes = require('./routes/cart');
+const commentRoutes = require('./routes/comments');
+const favoriteRoutes = require('./routes/favorites');
 
 app.use('/auth', authRoutes);
 app.use('/hotels', hotelRoutes);
 app.use('/bookings', bookingRoutes);
 app.use('/attractions', attractionRoutes);
+app.use('/cart', cartRoutes);
+app.use('/comments', commentRoutes);
+app.use('/favorites', favoriteRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
