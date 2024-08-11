@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom"; // 先注释掉导航相关的代码
 import styles from "./Header.module.css";
-import { Typography, Menu, Button, Row, Col} from "antd";
-import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined} from "@ant-design/icons";
+import { Typography, Menu, Button, Row, Col } from "antd";
+import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { currencyItems, langItems, menuItems } from "../../assets/data/Array";
 
 export const Header: React.FC = () => {
@@ -9,30 +10,30 @@ export const Header: React.FC = () => {
     const [location, setLocation] = useState<string>("Unknown Location");
     const [selectedCurrency, setSelectedCurrency] = useState<string>("NZD");
     const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
-    
+
     useEffect(() => {
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-                fetchLocationName(position.coords.latitude, position.coords.longitude)
-                .then((locationName) => setLocation(locationName))
-                .catch((error) => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    fetchLocationName(position.coords.latitude, position.coords.longitude)
+                        .then((locationName) => setLocation(locationName))
+                        .catch((error) => {
+                            console.error("Error fetching location:", error);
+                            setLocation("Unknown Location");
+                        });
+                },
+                (error) => {
                     console.error("Error fetching location:", error);
-                    setLocation("Unknown Location");
-                });
-            },
-            (error) => {
-              console.error("Error fetching location:", error);
-            }
-          );
+                }
+            );
         }
-      }, []);
-    
-      const handleIconClick = (type: string) => {
+    }, []);
+
+    const handleIconClick = (type: string) => {
         setVisibleDropdown(visibleDropdown === type ? null : type);
-      };
-    
-      const renderDropdown = (type: string, items: any[]) => {
+    };
+
+    const renderDropdown = (type: string, items: any[]) => {
         return visibleDropdown === type && (
             <div className={styles["menu-list"]}>
                 {items.map((item, index) => (
@@ -52,10 +53,10 @@ export const Header: React.FC = () => {
     };
 
     return (
-      <div className={styles["app-header"]}>
+        <div className={styles["app-header"]}>
             <div>
                 <Row className={styles['top-header']}>
-                    <Col span={12}>
+                    <Col span={10}>
                         <Typography.Title level={3} className={styles.title}>
                             Te Tira
                         </Typography.Title>
@@ -64,19 +65,23 @@ export const Header: React.FC = () => {
                         </Typography.Text>
                     </Col>
                     <Col className={styles["top-button"]} onClick={() => handleIconClick("location")}>
-                        <EnvironmentOutlined className={styles["button-icon"]}/>
-                            <Typography.Text className={styles["selected-item"]}>{location}</Typography.Text>
-                            {renderDropdown("location", [location])}
+                        <EnvironmentOutlined className={styles["button-icon"]} />
+                        <Typography.Text className={styles["selected-item"]}>{location}</Typography.Text>
+                        {renderDropdown("location", [location])}
                     </Col>
                     <Col className={styles["top-button"]} onClick={() => handleIconClick("currency")}>
-                        <DollarCircleOutlined className={styles["button-icon"]}/>
+                        <DollarCircleOutlined className={styles["button-icon"]} />
                         <Typography.Text className={styles["selected-item"]}>{selectedCurrency}</Typography.Text>
                         {renderDropdown("currency", currencyItems)}
                     </Col>
                     <Col className={styles["top-button"]} onClick={() => handleIconClick("language")}>
-                        <GlobalOutlined className={styles["button-icon"]}/>
+                        <GlobalOutlined className={styles["button-icon"]} />
                         <Typography.Text className={styles["selected-item"]}>{selectedLanguage}</Typography.Text>
                         {renderDropdown("language", langItems)}
+                    </Col>
+                    <Col className={styles["top-button"]} onClick={() => window.location.href = "/help"}>
+                        <QuestionCircleOutlined className={styles["button-icon"]} />
+                        <Typography.Text className={styles["selected-item"]}>Help</Typography.Text>
                     </Col>
                     <Col>
                         <Button.Group className={styles["user-auth"]}>
@@ -93,7 +98,7 @@ export const Header: React.FC = () => {
                     />
                 </Row>
             </div>
-      </div>
+        </div>
     );
 }
 
