@@ -3,7 +3,7 @@
   flex-direction: column; /* 子元素垂直排列 */
   align-items: flex-start;
   justify-content: center;
-  background: linear-gradient(to bottom, #00247d 84%, #F0F0F0 16%); /* 上半部分白色，下半部分浅灰色 */
+  background: linear-gradient(to bottom, #00247d 84%, transparent 16%); /* 上半部分白色，下半部分浅灰色 */
   padding: 10px;
   margin: auto auto;
 }
