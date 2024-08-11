@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./App.module.css";
-import { Header, Footer, SideMenu, Carousel } from "./components";
+import { Header, Footer, SideMenu, Carousel, Search } from "./components";
 import {Row, Col} from "antd";
 
 
@@ -8,6 +8,7 @@ function App() {
   return (
     <div className={styles.App}>
       <Header />
+      <Search />
       <div className={styles['page-content']}>
         <Row style={{marginTop: 20}}>
           <Col span={6}>
@@ -17,7 +18,6 @@ function App() {
             <Carousel />
           </Col>
         </Row>
-
       </div>
       <Footer />
     </div>
