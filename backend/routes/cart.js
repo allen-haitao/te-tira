@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
+const authMiddleware = require('../middleware/auth');
 
 /**
  * @swagger
@@ -59,6 +60,8 @@ const cartController = require('../controllers/cartController');
  *   post:
  *     summary: Add a hotel to the cart
  *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -71,7 +74,7 @@ const cartController = require('../controllers/cartController');
  *       400:
  *         description: Some error happened
  */
-router.post('/add', cartController.addItem);
+router.post('/add', authMiddleware, cartController.addItem);
 
 /**
  * @swagger
@@ -79,6 +82,8 @@ router.post('/add', cartController.addItem);
  *   post:
  *     summary: Remove a hotel from the cart
  *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -91,7 +96,7 @@ router.post('/add', cartController.addItem);
  *       400:
  *         description: Some error happened
  */
-router.post('/remove', cartController.removeItem);
+router.post('/remove', authMiddleware, cartController.removeItem);
 
 /**
  * @swagger
@@ -99,6 +104,8 @@ router.post('/remove', cartController.removeItem);
  *   post:
  *     summary: Checkout the cart
  *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -111,6 +118,6 @@ router.post('/remove', cartController.removeItem);
  *       400:
  *         description: Some error happened
  */
-router.post('/checkout', cartController.checkout);
+router.post('/checkout', authMiddleware, cartController.checkout);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const Favorite = require('../models/Favorite');
+const jwt = require('jsonwebtoken');
 
 /**
  * @swagger
@@ -7,13 +8,9 @@ const Favorite = require('../models/Favorite');
  *     Favorite:
  *       type: object
  *       required:
- *         - userId
  *         - itemId
  *         - itemType
  *       properties:
- *         userId:
- *           type: string
- *           description: The ID of the user
  *         itemId:
  *           type: string
  *           description: The ID of the hotel or attraction
@@ -46,10 +43,18 @@ const Favorite = require('../models/Favorite');
  */
 exports.addFavorite = async (req, res) => {
     try {
-        const { userId, itemId, itemType } = req.body;
+        // Get the userId from the auth middleware
+        const userId = req.userId;
+
+        // Extract itemId and itemType from the request body
+        const { itemId, itemType } = req.body;
+
+        // Add the item to the user's favorites
         await Favorite.add(userId, itemId, itemType);
+
         res.status(201).send('Item added to favorites successfully');
     } catch (err) {
+        console.error('Error adding item to favorites:', err);
         res.status(400).send(err.message);
     }
 };
@@ -81,9 +86,15 @@ exports.addFavorite = async (req, res) => {
  */
 exports.getFavoritesByUserId = async (req, res) => {
     try {
-        const favorites = await Favorite.getByUserId(req.params.userId);
-        res.send(favorites);
+        // Get the userId from the auth middleware
+        const userId = req.userId;
+
+        // Get the user's favorites from the database
+        const favorites = await Favorite.getByUserId(userId);
+
+        res.status(200).send(favorites);
     } catch (err) {
+        console.error('Error fetching favorites:', err);
         res.status(400).send(err.message);
     }
 };
@@ -108,7 +119,9 @@ exports.getFavoritesByUserId = async (req, res) => {
  */
 exports.removeFavorite = async (req, res) => {
     try {
-        const { userId, itemId, itemType } = req.body;
+        const { itemId, itemType } = req.body;
+        // Get the userId from the auth middleware
+        const userId = req.userId;
         await Favorite.remove(userId, itemId, itemType);
         res.status(200).send('Item removed from favorites successfully');
     } catch (err) {
