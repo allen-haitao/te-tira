@@ -1,6 +1,7 @@
 const Cart = require('../models/Cart');
 const Hotel = require('../models/Hotel');
 
+
 /**
  * @swagger
  * components:

@@ -13,6 +13,7 @@
  *           description: The location of the hotel
  *     
 */
+
 /**
  * @swagger
  * tags:

@@ -1,5 +1,6 @@
 const dynamodb = require('../config/db');
 
+
 const Hotel = {
   async search({ location, minPrice, maxPrice }) {
     const params = {
@@ -30,12 +31,21 @@ const Hotel = {
     return result.Items;
   },
 
-  async getAll() {
+  async getAll(limit, lastEvaluatedKey) {
     const params = {
       TableName: 'Hotels',
+      Limit: limit,
     };
+
+    if (lastEvaluatedKey) {
+      params.ExclusiveStartKey = { hotelId: lastEvaluatedKey.hotelId };
+    }
+
     const result = await dynamodb.scan(params).promise();
-    return result.Items;
+    return {
+      hotels: result.Items,
+      lastEvaluatedKey: result.LastEvaluatedKey, // Use this key to fetch the next set of results
+    };
   },
 
   async getById(hotelId) {
