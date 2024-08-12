@@ -2,6 +2,7 @@ const dynamodb = require('../config/db');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
+
 const User = {
   async create(user) {
     user.userId = uuidv4()
