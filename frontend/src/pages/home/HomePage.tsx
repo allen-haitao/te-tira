@@ -30,32 +30,31 @@ export class HomePage extends React.Component {
               <Carousel />
             </Col>
           </Row>
+          <Typography.Title level={2} className={styles["section-title"]}>
+            Offers
+          </Typography.Title>
+          <Typography.Text className={styles["section-subtitle"]}>
+            Promotions, deals and special offers for you
+          </Typography.Text>
+          {/* 使用 ProductCollection 组件 */}
           <ProductCollection
             title={
-              <Typography.Title level={3} type="warning">
-                爆款推荐
+              <Typography.Title level={3}>
+                Fly away to your dream holiday
               </Typography.Title>
             }
             sideImage={sideImage}
             products={productList1}
           />
+
           <ProductCollection
             title={
-              <Typography.Title level={3} type="danger">
-                新品上市
+              <Typography.Title level={3}>
+                Seize the moment
               </Typography.Title>
             }
             sideImage={sideImage2}
-            products={productList2}
-          />
-          <ProductCollection
-            title={
-              <Typography.Title level={3} type="success">
-                国内游推荐
-              </Typography.Title>
-            }
-            sideImage={sideImage3}
-            products={productList3}
+            products={productList1}
           />
         </div>
         <Footer />
