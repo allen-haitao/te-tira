@@ -1,25 +1,16 @@
 import React from "react";
 import styles from "./App.module.css";
-import { Header, Footer, SideMenu, Carousel, Search } from "./components";
-import {Row, Col} from "antd";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HomePage } from "./pages";
 
 function App() {
   return (
     <div className={styles.App}>
-      <Header />
-      <Search />
-      <div className={styles['page-content']}>
-        <Row style={{marginTop: 20}}>
-          <Col span={6}>
-            <SideMenu />
-          </Col>
-          <Col span={18}>
-            <Carousel />
-          </Col>
-        </Row>
-      </div>
-      <Footer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
