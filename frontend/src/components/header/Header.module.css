@@ -1,9 +1,12 @@
 .app-header {
     background-color: #00247d !important;
+    margin-left: auto;
+    margin-right: auto; /* 添加间距确保图标之间保持一致 */
   }
   
   .top-header {
     height: 80px;
+    width: 1230px;
     padding-right: 4%;
     line-height: auto;
     text-align: left;
@@ -43,12 +46,28 @@
     50% { border-color: #f5f5f5; }
   }
 
+  .header-image {
+    position: relative;
+    top: 15px;
+    margin-left: auto;
+    height: 100%; /* 根据容器的大小自动调整 */
+    width: 14%;
+  }
+
+  .image {
+    position: absolute;
+    height: 100%; /* 根据容器的大小自动调整 */
+    width: 100%;
+    transform: scale(1); /* 保持原始比例 */
+  }
+
   .top-button {
     position: relative;
     cursor: pointer;
     background-color: inherit;
     padding: 10px;
-    margin-right: 20px; /* 添加间距确保图标之间保持一致 */
+    margin-left: auto;
+    margin-right: auto; /* 添加间距确保图标之间保持一致 */
     text-align: center; /* 确保图标和文本在列中居中 */
     display: flex; /* 使用 flexbox 布局 */
     flex-direction: column; /* 将图标和文本垂直排列 */
@@ -110,8 +129,8 @@
 
   .user-auth {
     float: right;
+    width: 70%;
     margin-top: 25px;
-    margin-left: 30px;
     gap: 10px;
   }
 

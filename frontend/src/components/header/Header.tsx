@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import image from "../../assets/image.png"
 // import { useNavigate } from "react-router-dom"; // 先注释掉导航相关的代码
 import styles from "./Header.module.css";
-import { Typography, Menu, Button, Row, Col } from "antd";
+import { Typography, Layout, Menu, Button, Row, Col } from "antd";
 import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { currencyItems, langItems, menuItems } from "../../assets/data/Array";
 
@@ -54,50 +55,51 @@ export const Header: React.FC = () => {
 
     return (
         <div className={styles["app-header"]}>
-            <div>
-                <Row className={styles['top-header']}>
-                    <Col span={10}>
-                        <Typography.Title level={3} className={styles.title}>
-                            Te Tira
-                        </Typography.Title>
-                        <Typography.Text className={styles.slogan}>
-                            Ka tīmata tō haerenga Kiwi i konei
-                        </Typography.Text>
-                    </Col>
-                    <Col className={styles["top-button"]} onClick={() => handleIconClick("location")}>
-                        <EnvironmentOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>{location}</Typography.Text>
-                        {renderDropdown("location", [location])}
-                    </Col>
-                    <Col className={styles["top-button"]} onClick={() => handleIconClick("currency")}>
-                        <DollarCircleOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>{selectedCurrency}</Typography.Text>
-                        {renderDropdown("currency", currencyItems)}
-                    </Col>
-                    <Col className={styles["top-button"]} onClick={() => handleIconClick("language")}>
-                        <GlobalOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>{selectedLanguage}</Typography.Text>
-                        {renderDropdown("language", langItems)}
-                    </Col>
-                    <Col className={styles["top-button"]} onClick={() => window.location.href = "/help"}>
-                        <QuestionCircleOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>Help</Typography.Text>
-                    </Col>
-                    <Col>
-                        <Button.Group className={styles["user-auth"]}>
-                            <Button className={styles["auth-btn"]}>Register</Button>
-                            <Button className={styles["auth-btn"]}>Login</Button>
-                        </Button.Group>
-                    </Col>
-                </Row>
-                <Row className={styles['top-header']}>
-                    <Menu
-                        mode={"horizontal"}
-                        className={styles["main-menu"]}
-                        items={menuItems}
-                    />
-                </Row>
-            </div>
+            <Row className={styles['top-header']}>
+                <Col span={7}>
+                    <Typography.Title level={3} className={styles.title}>
+                        Te Tira
+                    </Typography.Title>
+                    <Typography.Text className={styles.slogan}>
+                        Ka tīmata tō haerenga Kiwi i konei
+                    </Typography.Text>
+                </Col>
+                <Col className={styles["header-image"]}>
+                    <img src={image} alt="image" className={styles.image}/>
+                </Col>
+                <Col className={styles["top-button"]} onClick={() => handleIconClick("location")}>
+                    <EnvironmentOutlined className={styles["button-icon"]} />
+                    <Typography.Text className={styles["selected-item"]}>{location}</Typography.Text>
+                    {renderDropdown("location", [location])}
+                </Col>
+                <Col className={styles["top-button"]} onClick={() => handleIconClick("currency")}>
+                    <DollarCircleOutlined className={styles["button-icon"]} />
+                    <Typography.Text className={styles["selected-item"]}>{selectedCurrency}</Typography.Text>
+                    {renderDropdown("currency", currencyItems)}
+                </Col>
+                <Col className={styles["top-button"]} onClick={() => handleIconClick("language")}>
+                    <GlobalOutlined className={styles["button-icon"]} />
+                    <Typography.Text className={styles["selected-item"]}>{selectedLanguage}</Typography.Text>
+                    {renderDropdown("language", langItems)}
+                </Col>
+                <Col className={styles["top-button"]} onClick={() => window.location.href = "/help"}>
+                    <QuestionCircleOutlined className={styles["button-icon"]} />
+                    <Typography.Text className={styles["selected-item"]}>Help</Typography.Text>
+                </Col>
+                <Col>
+                    <Button.Group className={styles["user-auth"]}>
+                        <Button className={styles["auth-btn"]}>Register</Button>
+                        <Button className={styles["auth-btn"]}>Login</Button>
+                    </Button.Group>
+                </Col>
+            </Row>
+            <Row className={styles['top-header']}>
+                <Menu
+                    mode={"horizontal"}
+                    className={styles["main-menu"]}
+                    items={menuItems}
+                />
+            </Row>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
+import { Layout, Typography } from "antd";
 
 export const Footer: React.FC = () => {
     return (
