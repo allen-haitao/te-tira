@@ -66,7 +66,9 @@ const Hotel = require('../models/Hotel');
  */
 exports.addItem = async (req, res) => {
     try {
-        const { userId, hotelId, checkInDate, checkOutDate } = req.body;
+        const { hotelId, checkInDate, checkOutDate } = req.body;
+        // Get the userId from the auth middleware
+        const userId = req.userId;
         const hotel = await Hotel.getById(hotelId);
         if (!hotel) {
             return res.status(404).send('Hotel not found');
@@ -98,7 +100,9 @@ exports.addItem = async (req, res) => {
  */
 exports.removeItem = async (req, res) => {
     try {
-        const { userId, hotelId } = req.body;
+        const { hotelId } = req.body;
+        // Get the userId from the auth middleware
+        const userId = req.userId;
         await Cart.removeItem(userId, hotelId);
         res.send('Item removed from cart');
     } catch (err) {
@@ -126,7 +130,8 @@ exports.removeItem = async (req, res) => {
  */
 exports.checkout = async (req, res) => {
     try {
-        const { userId } = req.body;
+        // Get the userId from the auth middleware
+        const userId = req.userId;
         await Cart.checkout(userId);
         res.send('Checkout successful');
     } catch (err) {

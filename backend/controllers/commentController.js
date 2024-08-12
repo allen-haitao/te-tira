@@ -51,7 +51,9 @@ const Comment = require('../models/comment');
  */
 exports.addComment = async (req, res) => {
     try {
-        const { userId, itemId, itemType, comment } = req.body;
+        const { itemId, itemType, comment } = req.body;
+        // Get the userId from the auth middleware
+        const userId = req.userId;
         await Comment.create(userId, itemId, itemType, comment);
         res.status(201).send('Comment added successfully');
     } catch (err) {

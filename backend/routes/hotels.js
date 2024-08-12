@@ -25,17 +25,39 @@ const express = require('express');
 const router = express.Router();
 const hotelController = require('../controllers/hotelController');
 
+
 /**
  * @swagger
- * /hotel:
+ * /hotels:
  *   get:
  *     summary: get all hotels
  *     tags: [Hotel]
- *     requestBody:
- *       required: false
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           description: Number of hotels to fetch
+ *       - in: query
+ *         name: lastEvaluatedKey
+ *         schema:
+ *           type: string
+ *           description: The key to start from (for pagination)
  *     responses:
- *       201:
- *         description: success
+ *       200:
+ *         description: A list of hotels
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hotels:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Hotel'
+ *                 lastEvaluatedKey:
+ *                   type: string
+ *                   description: The key to use for fetching the next set of results
  *       400:
  *         description: Some error happened
  */

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const commentController = require('../controllers/commentController');
+const authMiddleware = require('../middleware/auth');
 
 /**
  * @swagger
@@ -34,6 +35,8 @@ const commentController = require('../controllers/commentController');
  *   post:
  *     summary: Add a comment to a hotel or attraction
  *     tags: [Comments]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -46,7 +49,7 @@ const commentController = require('../controllers/commentController');
  *       400:
  *         description: Some error happened
  */
-router.post('/', commentController.addComment);
+router.post('/', authMiddleware, commentController.addComment);
 
 /**
  * @swagger

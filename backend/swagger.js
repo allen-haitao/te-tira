@@ -1,5 +1,3 @@
-// swagger.js
-
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -9,18 +7,28 @@ const swaggerOptions = {
     info: {
       title: 'Tourism E-commerce Platform API',
       version: '1.0.0',
-      description: 'API for a tourism e-commerce platform where users can book hotels and get recommendations for nearby attractions.',
-      contact: {
-        name: 'Your Name',
-        email: 'your.email@example.com',
-      },
-      servers: [
-        {
-          url: 'http://localhost:3000',
-          description: 'Local server',
-        },
-      ],
+      description: 'API documentation for 527',
     },
+    servers: [
+      {
+        url: 'http://127.0.0.1:3000',  // Replace with your server URL
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'Enter JWT token in the format: Bearer <token>',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],  // Apply this security scheme globally to all routes
+      },
+    ],
   },
   apis: ['./routes/*.js'],
 };
@@ -28,5 +36,7 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 module.exports = (app) => {
+  // Set up Swagger UI
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 };
