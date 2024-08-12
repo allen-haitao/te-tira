@@ -1,5 +1,6 @@
 const Hotel = require('../models/Hotel');
 
+
 /**
  * @swagger
  * components:
@@ -55,26 +56,48 @@ const Hotel = require('../models/Hotel');
  * @swagger
  * /hotels:
  *   get:
- *     summary: Get all hotels
+ *     summary: Get a paginated list of hotels
  *     tags: [Hotels]
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           description: Number of hotels to fetch
+ *       - in: query
+ *         name: lastEvaluatedKey
+ *         schema:
+ *           type: string
+ *           description: The key to start from (for pagination)
  *     responses:
  *       200:
  *         description: A list of hotels
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Hotel'
+ *               type: object
+ *               properties:
+ *                 hotels:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Hotel'
+ *                 lastEvaluatedKey:
+ *                   type: string
+ *                   description: The key to use for fetching the next set of results
  *       400:
  *         description: Some error happened
  */
 exports.getAllHotels = async (req, res) => {
   try {
-    const hotels = await Hotel.getAll();
-    res.send(hotels);
+    const limit = parseInt(req.query.limit) || 10; // Default limit to 10 if not provided
+    const lastEvaluatedKey = req.query.lastEvaluatedKey ? JSON.parse(req.query.lastEvaluatedKey) : null;
+
+    const { hotels, lastEvaluatedKey: newLastEvaluatedKey } = await Hotel.getAll(limit, lastEvaluatedKey);
+
+    res.status(200).json({ hotels, lastEvaluatedKey: newLastEvaluatedKey });
   } catch (err) {
-    res.status(400).send(err.message);
+    console.error('Error fetching hotels:', err);
+    res.status(500).send('Internal server error');
   }
 };
 

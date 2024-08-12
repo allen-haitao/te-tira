@@ -1,4 +1,4 @@
-const Favorite = require('../models/favorite');
+const Favorite = require('../models/Favorite');
 
 /**
  * @swagger
@@ -83,6 +83,34 @@ exports.getFavoritesByUserId = async (req, res) => {
     try {
         const favorites = await Favorite.getByUserId(req.params.userId);
         res.send(favorites);
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+};
+
+/**
+ * @swagger
+ * /favorites:
+ *   delete:
+ *     summary: Remove a hotel or attraction from favorites
+ *     tags: [Favorites]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Favorite'
+ *     responses:
+ *       200:
+ *         description: Item removed from favorites successfully
+ *       400:
+ *         description: Some error happened
+ */
+exports.removeFavorite = async (req, res) => {
+    try {
+        const { userId, itemId, itemType } = req.body;
+        await Favorite.remove(userId, itemId, itemType);
+        res.status(200).send('Item removed from favorites successfully');
     } catch (err) {
         res.status(400).send(err.message);
     }

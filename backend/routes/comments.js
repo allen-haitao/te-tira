@@ -4,6 +4,25 @@ const commentController = require('../controllers/commentController');
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Comment:
+ *       type: object
+ *       properties:
+ *         itemId:
+ *           type: string
+ *           description: The id of the object commented
+ *         itemType:
+ *           type: string
+ *           description: The type of the object commented
+ *         comment:
+ *           type: string
+ *           description: The comment
+ *     
+*/
+
+/**
+ * @swagger
  * tags:
  *   name: Comments
  *   description: The comments managing API
