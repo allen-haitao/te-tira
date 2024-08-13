@@ -1,43 +1,43 @@
 import React from "react";
 import styles from "./Offer.module.css";
-import { Row, Col, Typography, Button } from "antd";
+import { OfferImage } from "./OfferImage";  // 引入 OfferImage 组件
 
 interface PropsType {
-  title: JSX.Element;
-  text: JSX.Element;
   button: JSX.Element;
   imageSrc: string;
-  imageOnLeft?: boolean;
   customClass?: string;
+  products: any[];  // 接收产品数据
 }
 
 export const Offer: React.FC<PropsType> = ({
-  title,
-  text,
   button,
   imageSrc,
-  imageOnLeft = false, // 控制图片在左还是在右
   customClass = "",
+  products,  // 从 props 中接收产品数据
 }) => {
+  const productTitle = `产品ID: ${products[0].id}`;
+  const productPrice = `价格: ¥${products[0].price}`;
+
   return (
-    <div className={`${styles.offerCard} ${customClass}`}>
-      <Row
-        gutter={[16, 16]}
-        className={`${styles.offerRow} ${imageOnLeft ? styles.imageLeft : ""}`}
-      >
-        <Col xs={24} md={12}>
+    <div className={styles.offerCard}>
+      <div className={styles.offerRow}>
+        <div className={styles.offerContentContainer}>
           <div className={styles.offerContent}>
-            {title}
-            {text}
+            <h3>{productTitle}</h3> {/* 动态生成的 title */}
+            <p>{productPrice}</p> {/* 动态生成的 text */}
             {button}
           </div>
-        </Col>
-        <Col xs={24} md={12}>
-          <div className={styles.offerImageContainer}>
-            <img src={imageSrc} alt="Offer Image" className={styles.offerImage} />
-          </div>
-        </Col>
-      </Row>
+        </div>
+        <div className={styles.offerImageContainer}>
+          <OfferImage
+            id={`offer-${products[0].id}`}
+            size="large"
+            imageSrc={imageSrc}
+            price=""
+            title=""
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,13 +1,16 @@
 import React from "react";
 import { Header, Footer, Search, Carousel, SideMenu, Offer } from "../../components";
 import { Row, Col, Typography, Button } from "antd";
-import { productList1 } from "./mockups";
-import sideImage1 from "../../assets/images/sider_2019_12-09.png";
-import sideImage2 from "../../assets/images/sider_2019_02-04-2.png";
+import { productList1, productList2 } from "./mockups";
+import sideImage1 from "../../assets/images/carousel_1.jpg";
+import sideImage2 from "../../assets/images/carousel_2.jpg";
 import styles from "./HomePage.module.css";
 
 export class HomePage extends React.Component {
   render(): React.ReactNode {
+    const offerImage1 = sideImage1;
+    const offerImage2 = sideImage2;
+
     return (
       <>
         <Header />
@@ -30,50 +33,29 @@ export class HomePage extends React.Component {
                 Promotions, deals and special offers for you
               </Typography.Text>
             </div>
-            <Row>
+            <Row style={{ width: '100%' }}>
               <Col span={12} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                 <Offer
-                  title={
-                    <Typography.Title level={3}>
-                      Fly away to your dream holiday
-                    </Typography.Title>
-                  }
-                  text={
-                    <Typography.Text>
-                      Get inspired, compare and book flights with more flexibility
-                    </Typography.Text>
-                  }
                   button={
                     <Button type="primary" className={styles["offer-button"]}>
                       Search for flights
                     </Button>
                   }
-                  imageSrc={sideImage1}
-                  customClass={styles.customOffer1}
+                  imageSrc={offerImage1}
+                  products={productList1}
                 />
               </Col>
               <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Offer
-                  title={
-                    <Typography.Title level={3}>
-                      Seize the moment
-                    </Typography.Title>
-                  }
-                  text={
-                    <Typography.Text>
-                      Save 15% or more when you book and stay before October 2024
-                    </Typography.Text>
-                  }
                   button={
                     <Button type="primary" className={styles["offer-button"]}>
                       Find Getaway Deals
                     </Button>
                   }
-                  imageSrc={sideImage2}
-                  imageOnLeft={true}
-                  customClass={styles.customOffer2}
+                  imageSrc={offerImage2}
+                  products={productList2}
                 />
-              </Col>
+            </Col>
             </Row>
           </Row>
         </div>
