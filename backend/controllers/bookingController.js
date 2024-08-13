@@ -19,3 +19,15 @@ exports.getUserBookings = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+
+exports.deleteBookings = async (req, res) => {
+  try {
+    // Get the userId from the auth middleware
+    const userId = req.userId;
+    const { bookingId } = req.body
+    const bookings = await Booking.remove(userId, bookingId);
+    res.send(bookings);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+}
