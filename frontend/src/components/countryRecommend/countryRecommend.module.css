@@ -8,6 +8,9 @@
 .imageContainer {
     text-align: center;
     margin-bottom: 20px;
+    flex: 1 1 15%; /* 调整图片容器的大小，使其在一行内显示更多图片 */
+    max-width: 150px; /* 设置图片容器的最大宽度 */
+    overflow: hidden; /* 确保超出容器的图片部分被隐藏 */
 }
 
 .imageDescription {
@@ -27,9 +30,11 @@
     font-weight: bold;
     margin-bottom: 20px;
 }
+
 .smallImage {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin: 10px;
+    width: 100%; 
+    height: 100px; 
+    object-fit: cover; 
+    border-radius: 8px;
+    margin: 0; 
 }
