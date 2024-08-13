@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Footer, Search, Carousel, SideMenu, Offer } from "../../components";
+import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2 } from "../../components";
 import { Row, Col, Typography, Button } from "antd";
 import { productList1, productList2 } from "./mockups";
 import sideImage1 from "../../assets/images/carousel_1.jpg";
@@ -35,7 +35,7 @@ export class HomePage extends React.Component {
             </div>
             <Row style={{ width: '100%' }}>
               <Col span={12} style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                <Offer
+                <Offer1
                   button={
                     <Button type="primary" className={styles["offer-button"]}>
                       Search for flights
@@ -46,7 +46,7 @@ export class HomePage extends React.Component {
                 />
               </Col>
               <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Offer
+                <Offer2
                   button={
                     <Button type="primary" className={styles["offer-button"]}>
                       Find Getaway Deals
