@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const favoriteController = require('../controllers/favoriteController');
+const authMiddleware = require('../middleware/auth');
 
 /**
  * @swagger
@@ -37,6 +38,8 @@ const favoriteController = require('../controllers/favoriteController');
  *   post:
  *     summary: Add a hotel or attraction to favorites
  *     tags: [Favorites]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -49,21 +52,18 @@ const favoriteController = require('../controllers/favoriteController');
  *       400:
  *         description: Some error happened
  */
-router.post('/', favoriteController.addFavorite);
+router.post('/', authMiddleware, favoriteController.addFavorite);
 
 /**
  * @swagger
- * /favorites/{userId}:
+ * /favorites/ç:
  *   get:
  *     summary: Get favorites for a user
  *     tags: [Favorites]
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the user
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: false
  *     responses:
  *       200:
  *         description: A list of favorite items for the user
@@ -76,7 +76,7 @@ router.post('/', favoriteController.addFavorite);
  *       400:
  *         description: Some error happened
  */
-router.get('/:userId', favoriteController.getFavoritesByUserId);
+router.get('/', authMiddleware, favoriteController.getFavoritesByUserId);
 
 /**
  * @swagger
@@ -96,6 +96,6 @@ router.get('/:userId', favoriteController.getFavoritesByUserId);
  *       400:
  *         description: Some error happened
  */
-router.delete('/', favoriteController.removeFavorite);
+router.delete('/', authMiddleware, favoriteController.removeFavorite);
 
 module.exports = router;

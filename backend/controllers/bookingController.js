@@ -11,7 +11,9 @@ exports.createBooking = async (req, res) => {
 
 exports.getUserBookings = async (req, res) => {
   try {
-    const bookings = await Booking.getByUserId(req.query.userId);
+    // Get the userId from the auth middleware
+    const userId = req.userId;
+    const bookings = await Booking.getByUserId(userId);
     res.send(bookings);
   } catch (err) {
     res.status(400).send(err.message);
