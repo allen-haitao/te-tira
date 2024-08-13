@@ -1,0 +1,50 @@
+.offerCard {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 2%;
+  margin-bottom: 20px;
+  overflow: hidden;
+  height: 150px; /* 保持卡片的固定高度 */
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+}
+
+.offerRow {
+  display: flex;
+  align-items: center;
+  height: 100%; /* 使Row的高度填满Offer Card */
+  width: 100%;
+}
+
+.offerContentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%; /* 占50%宽度 */
+  padding-right: 20px;
+}
+
+.offerContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 使内容垂直居中 */
+}
+
+.offerImageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* 确保图片容器高度填满 */
+  width: 50%; /* 占50%宽度 */
+  overflow: hidden; /* 防止图片溢出容器 */
+}
+
+.offerImage {
+  height: 100%; /* 确保图片高度填满容器 */
+  width: auto; /* 保持图片的宽高比 */
+  object-fit: cover; /* 确保图片覆盖容器 */
+  display: block;
+}
