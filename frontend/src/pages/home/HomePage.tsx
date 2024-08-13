@@ -87,15 +87,15 @@ export class HomePage extends React.Component {
             />
             <CountryRecommend 
               title={
-                <Typography.Title level={3} type="success">
-                  国家推荐
+                <Typography.Title level={3} style={{ fontFamily: 'Julius Sans One, sans-serif', fontWeight: 700 }}>
+                  Country Recommendation
                 </Typography.Title>
               }
             />
             <HotelRec
               title={
-                <Typography.Title level={3} type="success">
-                  酒店推荐
+                <Typography.Title level={3} style={{ fontFamily: 'Julius Sans One, sans-serif', fontWeight: 700 }}>
+                  Hotel Recommendation
                 </Typography.Title>
               }
             />

@@ -24,35 +24,35 @@ export const CountryRecommend: React.FC<CountryRecommendProps> = ({ title }) => 
       <div className={styles.additionalImages}>
         <div className={styles.imageContainer}>
           <Image src={smallImage1} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第一张图片的描述</p>
+          <p className={styles.imageDescription}>China</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage2} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第二张图片的描述</p>
+          <p className={styles.imageDescription}>US</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage3} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第三张图片的描述</p>
+          <p className={styles.imageDescription}>UK</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage4} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第四张图片的描述</p>
+          <p className={styles.imageDescription}>Australia</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage5} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第五张图片的描述</p>
+          <p className={styles.imageDescription}>Canada</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage6} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第六张图片的描述</p>
+          <p className={styles.imageDescription}>Brazil</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage7} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第七张图片的描述</p>
+          <p className={styles.imageDescription}>Nepal</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={smallImage8} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第八张图片的描述</p>
+          <p className={styles.imageDescription}>Malaysia</p>
         </div>
       </div>
     </div>

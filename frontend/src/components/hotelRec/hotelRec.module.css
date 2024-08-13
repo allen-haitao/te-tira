@@ -12,8 +12,10 @@
 
 .imageDescription {
     margin-top: 5px;
-    font-size: 14px;
+    font-size: 20px;
     color: #333;
+    font-family: 'Julius Sans One', sans-serif;
+    font-weight: bold;
 }
 
 .recommendedSection {
