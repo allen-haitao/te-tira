@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection } from "../../components";
+import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection, CountryRecommend, HotelRec} from "../../components";
 import { Row, Col, Typography, Button } from "antd";
 import { productList1, productList2, productList3} from "./mockups";
 import sideImage1 from "../../assets/images/carousel_1.jpg";
@@ -84,6 +84,20 @@ export class HomePage extends React.Component {
               }
               sideImage={sideImage3}
               products={productList3}
+            />
+            <CountryRecommend 
+              title={
+                <Typography.Title level={3} type="success">
+                  国家推荐
+                </Typography.Title>
+              }
+            />
+            <HotelRec
+              title={
+                <Typography.Title level={3} type="success">
+                  酒店推荐
+                </Typography.Title>
+              }
             />
           </Row>
         </div>
