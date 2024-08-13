@@ -1,9 +1,10 @@
 import React from "react";
-import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2 } from "../../components";
+import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection } from "../../components";
 import { Row, Col, Typography, Button } from "antd";
-import { productList1, productList2 } from "./mockups";
+import { productList1, productList2, productList3} from "./mockups";
 import sideImage1 from "../../assets/images/carousel_1.jpg";
 import sideImage2 from "../../assets/images/carousel_2.jpg";
+import sideImage3 from "../../assets/images/sider_2019_02-04-2.png";
 import styles from "./HomePage.module.css";
 
 export class HomePage extends React.Component {
@@ -55,8 +56,35 @@ export class HomePage extends React.Component {
                   imageSrc={offerImage2}
                   products={productList2}
                 />
-            </Col>
+              </Col>
             </Row>
+            <ProductCollection
+              title={
+                <Typography.Title level={3} type="warning">
+                  爆款推荐
+                </Typography.Title>
+              }
+              sideImage={sideImage1}
+              products={productList1}
+            />
+            <ProductCollection
+              title={
+                <Typography.Title level={3} type="danger">
+                  新品上市
+                </Typography.Title>
+              }
+              sideImage={sideImage2}
+              products={productList2}
+            />
+            <ProductCollection
+              title={
+                <Typography.Title level={3} type="success">
+                  国内游推荐
+                </Typography.Title>
+              }
+              sideImage={sideImage3}
+              products={productList3}
+            />
           </Row>
         </div>
         <Footer />
