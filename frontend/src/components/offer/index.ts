@@ -1,2 +1,2 @@
 export * from './Offer'
-export * from './ProductImage'
+export * from './OfferImage'
