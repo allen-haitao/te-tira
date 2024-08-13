@@ -3,4 +3,7 @@ export * from './footer';
 export * from './sideMenu';
 export * from './carousel';
 export * from './search';
-export * from './productCollection'
+export * from './offer';
+export * from './productCollection';
+export * from './countryRecommend';
+export * from './hotelRec';
