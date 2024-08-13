@@ -56,6 +56,31 @@ const authMiddleware = require('../middleware/auth');
 
 /**
  * @swagger
+ * /cart:
+ *   get:
+ *     summary: Get cart for a user
+ *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       200:
+ *         description: A cart for the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Carts'
+ *       400:
+ *         description: Some error happened
+ */
+router.get('/', authMiddleware, cartController.getCartByUserId);
+
+
+/**
+ * @swagger
  * /cart/add:
  *   post:
  *     summary: Add a hotel to the cart

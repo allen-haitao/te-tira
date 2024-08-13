@@ -48,6 +48,40 @@ const Hotel = require('../models/Hotel');
 
 /**
  * @swagger
+ * /cart:
+ *   get:
+ *     summary: Get cart for a user
+ *     tags: [cart]
+ *     parameters:
+ *         required: false
+ *     responses:
+ *       200:
+ *         description: A list of favorite items for the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               items:
+ *                 $ref: '#/components/schemas/CartItem'
+ *       400:
+ *         description: Some error happened
+ */
+exports.getCartByUserId = async (req, res) => {
+    try {
+        // Get the userId from the auth middleware
+        const userId = req.userId;
+
+        // Get the user's cart from the database
+        const cart = await Cart.getByUserId(userId);
+
+        res.status(200).send(cart);
+    } catch (err) {
+        console.error('Error fetching cart:', err);
+        res.status(400).send(err.message);
+    }
+};
+
+/**
+ * @swagger
  * /cart/add:
  *   post:
  *     summary: Add a hotel to the cart
