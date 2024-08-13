@@ -5,18 +5,14 @@
     min-height: 75vh;
     padding: 24px;
   }
-  
+
   .section-title {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin-bottom: auto !important;
   }
   
   .section-subtitle {
-    color: #888;
-    margin-bottom: 20px;
-    display: block;
-  }
-  
-  .offers-section {
-    margin-top: 20px;
+    color: #888 !important;
+    margin-bottom: auto !important;
   }
