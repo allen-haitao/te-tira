@@ -56,7 +56,7 @@ router.post('/', authMiddleware, favoriteController.addFavorite);
 
 /**
  * @swagger
- * /favorites/ç:
+ * /favorites:
  *   get:
  *     summary: Get favorites for a user
  *     tags: [Favorites]

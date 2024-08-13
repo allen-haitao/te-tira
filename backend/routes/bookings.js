@@ -76,6 +76,8 @@ const authMiddleware = require('../middleware/auth');
  *       400:
  *         description: Some error happened
  */
+//this method my no expouse to client, after checkout the booking is automatically create
+//user can only explorer their bookings and cancel them--todo:add cancel booking api
 router.post('/', authMiddleware, bookingController.createBooking);
 
 /**
@@ -84,8 +86,10 @@ router.post('/', authMiddleware, bookingController.createBooking);
  *   get:
  *     summary: Get bookings for a user
  *     tags: [Bookings]
- *     parameters:
- *        required: false
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: false
  *     responses:
  *       200:
  *         description: A list of bookings for the user
@@ -99,5 +103,27 @@ router.post('/', authMiddleware, bookingController.createBooking);
  *         description: Some error happened
  */
 router.get('/', authMiddleware, bookingController.getUserBookings);
+
+/**
+ * @swagger
+ * /bookings:
+ *   get:
+ *     summary: Get bookings for a user
+ *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Booking'
+ *     responses:
+ *       200:
+ *         description: Item removed from favorites successfully
+ *       400:
+ *         description: Some error happened
+ */
+router.delete('/', authMiddleware, bookingController.deleteBookings);
 
 module.exports = router;
