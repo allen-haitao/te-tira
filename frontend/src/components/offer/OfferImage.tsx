@@ -8,7 +8,6 @@ interface PropsType {
   price?: number | string;
   title?: string;
   asBackground?: boolean;
-  isLeftOffer?: boolean;  // 新增，用于区分左侧Offer
 }
 
 export const OfferImage: React.FC<PropsType> = ({
@@ -18,13 +17,11 @@ export const OfferImage: React.FC<PropsType> = ({
   price,
   title,
   asBackground = false,
-  isLeftOffer = false,  // 默认不是左侧Offer
 }) => {
-  // 将宽高比改为 4:1 用于左侧Offer
-  const largeWidth = isLeftOffer ? 600 : 600;  // 左侧和右侧宽度保持相同
-  const largeHeight = isLeftOffer ? largeWidth / 4 : largeWidth / 5;  // 左侧4:1，右侧5:1
+  const largeWidth = 600;
+  const largeHeight = largeWidth / 4;  // 左侧4:1
   const smallWidth = 300;
-  const smallHeight = smallWidth / 5;
+  const smallHeight = smallWidth / 4;
 
   if (asBackground) {
     return (

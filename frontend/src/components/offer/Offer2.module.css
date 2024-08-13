@@ -1,0 +1,61 @@
+.offerCard {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin-bottom: 20px;
+  overflow: hidden;
+  height: 150px; /* 保持卡片的固定高度 */
+  width: 100%; /* 占据父容器的宽度 */
+  position: relative;
+}
+
+.offerRow {
+  display: flex;
+  align-items: center;
+  height: 100%; /* 使Row的高度填满Offer Card */
+  width: 100%;
+  position: relative;
+}
+
+.offerImageContainer {
+  width: 100%; /* 图片占据全宽 */
+  height: 100%; /* 图片占据全高 */
+  position: relative;
+  overflow: hidden;
+}
+
+.offerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1 !important;/* 确保图片在最底层 */
+}
+
+.offerContentContainer {
+  position: relative; /* 相对定位以便浮动在图片上 */
+  z-index: 2 !important; /* 确保内容在图片之上 */
+  padding: 20px;
+  color: black; /* 使文字颜色为黑色 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%; /* 内容宽度 */
+  height: 100%; /* 内容高度 */
+}
+
+.offerContent h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+}
+
+.offerContent p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: black;
+}
