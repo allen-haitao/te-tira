@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bookingController = require('../controllers/bookingController');
+const authMiddleware = require('../middleware/auth');
 
 /**
  * @swagger
@@ -61,6 +62,8 @@ const bookingController = require('../controllers/bookingController');
  *   post:
  *     summary: Create a new booking
  *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -73,7 +76,7 @@ const bookingController = require('../controllers/bookingController');
  *       400:
  *         description: Some error happened
  */
-router.post('/', bookingController.createBooking);
+router.post('/', authMiddleware, bookingController.createBooking);
 
 /**
  * @swagger
@@ -82,12 +85,7 @@ router.post('/', bookingController.createBooking);
  *     summary: Get bookings for a user
  *     tags: [Bookings]
  *     parameters:
- *       - in: query
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the user
+ *        required: false
  *     responses:
  *       200:
  *         description: A list of bookings for the user
@@ -100,6 +98,6 @@ router.post('/', bookingController.createBooking);
  *       400:
  *         description: Some error happened
  */
-router.get('/', bookingController.getUserBookings);
+router.get('/', authMiddleware, bookingController.getUserBookings);
 
 module.exports = router;
