@@ -21,19 +21,19 @@ export const HotelRec: React.FC<HotelRecProps> = ({ title }) => {
       <div className={styles.additionalImages}>
         <div className={styles.imageContainer}>
           <Image src={hotelImage1} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第一张图片的描述</p>
+          <p className={styles.imageDescription}>Hotels</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={hotelImage2} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第二张图片的描述</p>
+          <p className={styles.imageDescription}>Resorts</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={hotelImage3} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第三张图片的描述</p>
+          <p className={styles.imageDescription}>Apartments</p>
         </div>
         <div className={styles.imageContainer}>
           <Image src={hotelImage4} className={styles.smallImage} />
-          <p className={styles.imageDescription}>这是第四张图片的描述</p>
+          <p className={styles.imageDescription}>Villas</p>
         </div>
       </div>
     </div>

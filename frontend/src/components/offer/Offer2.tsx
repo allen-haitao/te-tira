@@ -15,7 +15,7 @@ export const Offer2: React.FC<PropsType> = ({
   products,  // 从 props 中接收产品数据
 }) => {
   const productTitle = `产品ID: ${products[0].id}`;
-  const productPrice = `价格: ¥${products[0].price}`;
+  const productPrice = `Price: ¥${products[0].price}`;
 
   return (
     <div className={styles.offerCard}>
