@@ -9,9 +9,6 @@ import styles from "./HomePage.module.css";
 
 export class HomePage extends React.Component {
   render(): React.ReactNode {
-    const offerImage1 = sideImage1;
-    const offerImage2 = sideImage2;
-
     return (
       <>
         <Header />
@@ -39,10 +36,9 @@ export class HomePage extends React.Component {
                 <Offer1
                   button={
                     <Button type="primary" className={styles["offer-button"]}>
-                      Search for flights
+                      Find Your Best Deal
                     </Button>
                   }
-                  imageSrc={offerImage1}
                   products={productList1}
                 />
               </Col>
@@ -50,10 +46,9 @@ export class HomePage extends React.Component {
                 <Offer2
                   button={
                     <Button type="primary" className={styles["offer-button"]}>
-                      Find Getaway Deals
+                      Search for Highest Rated
                     </Button>
                   }
-                  imageSrc={offerImage2}
                   products={productList2}
                 />
               </Col>
