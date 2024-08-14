@@ -10,11 +10,12 @@
     margin-right: auto; /* 添加间距确保图标之间保持一致 */
     padding-left: 2%;
     padding-right: 6%;
+    
   }
 
   .title {
     color: white !important;
-    font-family: BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif !important;
+    font-family: 'Julius Sans One', sans-serif !important;
     font-size: 30px !important;
     font-weight: bold !important;
     margin-top: 15px !important;
@@ -26,7 +27,7 @@
 
   .slogan {
     color: white !important;
-    font-family: 'Pacifico', cursive; /* 圆滑斜体字体 */
+    font-family: 'Julius Sans One', sans-serif;
     font-size: 20px;
     display: inline-block;
     white-space: nowrap;
@@ -89,6 +90,7 @@
     min-width: 50px;
     width: 100%; /* 确保文本宽度与父元素一致 */
     margin-top: -10px;
+    font-family: 'Julius Sans One', sans-serif;
   }
   
   .menu-list {
@@ -105,6 +107,7 @@
     display: none; /* 初始状态下隐藏菜单 */
     flex-direction: column;
     padding: 0 20px !important; /* 调整按钮的内边距 */
+    font-family: 'Julius Sans One', sans-serif !important;
   }
 
   .top-button:hover .menu-list, 
