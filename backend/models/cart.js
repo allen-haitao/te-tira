@@ -1,4 +1,5 @@
 const dynamodb = require('../config/db');
+const Booking = require('./booking')
 const { v4: uuidv4 } = require('uuid');
 
 const Cart = {
@@ -31,7 +32,7 @@ const Cart = {
   },
 
   async addItem(userId, hotel, checkInDate, checkOutDate) {
-    cart = await this.getByUserId(userId);
+    let cart = await this.getByUserId(userId);
     if (!cart) {
       cart = await this.create(userId)
       //throw new Error('Cart not found');
@@ -59,7 +60,7 @@ const Cart = {
       nights,
       totalPrice: hotel.price * nights,
     };
-
+    cart.items = cart.items || [];
     cart.items.push(cartItem);
     cart.totalPrice += cartItem.totalPrice;
 
@@ -91,23 +92,51 @@ const Cart = {
     };
     return dynamodb.put(params).promise();
   },
+  async clearCart(cartId) {
+    // Delete the cart after checkout
+    const params = {
+      TableName: 'Carts',
+      Key: {
+        cartId: cartId
+      }
+    };
+    return dynamodb.delete(params).promise();
+  },
 
   async checkout(userId) {
     const cart = await this.getByUserId(userId);
-    if (!cart) {
-      throw new Error('Cart not found');
+    if (!cart || cart.items.length === 0) {
+      throw new Error('Cart not found or is empty');
     }
     // Logic for processing payment and booking hotels goes here.
     //After payment, update the booking table.
+    const bookingPromises = cart.items.map(async (item) => {
+      const bookingId = uuidv4();  // Generate a unique ID for the booking
 
-    cart.items = [];
-    cart.totalPrice = 0;
-    const params = {
-      TableName: 'Carts',
-      Item: cart,
-    };
-    return dynamodb.put(params).promise();
-  },
+      const booking = {
+        bookingId,
+        userId,
+        hotelId: item.hotelId,
+        name: item.name,
+        location: item.location,
+        checkInDate: item.checkInDate,
+        checkOutDate: item.checkOutDate,
+        nights: item.nights,
+        totalPrice: item.totalPrice,
+        bookingStatus: 'Confirmed',  // Set the status as needed
+      };
+
+      // Create the booking using the Booking model
+      return Booking.create(booking);
+    });
+
+    // Wait for all bookings to be saved
+    await Promise.all(bookingPromises);
+    //Clear the cart
+    await this.clearCart(cart.cartId);
+  }
+
 };
+
 
 module.exports = Cart;

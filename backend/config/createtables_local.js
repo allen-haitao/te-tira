@@ -64,12 +64,28 @@ const createBookingsTable = () => {
             { AttributeName: 'bookingId', KeyType: 'HASH' } // Partition key
         ],
         AttributeDefinitions: [
-            { AttributeName: 'bookingId', AttributeType: 'S' }
+            { AttributeName: 'bookingId', AttributeType: 'S' },
+            { AttributeName: 'userId', AttributeType: 'S' }
         ],
         ProvisionedThroughput: {
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5
-        }
+        },
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'UserIdIndex',
+                KeySchema: [
+                    { AttributeName: 'userId', KeyType: 'HASH' }
+                ],
+                Projection: {
+                    ProjectionType: 'ALL'
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 5,
+                    WriteCapacityUnits: 5
+                }
+            }
+        ]
     };
     return dynamodb.createTable(params).promise();
 };

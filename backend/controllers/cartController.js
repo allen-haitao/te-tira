@@ -56,7 +56,7 @@ const Hotel = require('../models/Hotel');
  *         required: false
  *     responses:
  *       200:
- *         description: A list of favorite items for the user
+ *         description: A lcart for the user
  *         content:
  *           application/json:
  *             schema:
