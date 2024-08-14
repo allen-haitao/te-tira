@@ -31,24 +31,33 @@ const Cart = {
   },
 
   async addItem(userId, hotel, checkInDate, checkOutDate) {
-    const cart = await this.getByUserId(userId);
+    cart = await this.getByUserId(userId);
     if (!cart) {
-      throw new Error('Cart not found');
+      cart = await this.create(userId)
+      //throw new Error('Cart not found');
     }
 
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
     const nights = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+    if (isNaN(nights) || nights <= 0) {
+      throw new Error('Invalid check-in or check-out date');
+    }
+
+    const pricePerNight = parseFloat(hotel.price);
+    if (isNaN(pricePerNight)) {
+      throw new Error('Invalid price per night');
+    }
 
     const cartItem = {
       hotelId: hotel.hotelId,
       name: hotel.name,
       location: hotel.location,
-      pricePerNight: hotel.pricePerNight,
+      pricePerNight: hotel.price,
       checkInDate,
       checkOutDate,
       nights,
-      totalPrice: hotel.pricePerNight * nights,
+      totalPrice: hotel.price * nights,
     };
 
     cart.items.push(cartItem);

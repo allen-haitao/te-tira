@@ -61,17 +61,12 @@ exports.addFavorite = async (req, res) => {
 
 /**
  * @swagger
- * /favorites/{userId}:
+ * /favorites:
  *   get:
  *     summary: Get favorites for a user
  *     tags: [Favorites]
  *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the user
+ *         required: fasle
  *     responses:
  *       200:
  *         description: A list of favorite items for the user
