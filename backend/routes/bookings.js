@@ -107,8 +107,8 @@ router.get('/', authMiddleware, bookingController.getUserBookings);
 /**
  * @swagger
  * /bookings:
- *   get:
- *     summary: Get bookings for a user
+ *   delete:
+ *     summary: delete bookings f
  *     tags: [Bookings]
  *     security:
  *       - bearerAuth: []

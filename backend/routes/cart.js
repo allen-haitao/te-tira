@@ -72,7 +72,7 @@ const authMiddleware = require('../middleware/auth');
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Carts'
+ *                 $ref: '#/components/schemas/CartItem'
  *       400:
  *         description: Some error happened
  */
