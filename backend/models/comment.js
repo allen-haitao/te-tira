@@ -22,7 +22,9 @@ const Comment = {
         const params = {
             TableName: 'Comments',
             IndexName: 'ItemIdIndex',
-            KeyConditionExpression: 'itemId = :itemId and itemType = :itemType',
+            KeyConditionExpression: 'itemId = :itemId',
+            FilterExpression: 'itemType = :itemType',
+
             ExpressionAttributeValues: {
                 ':itemId': itemId,
                 ':itemType': itemType,

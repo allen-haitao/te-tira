@@ -5,3 +5,5 @@ export * from './carousel';
 export * from './search';
 export * from './offer';
 export * from './productCollection';
+export * from './countryRecommend';
+export * from './hotelRec';

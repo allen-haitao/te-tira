@@ -7,7 +7,7 @@ interface PropsType {
   products: any[];  // 接收产品数据
 }
 
-export const Offer2: React.FC<PropsType> = ({ button, products }) => {
+export const Offer2: React.FC<PropsType> = ({button, products }) => {
   return (
     <div className={styles.offerCard}>
       <div className={styles.offerInfo}>

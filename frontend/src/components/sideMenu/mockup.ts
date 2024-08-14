@@ -1,132 +1,130 @@
 export const sideMenuList = [
     {
-      title: "主题旅游",
+      title: "Topic Travel",
       subMenu: [
         {
-          title: "爸妈游",
-          subMenu: ["祈福拜佛", "古镇游玩", "桂林山水", "红色之旅"],
+          title: "Parents' Tour",
+          subMenu: ["Blessing and Worship", "Ancient Town Tour", "Guilin Scenery", "Red Tourism"],
         },
         {
-          title: "亲子游",
-          subMenu: ["上海迪士尼", "探险体验", "海洋公园", "感受名校"],
+          title: "Family Tour",
+          subMenu: ["Shanghai Disneyland", "Adventure Experience", "Ocean Park", "Famous School Tour"],
         },
         {
-          title: "浪漫蜜月游",
-          subMenu: ["浪漫海岛", "豪华酒店", "购物血拼", "全球婚礼"],
+          title: "Romantic Honeymoon Tour",
+          subMenu: ["Romantic Island", "Luxury Hotels", "Shopping Spree", "Global Weddings"],
         },
       ],
     },
     {
-      title: "周边游",
+      title: "Local Tours",
       subMenu: [
         {
-          title: "周边目的地",
-          subMenu: ["新疆", "南京", "苏州", "黄山"],
+          title: "Nearby Destinations",
+          subMenu: ["Xinjiang", "Nanjing", "Suzhou", "Huangshan"],
         },
         {
-          title: "热门景点",
-          subMenu: ["华山", "泸沽湖", "乌镇古镇", "宏村"],
+          title: "Popular Attractions",
+          subMenu: ["Mount Huashan", "Lugu Lake", "Wuzhen Ancient Town", "Hongcun"],
         },
       ],
     },
     {
-      title: "国内游",
+      title: "Domestic Tours",
       subMenu: [
         {
-          title: "广东",
-          subMenu: ["广州", "深圳", "珠海", "惠州"],
+          title: "Guangdong",
+          subMenu: ["Guangzhou", "Shenzhen", "Zhuhai", "Huizhou"],
         },
         {
-          title: "浙江",
-          subMenu: ["杭州", "普陀山", "千岛湖", "宁波"],
+          title: "Zhejiang",
+          subMenu: ["Hangzhou", "Putuo Mountain", "Qiandao Lake", "Ningbo"],
         },
         {
-          title: "江苏",
-          subMenu: ["舟山", "乌镇", "干山", "湖州"],
+          title: "Jiangsu",
+          subMenu: ["Zhoushan", "Wuzhen", "Gan Mountain", "Huzhou"],
         },
       ],
     },
     {
-      title: "东南亚",
+      title: "Southeast Asia",
       subMenu: [
         {
-          title: "热门目的地",
-          subMenu: ["新加坡", "巴厘岛", "越南", "柬埔寨"],
+          title: "Popular Destinations",
+          subMenu: ["Singapore", "Bali", "Vietnam", "Cambodia"],
         },
         {
-          title: "热门景点2",
-          subMenu: ["下龙湾", "吴哥窟", "西哈努克", "槟城珍珠岛"],
+          title: "Popular Attractions 2",
+          subMenu: ["Halong Bay", "Angkor Wat", "Sihanoukville", "Penang Pearl Island"],
         },
       ],
     },
     {
-      title: "欧洲",
+      title: "Europe",
       subMenu: [
         {
-          title: "热门邮轮航线",
-          subMenu: ["欧洲河轮", "北欧邮轮", "爱琴海邮轮", "英伦三岛"],
+          title: "Popular Cruise Routes",
+          subMenu: ["European River Cruises", "Northern Europe Cruises", "Aegean Sea Cruises", "British Isles"],
         },
         {
-          title: "热门景点3",
-          subMenu: ["贝加尔湖", "普罗旺斯", "阿尔卑斯", "圣托里尼岛"],
+          title: "Popular Attractions 3",
+          subMenu: ["Lake Baikal", "Provence", "Alps", "Santorini Island"],
         },
         {
-          title: "蜜月游",
-          subMenu: ["极光中心", "俄罗斯远东地区", "英格兰少女峰", "玻璃海滩"],
+          title: "Honeymoon Tour",
+          subMenu: ["Aurora Center", "Russian Far East", "Maiden's Peak in England", "Glass Beach"],
         },
       ],
     },
   ];
   
-  /**
-   * 首页推荐产品数据
-   * */
-  // 爆款推荐
+  // Home Page Recommended Products Data
+  // Hot Deals
   export const productList1 = [
     {
       id: 1,
-      title:
-        "埃及阿斯旺+卢克索+红海Red Sea+开罗+亚历山大12日跟团游(5钻)·【官方旗舰明星纯玩团】25人封顶|含签证小费全程餐|3晚尼罗河游轮+3晚红海全包度假村+1晚底比斯古都|升级内陆飞机|优质中文导游队伍|七大神庙+赠项目",
+      title: "12-Day Group Tour in Egypt (5-Star) - Aswan, Luxor, Red Sea, Cairo, Alexandria - [Official Flagship All-Inclusive Group] Up to 25 People, Includes Visa Fees, Full Board, 3 Nights on Nile Cruise, 3 Nights at Red Sea All-Inclusive Resort, 1 Night in Thebes, Upgrade to Domestic Flights, Excellent Chinese-Speaking Guides, 7 Temples + Free Extras",
       price: "11990",
     },
     {
       id: 2,
-      title: "摩洛哥撒哈拉沙漠+卡萨布兰卡+马拉喀什+舍夫沙...",
+      title: "Morocco Sahara Desert + Casablanca + Marrakech + Chefchaouen...",
       price: "13290",
     },
     {
       id: 3,
-      title: "越南胡志明市+美奈+芽庄+河内7日6晚跟团游(4钻)...",
+      title: "7-Day 6-Night Group Tour in Vietnam (4-Star) - Ho Chi Minh City, Mui Ne, Nha Trang, Hanoi...",
       price: "4000",
     },
     {
       id: 4,
-      title: "迪拜+阿布扎比6日跟团游(5钻)·【携程国旅纯玩...",
+      title: "6-Day Group Tour in Dubai & Abu Dhabi (5-Star) - [Ctrip Pure Play Group]...",
       price: "7399",
     },
     {
       id: 5,
-      title: "泰国曼谷+芭堤雅6日5晚跟团游(5钻)·【纯玩】『可...",
+      title: "6-Day 5-Night Group Tour in Thailand (5-Star) - Bangkok & Pattaya [Pure Play]...",
       price: "3499",
     },
     {
       id: 6,
-      title: "日本大阪+京都+箱根+东京6日5晚跟团游(4钻)·【浪...",
+      title: "6-Day 5-Night Group Tour in Japan (4-Star) - Osaka, Kyoto, Hakone, Tokyo...",
       price: "5999",
     },
     {
       id: 7,
-      title: "新加坡+马来西亚6日5晚跟团游(5钻)·【纯玩无购物...",
+      title: "6-Day 5-Night Group Tour in Singapore & Malaysia (5-Star) - [Pure Play, No Shopping]...",
       price: "6199",
     },
     {
       id: 8,
-      title: "法国+德国+意大利+瑞士12日跟团游(4钻)·【匠心定...",
+      title: "12-Day Group Tour in France, Germany, Italy, and Switzerland (4-Star) - [Mastercrafted Customized...]",
       price: "13699",
     },
     {
       id: 9,
-      title: "印度尼西亚巴厘岛7日5晚私家团(5钻)·A线独栋泳...",
+      title: "7-Day 5-Night Private Tour in Bali, Indonesia (5-Star) - Option A: Private Villa with Pool...",
       price: "5021",
     },
   ];
+  
