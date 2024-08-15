@@ -1,6 +1,7 @@
 const dynamodb = require('../config/db');
 const Booking = require('./booking')
 const { v4: uuidv4 } = require('uuid');
+const { Decimal } = require('decimal.js');
 
 const Cart = {
   async create(userId) {
@@ -31,35 +32,36 @@ const Cart = {
     return result.Items[0];
   },
 
-  async addItem(userId, hotel, checkInDate, checkOutDate) {
+  async addItem(userId, room, checkInDate, checkOutDate) {
     let cart = await this.getByUserId(userId);
     if (!cart) {
-      cart = await this.create(userId)
-      //throw new Error('Cart not found');
+      cart = await this.create(userId);
     }
 
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
-    const nights = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+    const nights = new Decimal((checkOut - checkIn) / (1000 * 60 * 60 * 24));
     if (isNaN(nights) || nights <= 0) {
       throw new Error('Invalid check-in or check-out date');
     }
 
-    const pricePerNight = parseFloat(hotel.price);
-    if (isNaN(pricePerNight)) {
+    const pricePerNight = new Decimal(room.price);  // Ensure pricePerNight is a Decimal
+    if (pricePerNight.isNaN()) {
       throw new Error('Invalid price per night');
     }
 
     const cartItem = {
-      hotelId: hotel.hotelId,
-      name: hotel.name,
-      location: hotel.location,
-      pricePerNight: hotel.price,
+      roomTypeId: room.roomTypeId,
+      roomTypeName: room.roomTypeName,
+      hotelId: room.hotelId,
+      hotelName: room.hotelName,
+      pricePerNight: pricePerNight.toNumber(),
       checkInDate,
       checkOutDate,
-      nights,
-      totalPrice: hotel.price * nights,
+      nights: nights.toNumber(),
+      totalPrice: pricePerNight.mul(nights).toNumber(),
     };
+
     cart.items = cart.items || [];
     cart.items.push(cartItem);
     cart.totalPrice += cartItem.totalPrice;
@@ -71,13 +73,13 @@ const Cart = {
     return dynamodb.put(params).promise();
   },
 
-  async removeItem(userId, hotelId) {
+  async removeItem(userId, roomTypeId) {
     const cart = await this.getByUserId(userId);
     if (!cart) {
       throw new Error('Cart not found');
     }
 
-    const itemIndex = cart.items.findIndex(item => item.hotelId === hotelId);
+    const itemIndex = cart.items.findIndex(item => item.roomTypeId === roomTypeId);
     if (itemIndex === -1) {
       throw new Error('Item not found in cart');
     }
@@ -92,8 +94,8 @@ const Cart = {
     };
     return dynamodb.put(params).promise();
   },
+
   async clearCart(cartId) {
-    // Delete the cart after checkout
     const params = {
       TableName: 'Carts',
       Key: {
@@ -108,35 +110,32 @@ const Cart = {
     if (!cart || cart.items.length === 0) {
       throw new Error('Cart not found or is empty');
     }
-    // Logic for processing payment and booking hotels goes here.
-    //After payment, update the booking table.
+
     const bookingPromises = cart.items.map(async (item) => {
-      const bookingId = uuidv4();  // Generate a unique ID for the booking
+      const bookingId = uuidv4();
 
       const booking = {
         bookingId,
         userId,
         hotelId: item.hotelId,
-        name: item.name,
-        location: item.location,
+        hotelName: item.hotelName,
+        roomTypeId: item.roomTypeId,
+        roomTypeName: item.roomTypeName,
         checkInDate: item.checkInDate,
         checkOutDate: item.checkOutDate,
         nights: item.nights,
         totalPrice: item.totalPrice,
-        bookingStatus: 'Confirmed',  // Set the status as needed
+        bookingStatus: 'Confirmed',
       };
 
-      // Create the booking using the Booking model
       return Booking.create(booking);
+      //It should update the available number of the room, an it should consider the date.
     });
 
-    // Wait for all bookings to be saved
     await Promise.all(bookingPromises);
-    //Clear the cart
+
     await this.clearCart(cart.cartId);
   }
-
 };
-
 
 module.exports = Cart;
