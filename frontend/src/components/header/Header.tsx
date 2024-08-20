@@ -93,13 +93,6 @@ export const Header: React.FC = () => {
                         </Button.Group>
                     </Col>
             </Row>
-            <Row className={styles['top-header']}>
-                <Menu
-                    mode={"horizontal"}
-                    className={styles["main-menu"]}
-                    items={menuItems}
-                />
-            </Row>
         </div>
     );
 }
