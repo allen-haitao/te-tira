@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import image from "../../assets/image.png"
 // import { useNavigate } from "react-router-dom"; // 先注释掉导航相关的代码
 import styles from "./Header.module.css";
-import { Typography, Menu, Button, Row, Col } from "antd";
+import { Typography, Button, Row, Col } from "antd";
 import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { currencyItems, langItems, menuItems } from "../../assets/data/Array";
+import { currencyItems, langItems } from "../../assets/data/Array";
 
 export const Header: React.FC = () => {
     const [visibleDropdown, setVisibleDropdown] = useState<string | null>(null);
