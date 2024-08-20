@@ -45,7 +45,6 @@
     border-radius: 5px;
     padding: 3px;
     margin: auto auto;
-    font-family: 'Josefin Sans', sans-serif;
   }
 
   .search-input {
@@ -55,7 +54,7 @@
     border: 2px solid #FFA500; /* 橙色实线边框，宽度为2px */
     height: 60px;
     padding: 12px;
-    font-size: 16px;
+    font-size:25px !important;
   }
 
   .search-button {

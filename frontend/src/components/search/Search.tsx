@@ -16,7 +16,7 @@ export const Search: React.FC = () => {
                     </Typography.Text>
                 </div>
                 <div className={styles["search-box"]}>
-                    <Input
+                    <Input 
                         prefix={<EnvironmentOutlined />}
                         placeholder="Where are you going?"
                         className={styles["search-input"]}
