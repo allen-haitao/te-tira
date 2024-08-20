@@ -206,6 +206,38 @@ const createFavoritesTable = () => {
     return dynamodb.createTable(params).promise();
 };
 
+const createRoomsTable = () => {
+    const params = {
+        TableName: 'Rooms',
+        KeySchema: [
+            { AttributeName: 'roomTypeId', KeyType: 'HASH' }  // Partition key
+        ],
+        AttributeDefinitions: [
+            { AttributeName: 'roomTypeId', AttributeType: 'S' },
+            { AttributeName: 'hotelId', AttributeType: 'S' }, // Used for GSI
+        ],
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'HotelIdIndex',
+                KeySchema: [
+                    { AttributeName: 'hotelId', KeyType: 'HASH' }  // Partition key for GSI
+                ],
+                Projection: {
+                    ProjectionType: 'ALL'
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 5,
+                    WriteCapacityUnits: 5
+                }
+            }
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+        }
+    };
+    return dynamodb.createTable(params).promise();
+};
 const createTables = async () => {
     try {
         await createUsersTable();
@@ -215,6 +247,7 @@ const createTables = async () => {
         await createCartsTable();
         await createCommentsTable();
         await createFavoritesTable();
+        await createRoomsTable();
         console.log('Tables created successfully');
     } catch (err) {
         console.error('Error creating tables:', err);

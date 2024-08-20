@@ -1,6 +1,5 @@
 const Cart = require('../models/Cart');
-const Hotel = require('../models/Hotel');
-
+const Room = require('../models/room');
 
 /**
  * @swagger
@@ -10,16 +9,16 @@ const Hotel = require('../models/Hotel');
  *       type: object
  *       required:
  *         - userId
- *         - hotelId
+ *         - roomTypeId
  *         - checkInDate
  *         - checkOutDate
  *       properties:
  *         userId:
  *           type: string
  *           description: The ID of the user
- *         hotelId:
+ *         roomTypeId:
  *           type: string
- *           description: The ID of the hotel to add to the cart
+ *           description: The ID of the room type to add to the cart
  *         checkInDate:
  *           type: string
  *           format: date
@@ -30,7 +29,7 @@ const Hotel = require('../models/Hotel');
  *           description: The check-out date
  *       example:
  *         userId: exampleUserId
- *         hotelId: exampleHotelId
+ *         roomTypeId: exampleRoomTypeId
  *         checkInDate: 2024-07-01
  *         checkOutDate: 2024-07-05
  * 
@@ -51,12 +50,12 @@ const Hotel = require('../models/Hotel');
  * /cart:
  *   get:
  *     summary: Get cart for a user
- *     tags: [cart]
+ *     tags: [Cart]
  *     parameters:
  *         required: false
  *     responses:
  *       200:
- *         description: A lcart for the user
+ *         description: A cart for the user
  *         content:
  *           application/json:
  *             schema:
@@ -67,10 +66,8 @@ const Hotel = require('../models/Hotel');
  */
 exports.getCartByUserId = async (req, res) => {
     try {
-        // Get the userId from the auth middleware
         const userId = req.userId;
 
-        // Get the user's cart from the database
         const cart = await Cart.getByUserId(userId);
 
         res.status(200).send(cart);
@@ -84,7 +81,7 @@ exports.getCartByUserId = async (req, res) => {
  * @swagger
  * /cart/add:
  *   post:
- *     summary: Add a hotel to the cart
+ *     summary: Add a room type to the cart
  *     tags: [Cart]
  *     requestBody:
  *       required: true
@@ -100,14 +97,15 @@ exports.getCartByUserId = async (req, res) => {
  */
 exports.addItem = async (req, res) => {
     try {
-        const { hotelId, checkInDate, checkOutDate } = req.body;
-        // Get the userId from the auth middleware
+        const { roomTypeId, checkInDate, checkOutDate } = req.body;
         const userId = req.userId;
-        const hotel = await Hotel.getById(hotelId);
-        if (!hotel) {
-            return res.status(404).send('Hotel not found');
+
+        const room = await Room.getById(roomTypeId);
+        if (!room) {
+            return res.status(404).send('Room type not found');
         }
-        await Cart.addItem(userId, hotel, checkInDate, checkOutDate);
+
+        await Cart.addItem(userId, room, checkInDate, checkOutDate);
         res.send('Item added to cart');
     } catch (err) {
         res.status(400).send(err.message);
@@ -118,7 +116,7 @@ exports.addItem = async (req, res) => {
  * @swagger
  * /cart/remove:
  *   post:
- *     summary: Remove a hotel from the cart
+ *     summary: Remove a room type from the cart
  *     tags: [Cart]
  *     requestBody:
  *       required: true
@@ -134,10 +132,10 @@ exports.addItem = async (req, res) => {
  */
 exports.removeItem = async (req, res) => {
     try {
-        const { hotelId } = req.body;
-        // Get the userId from the auth middleware
+        const { roomTypeId } = req.body;
         const userId = req.userId;
-        await Cart.removeItem(userId, hotelId);
+
+        await Cart.removeItem(userId, roomTypeId);
         res.send('Item removed from cart');
     } catch (err) {
         res.status(400).send(err.message);
@@ -164,7 +162,6 @@ exports.removeItem = async (req, res) => {
  */
 exports.checkout = async (req, res) => {
     try {
-        // Get the userId from the auth middleware
         const userId = req.userId;
         await Cart.checkout(userId);
         res.send('Checkout successful');

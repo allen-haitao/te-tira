@@ -18,6 +18,7 @@ const attractionRoutes = require('./routes/attractions');
 const cartRoutes = require('./routes/cart');
 const commentRoutes = require('./routes/comments');
 const favoriteRoutes = require('./routes/favorites');
+const roomRoutes = require('./routes/rooms');
 
 app.use('/auth', authRoutes);
 app.use('/hotels', hotelRoutes);
@@ -26,6 +27,7 @@ app.use('/attractions', attractionRoutes);
 app.use('/cart', cartRoutes);
 app.use('/comments', commentRoutes);
 app.use('/favorites', favoriteRoutes);
+app.use('/rooms', roomRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

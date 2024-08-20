@@ -11,16 +11,28 @@ const authMiddleware = require('../middleware/auth');
  *       type: object
  *       required:
  *         - userId
- *         - hotelId
+ *         - roomTypeId
  *         - checkInDate
  *         - checkOutDate
  *       properties:
  *         userId:
  *           type: string
  *           description: The ID of the user
+ *         roomTypeId:
+ *           type: string
+ *           description: The ID of the room type to add to the cart
+ *         roomTypeName:
+ *           type: string
+ *           description: The name of the room type
  *         hotelId:
  *           type: string
- *           description: The ID of the hotel to add to the cart
+ *           description: The ID of the hotel associated with the room
+ *         hotelName:
+ *           type: string
+ *           description: The name of the hotel associated with the room
+ *         pricePerNight:
+ *           type: number
+ *           description: The price per night for this room type
  *         checkInDate:
  *           type: string
  *           format: date
@@ -29,11 +41,23 @@ const authMiddleware = require('../middleware/auth');
  *           type: string
  *           format: date
  *           description: The check-out date
+ *         nights:
+ *           type: integer
+ *           description: The number of nights for the booking
+ *         totalPrice:
+ *           type: number
+ *           description: The total price for this booking
  *       example:
  *         userId: exampleUserId
+ *         roomTypeId: exampleRoomTypeId
+ *         roomTypeName: Deluxe
  *         hotelId: exampleHotelId
+ *         hotelName: Example Hotel
+ *         pricePerNight: 120
  *         checkInDate: 2024-07-01
  *         checkOutDate: 2024-07-05
+ *         nights: 4
+ *         totalPrice: 480
  * 
  *     Checkout:
  *       type: object
@@ -46,6 +70,7 @@ const authMiddleware = require('../middleware/auth');
  *       example:
  *         userId: exampleUserId
  */
+
 
 /**
  * @swagger
