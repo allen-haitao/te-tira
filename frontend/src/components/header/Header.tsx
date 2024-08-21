@@ -1,17 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, /*useEffect*/} from "react";
 import image from "../../assets/image.png"
-// import { useNavigate } from "react-router-dom"; // 先注释掉导航相关的代码
 import styles from "./Header.module.css";
 import { Typography, Button, Row, Col } from "antd";
 import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { currencyItems, langItems } from "../../assets/data/Array";
+import { useParams, /*useLocation,*/ useNavigate } from "react-router-dom";
+import { currencyItems } from "../../assets/data/Array";
+import { useSelector } from "../../redux/hooks";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import {
+    LanguageActionTypes,
+    addLanguageActionCreator,
+    changeLanguageActionCreator,
+  } from "../../redux/language/languageActions";
+import { useTranslation } from "react-i18next";
 
 export const Header: React.FC = () => {
     const [visibleDropdown, setVisibleDropdown] = useState<string | null>(null);
     const [location, setLocation] = useState<string>("Unknown Location");
     const [selectedCurrency, setSelectedCurrency] = useState<string>("NZD");
-    const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
-
+    //const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
+    const navigate = useNavigate();
+    //const location = useLocation();
+    const params = useParams();
+    const language = useSelector((state) => state.language);
+    const languageList = useSelector((state) => state.languageList);
+    const dispatch: Dispatch<LanguageActionTypes> = useDispatch();
+    const { t } = useTranslation();
+    
+    /*
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -30,29 +47,53 @@ export const Header: React.FC = () => {
         }
     }, []);
 
-    const handleIconClick = (type: string) => {
+    */
+   
+    const handleIconClick = (type: string, e?: any) => {
+        if (type === "language") {
+            if (e?.key === "new") {
+                dispatch(addLanguageActionCreator("new lang", "new_lang"));
+            } else if (e) {
+                dispatch(changeLanguageActionCreator(e.key));
+            }
+        } 
+        // Toggle dropdown visibility for other types
         setVisibleDropdown(visibleDropdown === type ? null : type);
+        
     };
 
     const renderDropdown = (type: string, items: any[]) => {
         return visibleDropdown === type && (
             <div className={styles["menu-list"]}>
                 {items.map((item, index) => (
-                    <a href="#" className={styles["dropdown-item"]} key={index}>
-                        {typeof item === "string" ? item : (
-                            <>
-                                <span role="img" aria-label={item.label}>
-                                    {item.flag}
-                                </span>
-                                {" " + item.label}
-                            </>
+                    <a href="javascript:void(0)" 
+                       className={styles["dropdown-item"]} 
+                       key={index}
+                       onClick={() => handleIconClick(type, { key: item.code })}>
+                        {item.flag && (
+                            <span role="img" aria-label={item.name}>
+                                {item.flag}
+                            </span>
                         )}
+                        {" " + item.name}
                     </a>
                 ))}
+                <a href="javascript:void(0)" 
+                className={styles["dropdown-item"]} 
+                onClick={() => handleIconClick(type, { key: "new" })}>
+                    <span role="img" aria-label={t("header.new_language")}>
+                        ➕ {/* 可以用适当的图标替换 */}
+                    </span>
+                    {" " + t("header.new_language")}
+                </a>
             </div>
         );
     };
 
+    const currentLanguageName = languageList.find(
+        (l: { code: string; name: string }) => l.code === language
+      )?.name;
+    
     return (
         <div className={styles["app-header"]}>
             <Row className={styles['top-header']}>
@@ -65,7 +106,7 @@ export const Header: React.FC = () => {
                     </Typography.Text>
                 </Col>
                     <Col className={styles["header-image"]}>
-                        <img src={image} alt="image" className={styles.image}/>
+                        <img src={image} alt=" " className={styles.image}/>
                     </Col>
                     <Col className={styles["top-button"]} onClick={() => handleIconClick("location")}>
                         <EnvironmentOutlined className={styles["button-icon"]} />
@@ -79,17 +120,17 @@ export const Header: React.FC = () => {
                     </Col>
                     <Col className={styles["top-button"]} onClick={() => handleIconClick("language")}>
                         <GlobalOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>{selectedLanguage}</Typography.Text>
-                        {renderDropdown("language", langItems)}
+                        <Typography.Text className={styles["selected-item"]}>{currentLanguageName || "Language"}</Typography.Text>
+                        {renderDropdown("language", languageList)}
                     </Col>
                     <Col className={styles["top-button"]} onClick={() => window.location.href = "/help"}>
                         <QuestionCircleOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>Help</Typography.Text>
+                        <Typography.Text className={styles["selected-item"]}>{t("header.help")}</Typography.Text>
                     </Col>
                     <Col>
                         <Button.Group className={styles["user-auth"]}>
-                            <Button className={styles["auth-btn"]}>Register</Button>
-                            <Button className={styles["auth-btn"]}>Login</Button>
+                            <Button className={styles["auth-btn"]}>{t("header.register")}</Button>
+                            <Button className={styles["auth-btn"]}>{t("header.login")}</Button>
                         </Button.Group>
                     </Col>
             </Row>
