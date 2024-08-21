@@ -3,7 +3,7 @@ import image from "../../assets/image.png"
 import styles from "./Header.module.css";
 import { Typography, Button, Row, Col } from "antd";
 import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { useParams, /*useLocation,*/ useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { currencyItems } from "../../assets/data/Array";
 import { useSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
@@ -23,6 +23,7 @@ export const Header: React.FC = () => {
     const navigate = useNavigate();
     //const location = useLocation();
     const params = useParams();
+
     const language = useSelector((state) => state.language);
     const languageList = useSelector((state) => state.languageList);
     const dispatch: Dispatch<LanguageActionTypes> = useDispatch();
@@ -98,12 +99,14 @@ export const Header: React.FC = () => {
         <div className={styles["app-header"]}>
             <Row className={styles['top-header']}>
                 <Col span={7}>
-                    <Typography.Title level={3} className={styles.title}>
-                        Te Tira
-                    </Typography.Title>
-                    <Typography.Text className={styles.slogan}>
-                        Ka tīmata tō haerenga Kiwi i konei
-                    </Typography.Text>
+                    <span onClick={() => navigate("/")}>
+                        <Typography.Title level={3} className={styles.title}>
+                            Te Tira
+                        </Typography.Title>
+                        <Typography.Text className={styles.slogan}>
+                            Ka tīmata tō haerenga Kiwi i konei
+                        </Typography.Text>
+                    </span>    
                 </Col>
                     <Col className={styles["header-image"]}>
                         <img src={image} alt=" " className={styles.image}/>
@@ -129,8 +132,8 @@ export const Header: React.FC = () => {
                     </Col>
                     <Col>
                         <Button.Group className={styles["user-auth"]}>
-                            <Button className={styles["auth-btn"]}>{t("header.register")}</Button>
-                            <Button className={styles["auth-btn"]}>{t("header.login")}</Button>
+                            <Button className={styles["auth-btn"]} onClick={()=>navigate("/register")}>{t("header.register")}</Button>
+                            <Button className={styles["auth-btn"]} onClick={()=>navigate("/login")}>{t("header.login")}</Button>
                         </Button.Group>
                     </Col>
             </Row>

@@ -11,7 +11,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="detail/:touristRouteId/:other" element = {<DetailPage />} />
+          <Route path="detail/:touristRouteId" element = {<DetailPage />} />
           <Route path="*" element = {<h1>404 not found Welcome to Mars</h1>} />
         </Routes>
       </BrowserRouter>
