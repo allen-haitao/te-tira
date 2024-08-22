@@ -4,6 +4,7 @@
     line-height: 250px;
     background: #364d79;
     overflow: hidden;
+    border-radius: 8px;
 }
 
 .additionalImages {

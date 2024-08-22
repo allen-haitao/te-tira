@@ -26,8 +26,6 @@
         "search_highest_rated": "Search for Highest Rated",
         "hot_recommended": "Hot Recommended",
         "new_arrival": "New arrival",
-        "domestic_travel": "Domestic travel",
-        "country_recommendation": "Country Recommendation",
-        "hotel_recommendation": "Hotel Recommendation"
+        "attractions_nearby": "Nearby Attractions"
     }
 }

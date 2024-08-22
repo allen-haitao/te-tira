@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection, CountryRecommend, HotelRec} from "../../components";
+import { Header, Footer } from "../../components";
 import { Row, Col, Typography, Button } from "antd";
 import styles from "./RegisterPage.module.css";
 import { useTranslation } from "react-i18next";

@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./ProductCollection.module.css";
 import { Image, Typography } from "antd";
 import {Link} from 'react-router-dom'
 
@@ -14,9 +15,9 @@ export const ProductImage: React.FC<PropsType> = ({id, size, imageSrc, price, ti
     return (
       <Link to={`/detail/${id}`}>
         {size == "large" ? (
-          <Image src={imageSrc} height={285} width={490} />
+          <Image src={imageSrc} className={styles.image_large}/>
         ) : (
-          <Image src={imageSrc} height={120} width={240} />
+          <Image src={imageSrc} className={styles.image_small} />
         )}
         <div>
           <Typography.Text type="secondary">

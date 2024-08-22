@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from 'react-router-dom';
-import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection, CountryRecommend, HotelRec} from "../../components";
+import { Header, Footer } from "../../components";
 import { Row, Col, Typography, Button } from "antd";
 import styles from "./DetailPage.module.css";
 import { useTranslation } from "react-i18next";

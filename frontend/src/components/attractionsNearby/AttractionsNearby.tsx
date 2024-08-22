@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./countryRecommend.module.css";
+import styles from "./AttractionsNearby.module.css";
 import { Image } from 'antd';
 
 // 图片导入
@@ -13,11 +13,11 @@ import smallImage7 from "../../assets/images/small_7.jpg";
 import smallImage8 from "../../assets/images/small_8.jpg";
 
 // 定义 CountryRecommend 组件的 props 类型
-interface CountryRecommendProps {
+interface AttractionsNearbyProps {
   title: React.ReactNode;  // title 属性的类型
 }
 
-export const CountryRecommend: React.FC<CountryRecommendProps> = ({ title }) => {
+export const AttractionsNearby: React.FC<AttractionsNearbyProps> = ({ title }) => {
   return (
     <div className={styles.recommendedSection}>
       {title}  {/* 使用传入的 title */}
