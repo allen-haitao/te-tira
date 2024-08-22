@@ -103,10 +103,10 @@ export const Header: React.FC = () => {
                         <Typography.Title level={3} className={styles.title}>
                             Te Tira
                         </Typography.Title>
-                        <Typography.Text className={styles.slogan}>
-                            Ka tīmata tō haerenga Kiwi i konei
-                        </Typography.Text>
-                    </span>    
+                    </span>  
+                    <Typography.Text className={styles.slogan}>
+                        Ka tīmata tō haerenga Kiwi i konei
+                    </Typography.Text> 
                 </Col>
                     <Col className={styles["header-image"]}>
                         <img src={image} alt=" " className={styles.image}/>

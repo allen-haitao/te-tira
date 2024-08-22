@@ -9,11 +9,23 @@
 .inner_large {
     width: 98%;
     font-size: large;
+    transform: translateZ(0); /* 确保3D效果正确应用 */
+	transition: transform 0.25s ease-out; /* 控制 transform 属性的过渡效果 */
+}
+
+.inner_large:hover {
+	transform: scale(1.05); /* 鼠标悬停时，放大元素 */
 }
 
 .inner_small {
     width: 96%;
     margin-left: 4%;
+    transform: translateZ(0); /* 确保3D效果正确应用 */
+	transition: transform 0.25s ease-out; /* 控制 transform 属性的过渡效果 */
+}
+
+.inner_small:hover {
+	transform: scale(1.05); /* 鼠标悬停时，放大元素 */
 }
 
 .image_large {
@@ -21,6 +33,8 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .image_small {
     border-radius: 8px;
