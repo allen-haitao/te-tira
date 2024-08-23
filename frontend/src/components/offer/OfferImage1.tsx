@@ -16,10 +16,10 @@ export const OfferImage: React.FC<PropsType> = ({ id, size, price, title, imageS
       <div className={styles.textContainer}>
         <div className={styles.offerText}>
           <Typography.Text type="secondary" className={styles.title}>
-            {title.slice(0, 10)}
+            {title}
           </Typography.Text>
           <Typography.Text type="danger" strong className={styles.price}>
-            ¥ {price} 起
+            $ {price}
           </Typography.Text>
         </div>
       </div>

@@ -58,6 +58,4 @@
   left: 10px;
   z-index: 2; /* 确保按钮位于图片和文本上方 */
   pointer-events: auto; /* 确保按钮可以点击 */
-  background-color: #00247d !important;
-  border-radius: 8px;
 }

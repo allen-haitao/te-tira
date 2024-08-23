@@ -8,6 +8,7 @@
 
 .inner_large {
     width: 98%;
+    border-radius: 8px !important;
     font-size: large;
     transform: translateZ(0); /* 确保3D效果正确应用 */
 	transition: transform 0.25s ease-out; /* 控制 transform 属性的过渡效果 */
@@ -19,6 +20,7 @@
 
 .inner_small {
     width: 96%;
+    border-radius: 8px !important;
     margin-left: 4%;
     transform: translateZ(0); /* 确保3D效果正确应用 */
 	transition: transform 0.25s ease-out; /* 控制 transform 属性的过渡效果 */

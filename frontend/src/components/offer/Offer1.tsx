@@ -8,15 +8,16 @@ interface PropsType {
 }
 
 export const Offer1: React.FC<PropsType> = ({button, products}) => {
+  
   return (
     <div className={styles.offerCard}>
       <div className={styles.offerInfo}>
         <OfferImage
-          id={products[0].id}
+          id={products[0].ID}
           size="large"
           price={products[0].price}
-          title={products[0].title}
-          imageSrc={products[0].touristRoutePictures[0].url}
+          title={products[0].HotelName}
+          imageSrc={products[0].HotelWebsiteUrl}
         />
       </div>
       <div className={styles.offerButton}>

@@ -15,16 +15,22 @@ export const ProductImage: React.FC<PropsType> = ({id, size, imageSrc, price, ti
     return (
       <Link to={`/detail/${id}`}>
         {size == "large" ? (
-          <Image src={imageSrc} className={styles.image_large}/>
+          <Image src={imageSrc} 
+          className={styles.image_large}
+          preview={false}  // 禁用预览功能
+          />
         ) : (
-          <Image src={imageSrc} className={styles.image_small} />
+          <Image src={imageSrc} 
+          className={styles.image_small} 
+          preview={false}  // 禁用预览功能
+          />
         )}
         <div>
           <Typography.Text type="secondary">
-            {title.slice(0, 25)}
+            {title}
           </Typography.Text>
           <Typography.Text type="danger" strong>
-            ¥ {price} 起
+            $ {price}
           </Typography.Text>
         </div>
       </Link>
