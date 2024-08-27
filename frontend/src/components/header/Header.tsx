@@ -24,9 +24,10 @@ export const Header: React.FC = () => {
     //const location = useLocation();
     const params = useParams();
 
-    const language = useSelector((state) => state.language);
-    const languageList = useSelector((state) => state.languageList);
-    const dispatch: Dispatch<LanguageActionTypes> = useDispatch();
+    const language = useSelector((state) => state.language.language);
+    const languageList = useSelector((state) => state.language.languageList);
+    const dispatch = useDispatch();
+    //const dispatch: Dispatch<LanguageActionTypes> = useDispatch();
     const { t } = useTranslation();
     
     /*

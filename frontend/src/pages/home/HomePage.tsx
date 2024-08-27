@@ -2,9 +2,42 @@ import React from "react";
 import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection, AttractionsNearby } from "../../components";
 import { Row, Col, Typography, Spin, Button } from "antd";
 import styles from "./HomePage.module.css";
-import {withTranslation, WithTranslation } from "react-i18next";
-import axios from "axios";
-import { categorizeHotels, Hotel} from "./productData";
+import { withTranslation, WithTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { RootState } from "../../redux/store";
+import { giveMeDataActionCreator } from "../../redux/productList/productListActions";
+import { categorizeHotels, Hotel } from "./productData";
+
+const mapStateToProps = (state: RootState) => {
+  console.log('Current Redux State:', state);
+  console.log('Mapping state to props:');
+  console.log('loading:', state.productList.loading);
+  console.log('error:', state.productList.error);
+  console.log('hotels:', state.productList.data);
+  
+  const data = state.productList.data;
+  const hotels = data ? [...data.hotels] : []; 
+
+  console.log('mapStateToProps - hotels data:', hotels);
+  
+  return {
+    loading: state.productList.loading,
+    error: state.productList.error,
+    hotels: hotels,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    giveMeData: () => {
+      dispatch(giveMeDataActionCreator());
+    }
+  };
+};
+
+type PropsType = WithTranslation &
+  ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
 
 interface State {
   loading: boolean;
@@ -15,8 +48,8 @@ interface State {
   productList4: Hotel[];
 }
 
-class HomePageComponent extends React.Component<WithTranslation, State> { 
-  constructor(props: WithTranslation) {
+class HomePageComponent extends React.Component<PropsType, State> { 
+  constructor(props: PropsType) {
     super(props);
     this.state = {
       loading: true,
@@ -24,58 +57,42 @@ class HomePageComponent extends React.Component<WithTranslation, State> {
       productList1: [],
       productList2: [],
       productList3: [],
-      productList4: [],
+      productList4: []
     };
   }
+  
+  static getDerivedStateFromProps(
+    nextProps: Readonly<PropsType>,
+    prevState: State
+  ): Partial<State> | null {
+    // Check if loading has changed to false and hotels are available
+    if (!nextProps.loading && nextProps.hotels.length > 0) {
+      const { productList1, productList2, productList3, productList4 } = categorizeHotels(nextProps.hotels);
 
-  async componentDidMount() {
-    try {
-      const response = await axios.get("http://localhost:3000/hotels");
-      const data = response.data;
-  
-      if (data && data.hotels) {
-        const { productList1, productList2, productList3, productList4 } = categorizeHotels(data.hotels);
-        console.log("Raw hotel data:", data.hotels);
-  
-        // 确保每个 productList 都有元素
-        if (productList1.length === 0) {
-          console.warn("productList1 is empty. Ensure you have BestDeal hotels in your data.");
-        }
-        if (productList2.length === 0) {
-          console.warn("productList2 is empty. Ensure you have HighestRated hotels in your data.");
-        }
-        if (productList3.length === 0) {
-          console.warn("productList3 is empty. Ensure you have HotRecommended hotels in your data.");
-        }
-        if (productList4.length === 0) {
-          console.warn("productList4 is empty. Ensure you have NewArrival hotels in your data.");
-        }
-  
-        // 打印数据结构到控制台
-        console.log("productList1:", productList1);
-        console.log("productList2:", productList2);
-        console.log("productList3:", productList3);
-        console.log("productList4:", productList4);
-  
-        this.setState({
-          loading: false,
-          error: null,
-          productList1,
-          productList2,
-          productList3,
-          productList4,
-        });
-      } else {
-        this.setState({ error: "Invalid data format", loading: false });
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        this.setState({
-          error: error.message,
-          loading: false,
-        });
-      }
+      // Return new state
+      return {
+        loading: nextProps.loading,
+        error: nextProps.error,
+        productList1,
+        productList2,
+        productList3,
+        productList4,
+      };
+    } else if (nextProps.error) {
+      // If there's an error, update the state with the error
+      return {
+        loading: nextProps.loading,
+        error: nextProps.error,
+      };
     }
+
+    // Return null if no state update is necessary
+    return null;
+  }
+
+  componentDidMount() {
+    // Initiate data fetch
+    this.props.giveMeData();
   }
 
   render(): React.ReactNode {
@@ -98,6 +115,10 @@ class HomePageComponent extends React.Component<WithTranslation, State> {
     }
     if (error) {
       return <div>Error: {error}</div>;
+    }
+
+    if (!productList1.length && !productList2.length && !productList3.length && !productList4.length) {
+      return <div>No hotels available</div>;
     }
 
     return (
@@ -175,4 +196,4 @@ class HomePageComponent extends React.Component<WithTranslation, State> {
   }
 }
 
-export const HomePage = withTranslation()(HomePageComponent)
+export const HomePage = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(HomePageComponent));
