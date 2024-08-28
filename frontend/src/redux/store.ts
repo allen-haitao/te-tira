@@ -1,15 +1,25 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
 import languageReducer from "./language/languageReducer";
 import productListReducer from './productList/productListReducer';
-import thunk from "redux-thunk";
+import { actionLog } from "./middlewares/actionLog";
+import { productDetailSlice } from "./productDetail/slice";
+import { combineReducers, configureStore, Middleware } from "@reduxjs/toolkit";
+import { productSearchSlice } from "./productSearch/slice";
 
 const rootReducer = combineReducers({
     language: languageReducer,
-    productList: productListReducer
+    productList: productListReducer,
+    productDetail: productDetailSlice.reducer,
+    productSearch: productSearchSlice.reducer
 })
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = configureStore({
+    reducer: rootReducer,
+    // middleware: [thunk, actionLog],
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(actionLog),
+    devTools: true,
+  });
 
 export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

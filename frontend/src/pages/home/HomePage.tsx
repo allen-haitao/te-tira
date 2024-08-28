@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, Footer, Search, Carousel, SideMenu, Offer1, Offer2, ProductCollection, AttractionsNearby } from "../../components";
+import { Header, Footer, SearchBar, Carousel, SideMenu, Offer1, Offer2, ProductCollection, AttractionsNearby } from "../../components";
 import { Row, Col, Typography, Spin, Button } from "antd";
 import styles from "./HomePage.module.css";
 import { withTranslation, WithTranslation } from "react-i18next";
@@ -124,7 +124,7 @@ class HomePageComponent extends React.Component<PropsType, State> {
     return (
       <>
         <Header />
-        <Search />
+        <SearchBar />
         <div className={styles["page-content"]}>
           <Row>
             <Col span={6}>

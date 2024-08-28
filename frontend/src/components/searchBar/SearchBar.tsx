@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "./Search.module.css";
+import styles from "./SearchBar.module.css";
 import { Typography, Input, Button } from "antd";
 import { EnvironmentOutlined, CalendarOutlined, UserOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
-export const Search: React.FC = () => {
+export const SearchBar: React.FC = () => {
     
     const { t } = useTranslation();
     

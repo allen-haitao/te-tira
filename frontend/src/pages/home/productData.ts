@@ -1,7 +1,7 @@
 // productData.ts
 
 export interface Hotel {
-  ID: number;
+  ID: string;
   HotelName: string;
   Description: string;
   price?: number | string;
@@ -31,8 +31,7 @@ export const categorizeHotels = (
   hotels.forEach((hotel, index) => {
     console.log(`Hotel object:`, hotel);  // 输出完整的 hotel 对象
   
-    // 如果 ID 字段不存在，使用其他字段作为 ID
-    const hotelID = `hotel-${index + 1}`; // 手动分配的ID
+    const hotelID = hotel.hotelId;
     console.log(`Assigned Hotel ID: ${hotelID}`);
   
 // 构建本地图片路径
@@ -45,7 +44,7 @@ try {
 }
 
 const hotelData: Hotel = {
-  ID: index + 1,
+  ID: hotelID || 'Unknown Hotel',
   HotelName: hotel.HotelName || 'Unknown Hotel',
   Description: hotel.Description || 'No description available',
   price: hotel.price || 0,
