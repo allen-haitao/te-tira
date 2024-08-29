@@ -1,22 +1,11 @@
 import React from "react";
-import { Header, Footer } from "../../components";
-import { Row, Col, Typography, Button } from "antd";
-import styles from "./RegisterPage.module.css";
-import { useTranslation } from "react-i18next";
+import { UserLayout } from "../../layouts/userLayout";
+import { RegisterForm  } from "./RegisterForm";
 
-export const RegisterPage:React.FC = () => {
-    
-    const { t } = useTranslation();
-    
-    return (
-      <>
-        <Header />
-        <div className={styles["page-content"]}>
-          <Row style={{ marginTop: 20 }}>
-            <h1>Register</h1>
-          </Row>
-        </div>
-        <Footer />
-      </>
-    );
-  };
+export const RegisterPage: React.FC = () => {
+  return (
+    <UserLayout>
+      <RegisterForm />
+    </UserLayout>
+  );
+};
