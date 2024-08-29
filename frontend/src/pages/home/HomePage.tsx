@@ -125,7 +125,19 @@ class HomePageComponent extends React.Component<PropsType, State> {
     return (
       <>
         <MainLayout>
-          <SearchBar />
+          <div className={styles["search-container"]}>
+            <div className={styles["search-block"]}>
+                <div className={styles["search-text"]}>
+                    <Typography.Text className={styles["search-title"]}>
+                        {t("search.search-title")}
+                    </Typography.Text>
+                    <Typography.Text className={styles["search-subtitle"]}>
+                        {t("search.search-subtitle")}
+                    </Typography.Text>
+                </div>
+                <SearchBar />
+            </div>
+          </div>
           <div className={styles["page-content"]}>
             <Row>
               <Col span={6}>

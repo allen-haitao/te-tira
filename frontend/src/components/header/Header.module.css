@@ -3,15 +3,17 @@
   }
   
   .top-header {
-    background-color: #00247d;
-    display: flex;
-    height: 80px;
+    height: 100px;
     width: 1230px;
     margin: 0 auto;
     padding-left: 2%;
-    padding-right: 6%;
-    padding-bottom: 8%;
+    padding-bottom: 2%;
+    position: relative;
     
+  }
+
+  .logo-header {
+    width: 26%;    
   }
 
   .title {
@@ -54,8 +56,8 @@
   .header-image {
     position: relative;
     top: 15px;
-    margin-left: auto;
-    width: 14%;
+    width: 10%;
+    height: 80px;
   }
 
   .image {
@@ -66,21 +68,21 @@
   }
 
   .top-button {
-    position: relative;
-    cursor: pointer;
-    background-color: inherit;
-    padding: 10px;
-    margin-left: auto;
-    margin-right: auto; /* 添加间距确保图标之间保持一致 */
-    text-align: center; /* 确保图标和文本在列中居中 */
-    display: flex; /* 使用 flexbox 布局 */
-    flex-direction: column; /* 将图标和文本垂直排列 */
-    align-items: center; /* 水平居中 */
+    width: 30%;
+    text-align: center;
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
+    gap: 5%;
+    padding: auto;
+    margin: auto 1%;
+    margin-top: 2%;
   }
 
   .button-icon {
     color: white !important;
-    padding: 15px;
+    padding-bottom: 15px;
     border-radius: 50%;
     font-size: 30px;
     cursor: pointer;
@@ -91,7 +93,6 @@
     color: white !important;
     font-size: 14px;
     text-align: center;
-    min-width: px;
     width: 100%; /* 确保文本宽度与父元素一致 */
     margin-top: -10px;
     font-family: 'Julius Sans One', sans-serif;
@@ -109,7 +110,6 @@
     z-index: 1000;
     display: none; /* 初始状态下隐藏菜单 */
     flex-direction: column;
-    padding: 0 auto !important; /* 调整按钮的内边距 */
     font-family: 'Julius Sans One', sans-serif !important;
   }
 
@@ -132,18 +132,38 @@
     background-color: #f0f0f0;
   }
 
+  .auth-container {
+    top: 10px;
+    width: 30%;
+    text-align: center; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: auto;
+  }
+
+  .cart-button {
+    width: 100%;
+  }
+
+  .logged-in-user {
+    color: white !important;
+    font-size: 12px;
+    font-family: 'Julius Sans One', sans-serif;
+  }
+
   .user-auth {
-    width: 70%;
-    margin-top: 25px;
-    margin-left: 30%;
-    gap: 10px;
+    gap: 5%;
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .auth-btn {
     border-radius: 5px !important;
-    padding: 0 20px !important; /* 调整按钮的内边距 */
-    height: 40px !important; /* 调整按钮的高度 */
+    padding: 0 20px !important; 
+    height: 40px !important; 
     color:#00247d;
-    font-size: 16px !important; /* 调整按钮的字体大小 */
+    font-size: 16px !important;
     font-weight: bold;
+    margin-left: 5%;
   }

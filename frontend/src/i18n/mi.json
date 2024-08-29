@@ -3,7 +3,10 @@
         "new_language": "reo hou",
         "help": "Āwhina",
         "register": "Rēhita",
-        "login": "Takiuru"
+        "login": "Takiuru",
+        "shoppingcart": "Kete Hoko",
+        "logout": "Takiputa",
+        "welcome": "Nau mai hoki mai"
     },
     
     "footer": {

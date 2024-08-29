@@ -3,7 +3,10 @@
         "new_language": "新語言",
         "help": "幫助",
         "register": "註冊",
-        "login": "登錄"
+        "login": "登錄",
+        "shoppingcart": "購物車",
+        "logout": "登出",
+        "welcome": "歡迎光臨"
     },
     "footer": {
         "detail": "版權所有 @ Te Tira"

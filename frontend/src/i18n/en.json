@@ -3,7 +3,10 @@
         "new_language": "new language",
         "help": "Help",
         "register":"Register",
-        "login":"Login"
+        "login":"Login",
+        "shoppingcart": "Shopping Cart",
+        "logout": "Logout",
+        "welcome": "Welcome back"
     },
 
     "footer": {

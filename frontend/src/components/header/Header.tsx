@@ -1,25 +1,26 @@
-import React, { useState, /*useEffect*/} from "react";
+import React, { useState, useEffect} from "react";
 import image from "../../assets/image.png"
 import styles from "./Header.module.css";
 import { Typography, Button, Row, Col } from "antd";
-import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { currencyItems } from "../../assets/data/Array";
 import { useSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import {
-    LanguageActionTypes,
-    addLanguageActionCreator,
-    changeLanguageActionCreator,
-  } from "../../redux/language/languageActions";
+import { addLanguageActionCreator, changeLanguageActionCreator } from "../../redux/language/languageActions";
 import { useTranslation } from "react-i18next";
+import jwt_decode, { JwtPayload as DefaultJwtPayload } from "jwt-decode";
+import { authSlice } from "../../redux/auth/slice";
+
+
+interface JwtPayload extends DefaultJwtPayload {
+    userId: string;
+  }
 
 export const Header: React.FC = () => {
     const [visibleDropdown, setVisibleDropdown] = useState<string | null>(null);
     const [location, setLocation] = useState<string>("Unknown Location");
     const [selectedCurrency, setSelectedCurrency] = useState<string>("NZD");
-    //const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
     const navigate = useNavigate();
     //const location = useLocation();
     const params = useParams();
@@ -27,8 +28,17 @@ export const Header: React.FC = () => {
     const language = useSelector((state) => state.language.language);
     const languageList = useSelector((state) => state.language.languageList);
     const dispatch = useDispatch();
-    //const dispatch: Dispatch<LanguageActionTypes> = useDispatch();
     const { t } = useTranslation();
+
+    const jwt = useSelector((s) => s.user.token);
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+        if (jwt) {
+          const token = jwt_decode<JwtPayload>(jwt);
+          setUsername(token.userId);
+        }
+      }, [jwt]);
     
     /*
     useEffect(() => {
@@ -95,11 +105,16 @@ export const Header: React.FC = () => {
     const currentLanguageName = languageList.find(
         (l: { code: string; name: string }) => l.code === language
       )?.name;
+
+    const onLogout = () => {
+    dispatch(authSlice.actions.logOut())
+    navigate("/")
+    }
     
     return (
         <div className={styles["app-header"]}>
             <Row className={styles['top-header']}>
-                <Col span={7}>
+                <Col className={styles['logo-header']}>
                     <span onClick={() => navigate("/")}>
                         <Typography.Title level={3} className={styles.title}>
                             Te Tira
@@ -109,34 +124,51 @@ export const Header: React.FC = () => {
                         Ka tīmata tō haerenga Kiwi i konei
                     </Typography.Text> 
                 </Col>
-                    <Col className={styles["header-image"]}>
-                        <img src={image} alt=" " className={styles.image}/>
-                    </Col>
-                    <Col className={styles["top-button"]} onClick={() => handleIconClick("location")}>
+                <Col className={styles["header-image"]}>
+                    <img src={image} alt=" " className={styles.image}/>
+                </Col>
+                <Col className={styles["top-button"]}>
+                    <Col onClick={() => handleIconClick("location")}>
                         <EnvironmentOutlined className={styles["button-icon"]} />
                         <Typography.Text className={styles["selected-item"]}>{location}</Typography.Text>
                         {renderDropdown("location", [location])}
                     </Col>
-                    <Col className={styles["top-button"]} onClick={() => handleIconClick("currency")}>
+                    <Col onClick={() => handleIconClick("currency")}>
                         <DollarCircleOutlined className={styles["button-icon"]} />
                         <Typography.Text className={styles["selected-item"]}>{selectedCurrency}</Typography.Text>
                         {renderDropdown("currency", currencyItems)}
                     </Col>
-                    <Col className={styles["top-button"]} onClick={() => handleIconClick("language")}>
+                    <Col onClick={() => handleIconClick("language")}>
                         <GlobalOutlined className={styles["button-icon"]} />
                         <Typography.Text className={styles["selected-item"]}>{currentLanguageName || "Language"}</Typography.Text>
                         {renderDropdown("language", languageList)}
                     </Col>
-                    <Col className={styles["top-button"]} onClick={() => window.location.href = "/help"}>
+                    <Col onClick={() => window.location.href = "/help"}>
                         <QuestionCircleOutlined className={styles["button-icon"]} />
                         <Typography.Text className={styles["selected-item"]}>{t("header.help")}</Typography.Text>
                     </Col>
-                    <Col>
-                        <Button.Group className={styles["user-auth"]}>
-                            <Button className={styles["auth-btn"]} onClick={()=>navigate("/register")}>{t("header.register")}</Button>
-                            <Button className={styles["auth-btn"]} onClick={()=>navigate("/login")}>{t("header.login")}</Button>
-                        </Button.Group>
+                </Col>
+                {jwt ? (                   
+                <Col className={styles["auth-container"]}>
+                    <Col className={styles["cart-button"]} onClick={() => window.location.href = "/shoppingcart"}>
+                        <ShoppingCartOutlined className={styles["button-icon"]} />
+                        <Typography.Text className={styles["selected-item"]}>{t("header.shoppingcart")}</Typography.Text>
                     </Col>
+                    <Col>                          
+                        <Typography.Text className={styles["logged-in-user"]}>{username}</Typography.Text>
+                    </Col>
+                    <Col>   
+                        <Button className={styles["auth-btn"]} onClick={onLogout}>{t("header.logout")}</Button>
+                    </Col>
+                </Col>  
+                ) : (
+                <Col className={styles["auth-container"]}>
+                    <Button.Group className={styles["user-auth"]}>
+                        <Button className={styles["auth-btn"]} onClick={()=>navigate("/register")}>{t("header.register")}</Button>
+                        <Button className={styles["auth-btn"]} onClick={()=>navigate("/login")}>{t("header.login")}</Button>
+                    </Button.Group>
+                </Col>
+                )}
             </Row>
         </div>
     );

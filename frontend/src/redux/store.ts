@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
     productList: productListReducer,
     productDetail: productDetailSlice.reducer,
     productSearch: productSearchSlice.reducer,
-    auth: authSlice.reducer
+    user: authSlice.reducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -1,7 +1,6 @@
 import styles from "./LogInForm.module.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { logIn } from "../../redux/auth/slice";
-import { useDispatch } from "react-redux";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +15,9 @@ const tailLayout = {
 
 export const LogInForm = () => {
 
-  const loading = useSelector(s => s.auth.loading)
-  const jwt = useSelector(s => s.auth.token)
-  const error = useSelector(s => s.auth.error)
+  const loading = useSelector(s => s.user.loading)
+  const jwt = useSelector(s => s.user.token)
+  const error = useSelector(s => s.user.error)
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -47,10 +46,10 @@ export const LogInForm = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      className={styles["register-form"]}
+      className={styles["auth-form"]}
     >
       <Form.Item
-        label="Username"
+        label={<span style={{ color: 'white', fontSize: '16px' }}>Username</span>}
         name="username"
         rules={[{ required: true, message: "Please input your username!" }]}
       >
@@ -58,19 +57,22 @@ export const LogInForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Password"
+        label={<span style={{ color: 'white', fontSize: '16px' }}>Password</span>}
         name="password"
         rules={[{ required: true, message: "Please input your password!" }]}
       >
         <Input.Password />
       </Form.Item>
 
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
+      <Form.Item
+        {...tailLayout} name="remember" valuePropName="checked">
+        <Checkbox>
+          <span style={{ color: "white", fontSize: "16px" }}>Remember me</span>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
+        <Button className={styles["auth-btn"]} htmlType="submit">
           Submit
         </Button>
       </Form.Item>

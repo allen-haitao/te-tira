@@ -1,5 +1,15 @@
-.register-form {
+.auth-form {
 	width: 450px; 
 	margin-right: auto !important;
 	margin-left: auto !important;
 }
+
+.auth-btn {
+    border-radius: 5px !important;
+    padding: 0 20px !important; 
+    height: 40px !important; 
+    color:#00247d;
+    font-size: 16px !important;
+    font-weight: bold;
+    margin-left: 5%;
+  }

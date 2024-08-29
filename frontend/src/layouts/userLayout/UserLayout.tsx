@@ -1,50 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
+import image from "../../assets/image.png"
 import styles from "./UserLayout.module.css";
-import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
-import { CaretDownOutlined } from "@ant-design/icons";
-import { Layout, Menu, Dropdown, Button } from "antd";
-const { Header, Footer, Content } = Layout;
+import { GlobalOutlined } from "@ant-design/icons";
+import { Layout, Typography, Row, Col } from "antd";
+import { changeLanguageActionCreator } from "../../redux/language/languageActions";
+import { useSelector } from "../../redux/hooks";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+const { Header, Content } = Layout;
 
 interface PropsTypes {
   children: React.ReactNode;
 }
 
 export const UserLayout: React.FC<PropsTypes> = (props) => {
-  const menu = (
-    <Menu>
-      <Menu.Item>中文</Menu.Item>
-      <Menu.Item>English</Menu.Item>
-    </Menu>
-  );
+  const [visibleDropdown, setVisibleDropdown] = useState<string | null>(null);
+  const language = useSelector((state) => state.language.language);
+  const languageList = useSelector((state) => state.language.languageList);
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const handleIconClick = (type: string, e?: any) => {
+    if (type === "language" && e) {
+      dispatch(changeLanguageActionCreator(e.key)); // 仅处理已有语言的切换
+    }
+    // Toggle dropdown visibility for language selection
+    setVisibleDropdown(visibleDropdown === type ? null : type);
+  };
+
+  const renderDropdown = (type: string, items: any[]) => {
+    return (
+      visibleDropdown === type && (
+        <div className={styles["menu-list"]}>
+          {items.map((item, index) => (
+            <a
+              href="javascript:void(0)"
+              className={styles["dropdown-item"]}
+              key={index}
+              onClick={() => handleIconClick(type, { key: item.code })}
+            >
+              {item.flag && (
+                <span role="img" aria-label={item.name}>
+                  {item.flag}
+                </span>
+              )}
+              {" " + item.name}
+            </a>
+          ))}
+        </div>
+      )
+    );
+  };
+
+  const currentLanguageName = languageList.find(
+    (l: { code: string; name: string }) => l.code === language
+  )?.name;
 
   return (
     <Layout className={styles["user-layout-container"]}>
-      <Header className={styles["header"]}>
-        <div className={styles["lang"]}>
-          <Dropdown overlay={menu}>
-            <Button>
-              {" "}
-              选择语言 <CaretDownOutlined />
-            </Button>
-          </Dropdown>
-        </div>
-      </Header>
+      <div className={styles['language']}>
+        <Col onClick={() => handleIconClick("language")}>
+          <GlobalOutlined className={styles["language-button"]} />
+          <Typography.Text className={styles["selected-item"]}>{currentLanguageName || "Language"}</Typography.Text>
+          {renderDropdown("language", languageList)}
+        </Col>
+      </div>
       <Content className={styles["content"]}>
-        <div className={styles["top"]}>
-          <div className={styles["content-header"]}>
-            <Link to="/">
-              <img alt="logo" className={styles["logo"]} src={logo} />
-              <span className={styles["title"]}>React 旅游网</span>
-            </Link>
-          </div>
-          <div className={styles["desc"]}>
-            慕课网 是我朝最具影响力的 线上课程学习网站
-          </div>
+        <Row className={styles["header"]}>
+          <Col className={styles["image-container"]}>
+            <img src={image} alt=" " className={styles.image}/>
+          </Col>
+          <Col className={styles["title-container"]}>
+            <span className={styles["title"]}>Te Tira</span>
+          </Col>
+        </Row>
+        <Row className={styles["desc"]}>
+          Ka tīmata tō haerenga Kiwi i konei
+        </Row>
           {props.children}
-        </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>Footer就不写了，太累了</Footer>
     </Layout>
   );
 };

@@ -3,7 +3,10 @@
         "new_language": "新语言",
         "help": "帮助",
         "register": "注册",
-        "login": "登录"
+        "login": "登录",
+        "shoppingcart": "购物车",
+        "logout": "退出",
+        "welcome": "欢迎光临"
     },
     "footer": {
         "detail": "版权所有 @ Te Tira"

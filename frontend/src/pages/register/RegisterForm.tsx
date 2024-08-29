@@ -17,12 +17,12 @@ export const RegisterForm = () => {
   const onFinish = async (values: any) => {
     console.log("Success:", values);
     try {
-      await axios.post("http://82.157.43.234:8080/auth/register", {
+      await axios.post("http://127.0.0.1:3000/auth/register", {
         email: values.username,
         password: values.password,
         confirmPassword: values.confirm,
       });
-      navigate("/signIn/");
+      navigate("/logIn/");
     } catch (error) {
       alert("注册失败！");
     }
@@ -39,10 +39,10 @@ export const RegisterForm = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      className={styles["register-form"]}
+      className={styles["auth-form"]}
     >
       <Form.Item
-        label="Username"
+        label={<span style={{ color: "white", fontSize: "16px" }}>Username</span>}
         name="username"
         rules={[{ required: true, message: "Please input your username!" }]}
       >
@@ -50,7 +50,7 @@ export const RegisterForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Password"
+        label={<span style={{ color: "white", fontSize: "16px" }}>Password</span>}
         name="password"
         rules={[{ required: true, message: "Please input your password!" }]}
       >
@@ -58,7 +58,7 @@ export const RegisterForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Confirm Password"
+        label={<span style={{ color: "white", fontSize: "16px" }}>Confirm Password</span>}
         name="confirm"
         hasFeedback
         rules={[
@@ -77,11 +77,13 @@ export const RegisterForm = () => {
       </Form.Item>
 
       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
+      <Checkbox>
+          <span style={{ color: "white", fontSize: "16px" }}>Remember me</span>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
+        <Button className={styles["auth-btn"]} htmlType="submit">
           Submit
         </Button>
       </Form.Item>
