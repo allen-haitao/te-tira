@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 import image from "../../assets/image.png"
 import styles from "./Header.module.css";
-import { Typography, Button, Row, Col } from "antd";
+import { Typography, Button, Row, Col, Spin } from "antd";
 import { EnvironmentOutlined, DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { currencyItems } from "../../assets/data/Array";
@@ -32,6 +32,9 @@ export const Header: React.FC = () => {
 
     const jwt = useSelector((s) => s.user.token);
     const [username, setUsername] = useState("");
+
+    const shoppingCartItems = useSelector(s => s.shoppingCart.items)
+    const shoppingCartLoading = useSelector(s => s.shoppingCart.loading)
 
     useEffect(() => {
         if (jwt) {
@@ -94,7 +97,7 @@ export const Header: React.FC = () => {
                 className={styles["dropdown-item"]} 
                 onClick={() => handleIconClick(type, { key: "new" })}>
                     <span role="img" aria-label={t("header.new_language")}>
-                        ➕ {/* 可以用适当的图标替换 */}
+                        ➕ {}
                     </span>
                     {" " + t("header.new_language")}
                 </a>
@@ -150,9 +153,11 @@ export const Header: React.FC = () => {
                 </Col>
                 {jwt ? (                   
                 <Col className={styles["auth-container"]}>
-                    <Col className={styles["cart-button"]} onClick={() => window.location.href = "/shoppingcart"}>
-                        <ShoppingCartOutlined className={styles["button-icon"]} />
-                        <Typography.Text className={styles["selected-item"]}>{t("header.shoppingcart")}</Typography.Text>
+                    <Col className={styles["cart-button"]} onClick={() => navigate("/shoppingCart")}>
+                        <Spin spinning={shoppingCartLoading}>
+                            <ShoppingCartOutlined className={styles["button-icon"]} />    
+                            <Typography.Text className={styles["selected-item"]}>{shoppingCartItems.length}</Typography.Text>
+                        </Spin>
                     </Col>
                     <Col>                          
                         <Typography.Text className={styles["logged-in-user"]}>{username}</Typography.Text>
