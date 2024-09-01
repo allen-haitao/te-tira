@@ -4,7 +4,7 @@ import styles from "./UserLayout.module.css";
 import { Link } from "react-router-dom";
 import { GlobalOutlined } from "@ant-design/icons";
 import { Layout, Typography, Row, Col } from "antd";
-import { changeLanguageActionCreator } from "../../redux/language/languageActions";
+import { changeLanguage } from "../../redux/language/slice";
 import { useSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -23,7 +23,7 @@ export const UserLayout: React.FC<PropsTypes> = (props) => {
 
   const handleIconClick = (type: string, e?: any) => {
     if (type === "language" && e) {
-      dispatch(changeLanguageActionCreator(e.key)); // 仅处理已有语言的切换
+      dispatch(changeLanguage(e.key)); // 仅处理已有语言的切换
     }
     // Toggle dropdown visibility for language selection
     setVisibleDropdown(visibleDropdown === type ? null : type);

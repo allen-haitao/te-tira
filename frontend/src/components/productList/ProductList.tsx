@@ -18,10 +18,15 @@ interface Product {
   travelDays: string;
   tripType: string;
 }
+
 interface PropsType {
-  data: Product[];
-  paging?: any;
-  onPageChange?: (nextPage, pageSize) => void;
+  data: Product[] | null; // 修改类型，允许 data 为 null
+  paging?: {
+    currentPage: number;
+    pageSize: number;
+    totalCount: number;
+  };
+  onPageChange?: (nextPage: number, pageSize: number) => void;
 }
 
 const listData = (productList: Product[]) =>
@@ -31,13 +36,13 @@ const listData = (productList: Product[]) =>
     description: p.description,
     tags: (
       <>
-        {p.departureCity && <Tag color="#f50">{p.departureCity}出发</Tag>}
-        {p.travelDays && <Tag color="#108ee9">{p.travelDays} 天 </Tag>}
+        {p.departureCity && <Tag color="#f50">{p.departureCity} 出发</Tag>}
+        {p.travelDays && <Tag color="#108ee9">{p.travelDays} 天</Tag>}
         {p.discountPresent && <Tag color="#87d068">超低折扣</Tag>}
         {p.tripType && <Tag color="#2db7f5">{p.tripType}</Tag>}
       </>
     ),
-    imgSrc: p.touristRoutePictures[0].url,
+    imgSrc: p.touristRoutePictures?.[0]?.url, // 使用可选链处理可能的 undefined
     price: p.price,
     originalPrice: p.originalPrice,
     discountPresent: p.discountPresent,
@@ -51,12 +56,13 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
-export const ProductList: React.FC<PropsType> = ({
-  data,
-  paging,
-  onPageChange,
-}) => {
+export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange }) => {
+  if (!data) {
+    return <div>No products available</div>; // 处理 data 为 null 的情况
+  }
+
   const products = listData(data);
+
   return (
     <List
       itemLayout="vertical"
@@ -65,8 +71,7 @@ export const ProductList: React.FC<PropsType> = ({
         paging
           ? {
               current: paging.currentPage,
-              onChange: (page) =>
-                onPageChange && onPageChange(page, paging.pageSize),
+              onChange: (page) => onPageChange && onPageChange(page, paging.pageSize),
               pageSize: paging.pageSize,
               total: paging.totalCount,
             }
@@ -84,26 +89,14 @@ export const ProductList: React.FC<PropsType> = ({
         <List.Item
           key={item.title}
           actions={[
-            <IconText
-              icon={StarOutlined}
-              text="156"
-              key="list-vertical-star-o"
-            />,
-            <IconText
-              icon={LikeOutlined}
-              text="156"
-              key="list-vertical-like-o"
-            />,
+            <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+            <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
             <>
               <Rate defaultValue={3} />
-              <Text strong className="ant-rate-text">
-                {item.rating}
-              </Text>
+              <Text strong className="ant-rate-text">{item.rating}</Text>
             </>,
           ]}
-          extra={
-            <Image width={272} height={172} alt="image" src={item.imgSrc} />
-          }
+          extra={<Image width={272} height={172} alt="image" src={item.imgSrc} />}
         >
           <List.Item.Meta
             title={
@@ -113,20 +106,15 @@ export const ProductList: React.FC<PropsType> = ({
                     <Text style={{ fontSize: 20, fontWeight: 400 }} delete>
                       ¥ {item.originalPrice}
                     </Text>
-                    <Text
-                      type="danger"
-                      style={{ fontSize: 20, fontWeight: 400 }}
-                    >
+                    <Text type="danger" style={{ fontSize: 20, fontWeight: 400 }}>
                       {" "}
                       ¥ {item.price}
                     </Text>
                   </>
                 ) : (
-                  <Text style={{ fontSize: 20, fontWeight: 400 }}>
-                    ¥ {item.price}
-                  </Text>
+                  <Text style={{ fontSize: 20, fontWeight: 400 }}>¥ {item.price}</Text>
                 )}
-                <Link to={"/detail/" + item.id}> {item.title}</Link>
+                <Link to={`/detail/${item.id}`}> {item.title}</Link>
               </>
             }
             description={item.tags}

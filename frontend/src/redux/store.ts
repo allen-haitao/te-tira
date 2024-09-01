@@ -1,5 +1,5 @@
-import languageReducer from "./language/languageReducer";
-import productListReducer from './productList/productListReducer';
+import { languageSlice } from "./language/slice";
+import { productListSlice } from "./productList/slice";
 import { actionLog } from "./middlewares/actionLog";
 import { productDetailSlice } from "./productDetail/slice";
 import { roomSlice } from "./room/slice";
@@ -19,8 +19,8 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    language: languageReducer,
-    productList: productListReducer,
+    language: languageSlice.reducer,
+    productList: productListSlice.reducer,
     productDetail: productDetailSlice.reducer,
     room: roomSlice.reducer,
     comments: commentsSlice.reducer, 

@@ -1,7 +1,7 @@
 // DetailPage.tsx
 import React, { useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { ProductIntro, ProductComments } from "../../components";
+import { ProductIntro } from "../../components";
 import { Spin, Row, Col, Divider, Typography, Anchor, Menu, DatePicker, Space, Button } from "antd";
 import styles from "./DetailPage.module.css";
 import { getProductDetail } from "../../redux/productDetail/slice";

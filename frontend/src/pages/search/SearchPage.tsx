@@ -14,62 +14,23 @@ type MatchParams = {
 export const SearchPage: React.FC = () => {
   const { keywords } = useParams<MatchParams>();
 
-  const loading = useSelector((state) => state.productSearch.loading);
-  const error = useSelector((s) => s.productSearch.error);
-  const pagination = useSelector((s) => s.productSearch.pagination);
-  const productList = useSelector((s) => s.productSearch.data);
+  const loading = useSelector((state: any) => state.productSearch.loading);
+  const error = useSelector((state: any) => state.productSearch.error);
+  const pagination = useSelector((state: any) => state.productSearch.pagination);
+  const productList = useSelector((state: any) => state.productSearch.data);
 
   const dispatch = useAppDispatch();
   const location = useLocation();
 
   useEffect(() => {
     if (keywords) {
-      // 解析keywords，提取location, dateRange, roomType
-      const [location, dateRange, roomType] = keywords.split("-");
-
-      // 处理日期范围
-      let startDate: string | undefined = undefined;
-      let endDate: string | undefined = undefined;
-      if (dateRange && dateRange !== "any") {
-        const dates = dateRange.split("_");
-        if (dates.length === 2) {
-          startDate = dates[0];
-          endDate = dates[1];
-        }
-      }
-
-      // 构建搜索参数字符串
-      const searchParams = [
-        location !== "any" ? location : "",
-        startDate ? `${startDate}_${endDate}` : "any",
-        roomType !== "any" ? roomType : ""
-      ].join("-");
-
-      // 触发搜索操作
-      dispatch(searchProduct({ nextPage: 1, pageSize: 10, keywords: searchParams }));
+      dispatch(searchProduct({ nextPage: 1, pageSize: 10, keywords }));
     }
-  }, [location]);
+  }, [location, dispatch, keywords]);
 
   const onPageChange = (nextPage: number, pageSize: number) => {
     if (keywords) {
-      const [location, dateRange, roomType] = keywords.split("-");
-      let startDate: string | undefined = undefined;
-      let endDate: string | undefined = undefined;
-      if (dateRange && dateRange !== "any") {
-        const dates = dateRange.split("_");
-        if (dates.length === 2) {
-          startDate = dates[0];
-          endDate = dates[1];
-        }
-      }
-
-      const searchParams = [
-        location !== "any" ? location : "",
-        startDate ? `${startDate}_${endDate}` : "any",
-        roomType !== "any" ? roomType : ""
-      ].join("-");
-
-      dispatch(searchProduct({ nextPage, pageSize, keywords: searchParams }));
+      dispatch(searchProduct({ nextPage, pageSize, keywords }));
     }
   };
 
@@ -103,9 +64,9 @@ export const SearchPage: React.FC = () => {
         {/* 产品列表  */}
         <div className={styles["product-list-container"]}>
           <ProductList
-            data={productList}
-            paging={pagination}
-            onPageChange={onPageChange}
+            data={productList || []}  // 确保传递的数据不是 null 或 undefined
+            paging={pagination || undefined}  // 确保 pagination 对象符合预期
+            onPageChange={onPageChange}  // 处理分页逻辑
           />
         </div>
       </MainLayout>

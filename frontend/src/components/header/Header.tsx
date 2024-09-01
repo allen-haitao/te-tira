@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { currencyItems } from "../../assets/data/CurrencyItems";
 import { useSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
-import { addLanguageActionCreator, changeLanguageActionCreator } from "../../redux/language/languageActions";
 import { useTranslation } from "react-i18next";
 import jwt_decode, { JwtPayload as DefaultJwtPayload } from "jwt-decode";
+import { changeLanguage } from "../../redux/language/slice"; // 仅保留 changeLanguage 的引入
 import { authSlice } from "../../redux/auth/slice";
 
 interface JwtPayload extends DefaultJwtPayload {
@@ -40,15 +40,10 @@ export const Header: React.FC = () => {
   }, [jwt]);
 
   const handleIconClick = (type: string, e?: any) => {
-    if (type === "language") {
-      if (e?.key === "new") {
-        dispatch(addLanguageActionCreator("new lang", "new_lang"));
-      } else if (e) {
-        dispatch(changeLanguageActionCreator(e.key));
-      }
+    if (type === "language" && e) {
+      dispatch(changeLanguage(e.key)); // 仅处理已有语言的切换
     }
-    // Toggle dropdown visibility for other types
-    setVisibleDropdown(visibleDropdown === type ? null : type);
+    setVisibleDropdown(visibleDropdown === type ? null : type); // 切换下拉菜单的可见性
   };
 
   const renderDropdown = (type: string, items: any[]) => {
@@ -70,16 +65,6 @@ export const Header: React.FC = () => {
               {" " + item.name}
             </a>
           ))}
-          <a
-            href="javascript:void(0)"
-            className={styles["dropdown-item"]}
-            onClick={() => handleIconClick(type, { key: "new" })}
-          >
-            <span role="img" aria-label={t("header.new_language")}>
-              ➕ {}
-            </span>
-            {" " + t("header.new_language")}
-          </a>
         </div>
       )
     );
