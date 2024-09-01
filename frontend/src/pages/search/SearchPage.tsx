@@ -9,11 +9,11 @@ import { MainLayout } from "../../layouts/mainLayout";
 
 type MatchParams = {
   keywords: string;
-}
+};
 
 export const SearchPage: React.FC = () => {
   const { keywords } = useParams<MatchParams>();
-  
+
   const loading = useSelector((state) => state.productSearch.loading);
   const error = useSelector((s) => s.productSearch.error);
   const pagination = useSelector((s) => s.productSearch.pagination);
@@ -22,17 +22,56 @@ export const SearchPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-  useEffect(()=>{
-    if(keywords) {
-      dispatch(searchProduct({nextPage:1, pageSize: 10, keywords}))
-    }
-  },[location])
+  useEffect(() => {
+    if (keywords) {
+      // 解析keywords，提取location, dateRange, roomType
+      const [location, dateRange, roomType] = keywords.split("-");
 
-  const onPageChange = (nextPage, pageSize) =>{
-    if(keywords) {
-      dispatch(searchProduct({nextPage, pageSize, keywords}))
+      // 处理日期范围
+      let startDate: string | undefined = undefined;
+      let endDate: string | undefined = undefined;
+      if (dateRange && dateRange !== "any") {
+        const dates = dateRange.split("_");
+        if (dates.length === 2) {
+          startDate = dates[0];
+          endDate = dates[1];
+        }
+      }
+
+      // 构建搜索参数字符串
+      const searchParams = [
+        location !== "any" ? location : "",
+        startDate ? `${startDate}_${endDate}` : "any",
+        roomType !== "any" ? roomType : ""
+      ].join("-");
+
+      // 触发搜索操作
+      dispatch(searchProduct({ nextPage: 1, pageSize: 10, keywords: searchParams }));
     }
-  }
+  }, [location]);
+
+  const onPageChange = (nextPage: number, pageSize: number) => {
+    if (keywords) {
+      const [location, dateRange, roomType] = keywords.split("-");
+      let startDate: string | undefined = undefined;
+      let endDate: string | undefined = undefined;
+      if (dateRange && dateRange !== "any") {
+        const dates = dateRange.split("_");
+        if (dates.length === 2) {
+          startDate = dates[0];
+          endDate = dates[1];
+        }
+      }
+
+      const searchParams = [
+        location !== "any" ? location : "",
+        startDate ? `${startDate}_${endDate}` : "any",
+        roomType !== "any" ? roomType : ""
+      ].join("-");
+
+      dispatch(searchProduct({ nextPage, pageSize, keywords: searchParams }));
+    }
+  };
 
   if (loading) {
     return (
@@ -48,10 +87,11 @@ export const SearchPage: React.FC = () => {
       />
     );
   }
+
   if (error) {
     return <div>error: {error}</div>;
   }
-  
+
   return (
     <>
       <MainLayout>

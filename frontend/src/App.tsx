@@ -1,7 +1,7 @@
 import React,  { useEffect }  from "react";
 import styles from "./App.module.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HomePage, LogInPage, RegisterPage, DetailPage, SearchPage, ShoppingCartPage, BookingPage } from "./pages";
+import { HomePage, LogInPage, RegisterPage, DetailPage, RoomPage, SearchPage, ShoppingCartPage, BookingPage } from "./pages";
 import { Navigate } from "react-router-dom";
 import { useSelector, useAppDispatch } from "./redux/hooks";
 import { getShoppingCart } from "./redux/shoppingCart/slice";
@@ -28,7 +28,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="detail/:hotelId" element = {<DetailPage />} />
+          <Route path="/detail/:hotelId" element = {<DetailPage />} />
+          <Route path="/rooms/roomTypeId" element = {<RoomPage />} />
           <Route path="/search/:keywords" element = {<SearchPage />} />
           <Route
             path="/shoppingCart"

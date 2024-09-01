@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Popover, DatePicker, Space } from 'antd';
 import { UserOutlined, ShoppingCartOutlined, CalendarOutlined } from '@ant-design/icons';
 import { useSelector, useAppDispatch } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
 import { addShoppingCartItem } from "../../redux/shoppingCart/slice";
 import { getRoomsByHotelId } from '../../redux/room/slice';
 import { RootState } from '../../redux/store';
@@ -24,6 +25,7 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
   const [visiblePopover, setVisiblePopover] = useState<{ [key: string]: boolean }>({}); // 控制Popover的显示
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const jwt = useSelector((state: RootState) => state.user.token) as string;
   const shoppingCartLoading = useSelector((state: RootState) => state.shoppingCart.loading);
   const { loading, rooms } = useSelector((state: RootState) => state.room);
@@ -40,12 +42,25 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
     setVisiblePopover(prev => ({ ...prev, [roomTypeId]: false }));
   };
 
+  // 处理跳转到房型详细页面的函数
+  const handleRoomTypeClick = (roomTypeId: string) => {
+    navigate(`/rooms/${roomTypeId}`); // 假设房型详细页面的路径是 /room/:roomTypeId
+  };
+
   // 表格的列定义
   const columns = [
     {
       title: 'Accommodation Type',
       dataIndex: 'roomTypeName',
       key: 'roomTypeName',
+      render: (roomTypeName: string, record: Room) => (
+        <span
+          style={{ color: '#1890ff', cursor: 'pointer' }} // 鼠标悬停时显示手形光标
+          onClick={() => handleRoomTypeClick(record.roomTypeId)} // 点击房型名称时触发跳转
+        >
+          {roomTypeName}
+        </span>
+      ),
     },
     {
       title: 'Number of guests',

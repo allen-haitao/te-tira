@@ -3,7 +3,7 @@
   }
   
   .top-header {
-    height: 100px;
+    height: 120px;
     width: 1230px;
     margin: 0 auto;
     padding-left: 2%;
@@ -74,8 +74,7 @@
     flex-direction: row; 
     align-items: center; 
     justify-content: space-between;
-    gap: 5%;
-    padding: auto;
+    padding: 0 5%;
     margin: auto 1%;
     margin-top: 2%;
   }
@@ -102,7 +101,7 @@
     position: absolute;
     left: 50%; /* 菜单从按钮的中心开始对齐 */
     transform: translateX(-50%); /* 水平居中对齐图标 */
-    margin-top: 50px;
+    margin-top: 10%;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 5px;

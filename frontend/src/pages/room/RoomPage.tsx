@@ -1,39 +1,52 @@
-import React, {useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
-import { ProductIntro, ProductComments } from "../../components";
-import { Spin, Row, Col, Divider, Typography, Anchor, Menu, DatePicker, Space, Button } from "antd";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { ProductIntro } from "../../components";
+import {
+  Spin,
+  Row,
+  Col,
+  Divider,
+  Typography,
+  Anchor,
+  Menu,
+  DatePicker,
+  Button,
+} from "antd";
 import styles from "./RoomPage.module.css";
-import { productDetailSlice, getProductDetail } from "../../redux/productDetail/slice";
+import { getRoomById } from "../../redux/room/slice";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
-import { useTranslation } from "react-i18next";
 import { MainLayout } from "../../layouts/mainLayout";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { addShoppingCartItem } from "../../redux/shoppingCart/slice";
+import { RootState } from "../../redux/store";
 
 const { RangePicker } = DatePicker;
 
 type MatchParams = {
-    hotelId : string,
+  roomTypeId: string;
 };
 
-export const RoomPage:React.FC = () => {
-    
-  const { hotelId } = useParams<MatchParams>();
+export const RoomPage: React.FC = () => {
+  const { roomTypeId } = useParams<MatchParams>();
 
-  const loading = useSelector((state) => state.productDetail.loading);
-  const error = useSelector((state) => state.productDetail.error);
-  const product = useSelector((state) => state.productDetail.data);
+  const loading = useSelector((state: RootState) => state.room.loading);
+  const error = useSelector((state: RootState) => state.room.error);
+  const selectedRoom = useSelector(
+    (state: RootState) => state.room.selectedRoom
+  );
 
   const dispatch = useAppDispatch();
 
-  const jwt = useSelector((s) => s.user.token) as string;
-  const shoppingCartLoading = useSelector((s) => s.shoppingCart.loading);
+  const jwt = useSelector((state: RootState) => state.user.token) as string;
+  const shoppingCartLoading = useSelector(
+    (state: RootState) => state.shoppingCart.loading
+  );
 
   useEffect(() => {
-    if(hotelId) {
-      dispatch(getProductDetail(hotelId))
+    if (roomTypeId) {
+      dispatch(getRoomById(roomTypeId));
     }
-  }, []);
+  }, [roomTypeId, dispatch]);
 
   if (loading) {
     return (
@@ -49,102 +62,108 @@ export const RoomPage:React.FC = () => {
       />
     );
   }
+  
   if (error) {
     return <div>error: {error}</div>;
   }
 
-    return (
-      <>
-        <MainLayout>
-          <div className={styles["page-content"]}>
-            {/* Product Intro & Calendar */}
-            <div className={styles["product-intro-container"]}>
-              <Row>
-                <Col span={13}>
-                  <ProductIntro
-                    title={product.HotelName}
-                    price={product.price}
-                    address={product.Address}
-                    location={product.Map}
-                    contact={product.PhoneNumber}
-                    rating={product.HotelRating}
-                    pictures={[]}
-                  />
-                </Col>
-                <Col span={11}>
-                  <Button
-                    style={{ marginTop: 50, marginBottom: 30, display: "block" }}
-                    type="primary"
-                    danger
-                    loading={shoppingCartLoading}
-                    onClick={() => {
-                      dispatch(
-                        addShoppingCartItem({ jwt, roomTypeId: product.id })
-                      );
-                    }}
-                  >
-                    <ShoppingCartOutlined />
-                    放入购物车
-                  </Button>
-                  <RangePicker open style={{ marginTop: 20 }} />
-                </Col>
-              </Row>
-            </div>
-            {/* Anchor Menu */}
-            <Anchor className={styles["product-detail-anchor"]}>
-              <Menu mode="horizontal">
-                <Menu.Item key="1">
-                  <Anchor.Link href="#description" title="Description"></Anchor.Link>
-                </Menu.Item>
-                <Menu.Item key="3">
-                  <Anchor.Link href="#facilities" title="Facilities"></Anchor.Link>
-                </Menu.Item>
-                <Menu.Item key="4">
-                  <Anchor.Link href="#attractions" title="Attractions"></Anchor.Link>
-                </Menu.Item>
-                <Menu.Item key="5">
-                  <Anchor.Link href="#comments" title="Comments"></Anchor.Link>
-                </Menu.Item>
-              </Menu>
-            </Anchor>
-            {/* Description */}
-            <div id="description" className={styles["product-detail-container"]}>
-              <Divider orientation={"center"}>
-                <Typography.Title level={3}>Description</Typography.Title>
-              </Divider>
-              <div
-                dangerouslySetInnerHTML={{ __html: product.Description }}
-                style={{ margin: 50 }}
-              ></div>
-            </div>
-            {/* Facilities */}
-            <div id="facilities" className={styles["product-detail-container"]}>
-              <Divider orientation={"center"}>
-                <Typography.Title level={3}>Facilities</Typography.Title>
-              </Divider>
-              <div
-                dangerouslySetInnerHTML={{ __html: product.HotelFacilities }}
-                style={{ margin: 50 }}
-              ></div>
-            </div>
-            {/* Attractions */}
-            <div id="attractions" className={styles["product-detail-container"]}>
-              <Divider orientation={"center"}>
-                <Typography.Title level={3}>Attractions</Typography.Title>
-              </Divider>
-              <div
-                dangerouslySetInnerHTML={{ __html: product.Attractions }}
-                style={{ margin: 50 }}
-              ></div>
-            </div>
-            {/* Comments*/}
-            <div id="comments" className={styles["product-detail-container"]}>
-              <Divider orientation={"center"}>
-                <Typography.Title level={3}>Comments</Typography.Title>
-              </Divider>
-            </div>
+  // 检查selectedRoom是否存在
+  if (!selectedRoom) {
+    return <div>No room details available.</div>;
+  }
+
+  return (
+    <>
+      <MainLayout>
+        <div className={styles["page-content"]}>
+          {/* Product Intro & Calendar */}
+          <div className={styles["product-intro-container"]}>
+            <Row>
+              <Col span={13}>
+                <ProductIntro
+                  title={selectedRoom.roomTypeName}
+                  price={selectedRoom.price}
+                  address={selectedRoom.hotelId}  // 假设hotelId代表地址，需要根据实际情况更改
+                  location={selectedRoom.roomTypeId} // 假设roomTypeId代表位置，需要根据实际情况更改
+                  contact={"N/A"}  // 假设没有联系方式字段
+                  rating={4.5}  // 假设没有评分字段，静态赋值
+                  pictures={[]}  // 假设没有图片字段
+                />
+              </Col>
+              <Col span={11}>
+                <Button
+                  style={{ marginTop: 50, marginBottom: 30, display: "block" }}
+                  type="primary"
+                  danger
+                  loading={shoppingCartLoading}
+                  onClick={() => {
+                    dispatch(
+                      addShoppingCartItem({ jwt, roomTypeId: selectedRoom.roomTypeId })
+                    );
+                  }}
+                >
+                  <ShoppingCartOutlined />
+                  放入购物车
+                </Button>
+                <RangePicker open style={{ marginTop: 20 }} />
+              </Col>
+            </Row>
           </div>
-        </MainLayout>
-      </>
-    );
-  };
+          {/* Anchor Menu */}
+          <Anchor className={styles["product-detail-anchor"]}>
+            <Menu mode="horizontal">
+              <Menu.Item key="1">
+                <Anchor.Link href="#description" title="Description"></Anchor.Link>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Anchor.Link href="#facilities" title="Facilities"></Anchor.Link>
+              </Menu.Item>
+              <Menu.Item key="4">
+                <Anchor.Link href="#attractions" title="Attractions"></Anchor.Link>
+              </Menu.Item>
+              <Menu.Item key="5">
+                <Anchor.Link href="#comments" title="Comments"></Anchor.Link>
+              </Menu.Item>
+            </Menu>
+          </Anchor>
+          {/* Description */}
+          <div id="description" className={styles["product-detail-container"]}>
+            <Divider orientation={"center"}>
+              <Typography.Title level={3}>Description</Typography.Title>
+            </Divider>
+            <div
+              dangerouslySetInnerHTML={{ __html: "Room Description" }}  // 假设房型描述
+              style={{ margin: 50 }}
+            ></div>
+          </div>
+          {/* Facilities */}
+          <div id="facilities" className={styles["product-detail-container"]}>
+            <Divider orientation={"center"}>
+              <Typography.Title level={3}>Facilities</Typography.Title>
+            </Divider>
+            <div
+              dangerouslySetInnerHTML={{ __html: "Room Facilities" }}  // 假设房型设施
+              style={{ margin: 50 }}
+            ></div>
+          </div>
+          {/* Attractions */}
+          <div id="attractions" className={styles["product-detail-container"]}>
+            <Divider orientation={"center"}>
+              <Typography.Title level={3}>Attractions</Typography.Title>
+            </Divider>
+            <div
+              dangerouslySetInnerHTML={{ __html: "Nearby Attractions" }}  // 假设房型附近景点
+              style={{ margin: 50 }}
+            ></div>
+          </div>
+          {/* Comments*/}
+          <div id="comments" className={styles["product-detail-container"]}>
+            <Divider orientation={"center"}>
+              <Typography.Title level={3}>Comments</Typography.Title>
+            </Divider>
+          </div>
+        </div>
+      </MainLayout>
+    </>
+  );
+};

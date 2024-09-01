@@ -3,13 +3,13 @@ import React, { useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { ProductIntro, ProductComments } from "../../components";
 import { Spin, Row, Col, Divider, Typography, Anchor, Menu, DatePicker, Space, Button } from "antd";
-import { commentMockData } from "./mockup";
 import styles from "./DetailPage.module.css";
 import { getProductDetail } from "../../redux/productDetail/slice";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 import { MainLayout } from "../../layouts/mainLayout";
 import RoomTable from './RoomTable';
+import Comments from "./Comments";
 
 const { RangePicker } = DatePicker;
 
@@ -132,11 +132,11 @@ export const DetailPage: React.FC = () => {
           <Divider orientation={"center"}>
             <Typography.Title level={3}>Comments</Typography.Title>
           </Divider>
-          <div style={{ margin: 40 }}>
-            <ProductComments data={commentMockData} />
+          <div style={{ margin: 50 }}>
+            <Comments hotelId={hotelId!} />
           </div>
         </div>
       </div>
     </MainLayout>
-  );
+  )
 };

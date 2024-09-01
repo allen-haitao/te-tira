@@ -3,6 +3,7 @@ import productListReducer from './productList/productListReducer';
 import { actionLog } from "./middlewares/actionLog";
 import { productDetailSlice } from "./productDetail/slice";
 import { roomSlice } from "./room/slice";
+import { commentsSlice } from "./comments/slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { productSearchSlice } from "./productSearch/slice";
 import { authSlice } from "./auth/slice";
@@ -22,10 +23,12 @@ const rootReducer = combineReducers({
     productList: productListReducer,
     productDetail: productDetailSlice.reducer,
     room: roomSlice.reducer,
+    comments: commentsSlice.reducer, 
     productSearch: productSearchSlice.reducer,
     user: authSlice.reducer,
     shoppingCart: shoppingCartSlice.reducer,
     booking: orderSlice.reducer
+   
 
 })
 
