@@ -47,6 +47,21 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
     navigate(`/rooms/${roomTypeId}`); // 假设房型详细页面的路径是 /room/:roomTypeId
   };
 
+  const handleAddToCart = (roomTypeId: string) => {
+    const dates = selectedDates[roomTypeId];
+    if (!dates || !dates[0] || !dates[1]) {
+      alert("Please select check-in and check-out dates.");
+      return;
+    }
+
+    dispatch(addShoppingCartItem({
+      jwt,
+      roomTypeId,
+      checkInDate: dates[0].format('YYYY-MM-DD'),
+      checkOutDate: dates[1].format('YYYY-MM-DD')
+    }));
+  };
+
   // 表格的列定义
   const columns = [
     {
@@ -147,9 +162,7 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
           type="primary"
           icon={<ShoppingCartOutlined />}
           loading={shoppingCartLoading}
-          onClick={() => {
-            dispatch(addShoppingCartItem({ jwt, roomTypeId: record.roomTypeId }));
-          }}
+          onClick={() => handleAddToCart(record.roomTypeId)}
         >
           Add to Cart
         </Button>

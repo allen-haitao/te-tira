@@ -1,17 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProductIntro } from "../../components";
-import {
-  Spin,
-  Row,
-  Col,
-  Divider,
-  Typography,
-  Anchor,
-  Menu,
-  DatePicker,
-  Button,
-} from "antd";
+import { Spin, Row, Col, Divider, Typography, Anchor, Menu, DatePicker, Button } from "antd";
 import styles from "./RoomPage.module.css";
 import { getRoomById } from "../../redux/room/slice";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
@@ -19,6 +9,7 @@ import { MainLayout } from "../../layouts/mainLayout";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { addShoppingCartItem } from "../../redux/shoppingCart/slice";
 import { RootState } from "../../redux/store";
+import moment, { Moment } from "moment";
 
 const { RangePicker } = DatePicker;
 
@@ -31,16 +22,14 @@ export const RoomPage: React.FC = () => {
 
   const loading = useSelector((state: RootState) => state.room.loading);
   const error = useSelector((state: RootState) => state.room.error);
-  const selectedRoom = useSelector(
-    (state: RootState) => state.room.selectedRoom
-  );
+  const selectedRoom = useSelector((state: RootState) => state.room.selectedRoom);
 
   const dispatch = useAppDispatch();
 
   const jwt = useSelector((state: RootState) => state.user.token) as string;
-  const shoppingCartLoading = useSelector(
-    (state: RootState) => state.shoppingCart.loading
-  );
+  const shoppingCartLoading = useSelector((state: RootState) => state.shoppingCart.loading);
+
+  const [selectedDates, setSelectedDates] = useState<[Moment | null, Moment | null] | null>(null);
 
   useEffect(() => {
     if (roomTypeId) {
@@ -72,6 +61,24 @@ export const RoomPage: React.FC = () => {
     return <div>No room details available.</div>;
   }
 
+  const handleAddToCart = () => {
+    if (selectedDates && selectedDates[0] && selectedDates[1]) {
+      const checkInDate = selectedDates[0].format("YYYY-MM-DD");
+      const checkOutDate = selectedDates[1].format("YYYY-MM-DD");
+      
+      dispatch(
+        addShoppingCartItem({
+          jwt,
+          roomTypeId: selectedRoom.roomTypeId,
+          checkInDate,
+          checkOutDate,
+        })
+      );
+    } else {
+      alert("Please select check-in and check-out dates.");
+    }
+  };
+
   return (
     <>
       <MainLayout>
@@ -91,21 +98,20 @@ export const RoomPage: React.FC = () => {
                 />
               </Col>
               <Col span={11}>
+                <RangePicker
+                  value={selectedDates}
+                  onChange={(dates) => setSelectedDates(dates)}
+                  style={{ marginBottom: 20, display: "block" }}
+                />
                 <Button
-                  style={{ marginTop: 50, marginBottom: 30, display: "block" }}
                   type="primary"
                   danger
                   loading={shoppingCartLoading}
-                  onClick={() => {
-                    dispatch(
-                      addShoppingCartItem({ jwt, roomTypeId: selectedRoom.roomTypeId })
-                    );
-                  }}
+                  onClick={handleAddToCart}
                 >
                   <ShoppingCartOutlined />
                   放入购物车
                 </Button>
-                <RangePicker open style={{ marginTop: 20 }} />
               </Col>
             </Row>
           </div>

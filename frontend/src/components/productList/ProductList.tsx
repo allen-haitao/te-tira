@@ -6,21 +6,21 @@ import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 
 interface Product {
-  departureCity: string;
-  description: string;
-  discountPresent: number;
+  departureCity?: string;
+  description?: string;
+  discountPresent?: number;
   id: string;
-  originalPrice: number;
+  originalPrice?: number;
   price: number;
-  rating: number;
+  rating?: number;
   title: string;
-  touristRoutePictures: any[];
-  travelDays: string;
-  tripType: string;
+  touristRoutePictures?: any[];
+  travelDays?: string;
+  tripType?: string;
 }
 
 interface PropsType {
-  data: Product[] | null; // 修改类型，允许 data 为 null
+  data: Product[] | null;
   paging?: {
     currentPage: number;
     pageSize: number;
@@ -58,7 +58,7 @@ const IconText = ({ icon, text }) => (
 
 export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange }) => {
   if (!data) {
-    return <div>No products available</div>; // 处理 data 为 null 的情况
+    return <div>No products available</div>;
   }
 
   const products = listData(data);
@@ -93,10 +93,10 @@ export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange })
             <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
             <>
               <Rate defaultValue={3} />
-              <Text strong className="ant-rate-text">{item.rating}</Text>
+              <Text strong className="ant-rate-text">{item.rating ?? 0}</Text>
             </>,
           ]}
-          extra={<Image width={272} height={172} alt="image" src={item.imgSrc} />}
+          extra={<Image width={272} height={172} alt="image" src={item.imgSrc || ''} />}
         >
           <List.Item.Meta
             title={
@@ -104,7 +104,7 @@ export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange })
                 {item.discountPresent ? (
                   <>
                     <Text style={{ fontSize: 20, fontWeight: 400 }} delete>
-                      ¥ {item.originalPrice}
+                      ¥ {item.originalPrice || item.price}
                     </Text>
                     <Text type="danger" style={{ fontSize: 20, fontWeight: 400 }}>
                       {" "}

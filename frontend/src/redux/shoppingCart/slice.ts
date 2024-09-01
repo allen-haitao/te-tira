@@ -1,16 +1,23 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface ShoppingCarttate {
-  loading: boolean;
-  error: string | null;
-  items: any[];
+interface CartItem {
+  userId: string;
+  roomTypeId: string;
+  checkInDate: string;
+  checkOutDate: string;
 }
 
-const initialState: ShoppingCarttate = {
+interface ShoppingCartState {
+  items: CartItem[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: ShoppingCartState = {
+  items: [],
   loading: true,
   error: null,
-  items: [],
 };
 
 export const getShoppingCart = createAsyncThunk(
@@ -30,20 +37,21 @@ export const getShoppingCart = createAsyncThunk(
 
 export const addShoppingCartItem = createAsyncThunk(
   "shoppingCart/addShoppingCartItem",
-  async (parameters: { jwt: string; roomTypeId: string }, thunkAPI) => {
-    const { data } = await axios.post(
-      `http://127.0.0.1:3000/cart/add`,
-      {
-        roomTypeId: parameters.roomTypeId,
-      },
-      {
+  async ({ jwt, roomTypeId, checkInDate, checkOutDate }: { jwt: string; roomTypeId: string; checkInDate: string; checkOutDate: string }, thunkAPI) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:3000/cart/add", {
+        roomTypeId,
+        checkInDate,
+        checkOutDate
+      }, {
         headers: {
-          Authorization: `bearer ${parameters.jwt}`,
-        },
-      }
-    );
-    console.log('Item added to cart:', data);
-    return data.shoppingCartItems;
+          Authorization: `Bearer ${jwt}`
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -83,63 +91,19 @@ export const shoppingCartSlice = createSlice({
   name: "shoppingCart",
   initialState,
   reducers: {},
-  extraReducers: {
-    [getShoppingCart.pending.type]: (state) => {
-      state.loading = true;
-    },
-    [getShoppingCart.fulfilled.type]: (state, action) => {
-      state.items = action.payload || [];
-      state.loading = false;
-      state.error = null;
-    },
-    [getShoppingCart.rejected.type]: (
-      state,
-      action: PayloadAction<string | null>
-    ) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    [addShoppingCartItem.pending.type]: (state) => {
-      state.loading = true;
-    },
-    [addShoppingCartItem.fulfilled.type]: (state, action) => {
-      state.items = action.payload || [];
-      state.loading = false;
-      state.error = null;
-    },
-    [addShoppingCartItem.rejected.type]: (
-      state,
-      action: PayloadAction<string | null>
-    ) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    [clearShoppingCartItem.pending.type]: (state) => {
-      state.loading = true;
-    },
-    [clearShoppingCartItem.fulfilled.type]: (state) => {
-      state.items = [];
-      state.loading = false;
-      state.error = null;
-    },
-    [clearShoppingCartItem.rejected.type]: (
-      state,
-      action: PayloadAction<string | null>
-    ) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    [checkout.pending.type]: (state) => {
-      state.loading = true;
-    },
-    [checkout.fulfilled.type]: (state, action) => {
-      state.items = [];
-      state.loading = false;
-      state.error = null;
-    },
-    [checkout.rejected.type]: (state, action: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addShoppingCartItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addShoppingCartItem.fulfilled, (state, action: PayloadAction<CartItem>) => {
+        state.items.push(action.payload);
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(addShoppingCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });

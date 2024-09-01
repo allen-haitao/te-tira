@@ -9,7 +9,7 @@ import { useSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import jwt_decode, { JwtPayload as DefaultJwtPayload } from "jwt-decode";
-import { changeLanguage } from "../../redux/language/slice"; // 仅保留 changeLanguage 的引入
+import { changeLanguage } from "../../redux/language/slice";
 import { authSlice } from "../../redux/auth/slice";
 
 interface JwtPayload extends DefaultJwtPayload {
@@ -29,8 +29,8 @@ export const Header: React.FC = () => {
   const jwt = useSelector((s) => s.user.token);
   const [username, setUsername] = useState("");
 
-  const shoppingCartItems = useSelector((s) => s.shoppingCart.items);
-  const shoppingCartLoading = useSelector((s) => s.shoppingCart.loading);
+  const shoppingCartItems = useSelector((state) => state.shoppingCart.items);
+  const shoppingCartLoading = useSelector((state) => state.shoppingCart.loading);
 
   useEffect(() => {
     if (jwt) {
