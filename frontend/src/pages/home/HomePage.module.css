@@ -53,3 +53,8 @@
     color: #888 !important;
     margin-bottom: auto !important;
   }
+
+  .offer-button {
+    background-color: #00247d !important;
+    border-radius: 5px !important;
+  }

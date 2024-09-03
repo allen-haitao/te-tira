@@ -19,7 +19,8 @@
 .search-input-wrapper {
   position: relative;
   flex: 1; /* 使搜索输入框具有相同的宽度 */
-  padding: 3px;
+  padding: 3px 1px;
+  margin-left: 3px;
   display: flex; /* 使用flexbox布局 */
   flex-direction: column; /* 子元素垂直排列 */
   align-items: flex-start;
@@ -61,5 +62,5 @@
   width: 8% !important;
   font-size: 18px !important;
   font-weight: bold !important;
-  margin: 0 2px;
+  margin: 3px;
 }
