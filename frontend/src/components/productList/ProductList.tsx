@@ -132,7 +132,7 @@ export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange, o
                     onClick={() => onDelete && onDelete(item.key)} // 删除按钮，调用 onDelete prop
                     style={{ float: "right" }}
                   >
-                    Delete
+                    Remove
                   </Button>
                 </Col>
               </Row>

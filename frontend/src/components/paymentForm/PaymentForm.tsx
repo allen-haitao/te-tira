@@ -1,10 +1,10 @@
 import React from "react";
 import { PaymentInputsWrapper, usePaymentInputs } from "react-payment-inputs";
 import images from "react-payment-inputs/images";
-import { Input, Card } from "antd";
+import { Card } from "antd";
 import styles from "./PaymentForm.module.css";
 
-export const PaymentForm = () => {
+export const PaymentForm: React.FC = () => {
   const {
     wrapperProps,
     getCardImageProps,
@@ -15,7 +15,7 @@ export const PaymentForm = () => {
 
   return (
     <Card
-      title="信用卡"
+      title="Credit Card"
       bordered={false}
       className={styles["payment-credit-card"]}
     >

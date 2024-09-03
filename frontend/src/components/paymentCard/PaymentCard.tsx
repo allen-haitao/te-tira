@@ -66,7 +66,7 @@ export const PaymentCard: React.FC<PropsType> = ({
       actions={[
         <Button type="primary" danger onClick={onCheckout} loading={loading}>
           <CheckCircleOutlined />
-          Payment
+          Booking
         </Button>,
         <Button onClick={onShoppingCartClear} loading={loading}>
           <DeleteOutlined />
@@ -76,7 +76,7 @@ export const PaymentCard: React.FC<PropsType> = ({
     >
       <Skeleton loading={loading} active>
         <Meta
-          title={<Title level={2}>Total</Title>}
+          title={<Title level={2}>Amount</Title>}
           description={
             <Table<Item>
               columns={columns}

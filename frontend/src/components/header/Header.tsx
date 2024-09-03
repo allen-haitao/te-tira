@@ -5,12 +5,12 @@ import { Typography, Button, Row, Col, Spin } from "antd";
 import { DollarCircleOutlined, GlobalOutlined, QuestionCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { currencyItems } from "../../assets/data/CurrencyItems";
-import { useSelector } from "../../redux/hooks";
-import { useDispatch } from "react-redux";
+import { useSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 import jwt_decode, { JwtPayload as DefaultJwtPayload } from "jwt-decode";
 import { changeLanguage } from "../../redux/language/slice";
 import { authSlice } from "../../redux/auth/slice";
+import { getShoppingCart } from "../../redux/shoppingCart/slice";
 
 interface JwtPayload extends DefaultJwtPayload {
   userId: string;
@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
 
   const language = useSelector((state) => state.language.language);
   const languageList = useSelector((state) => state.language.languageList);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
   const jwt = useSelector((s) => s.user.token);

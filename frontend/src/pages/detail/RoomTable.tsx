@@ -22,7 +22,7 @@ interface Room {
 
 const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
   const [selectedDates, setSelectedDates] = useState<{ [key: string]: [Moment | null, Moment | null] | null }>({});
-  const [visiblePopover, setVisiblePopover] = useState<{ [key: string]: boolean }>({}); // 控制Popover的显示
+  const [visiblePopover, setVisiblePopover] = useState<{ [key: string]: boolean }>({});
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -31,38 +31,41 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
   const { loading, rooms } = useSelector((state: RootState) => state.room);
 
   useEffect(() => {
-    // 从redux中获取房间信息
     if (hotelId) {
       dispatch(getRoomsByHotelId(hotelId));
     }
   }, [hotelId, dispatch]);
 
-  // 确认选择日期后关闭 Popover
   const handleConfirm = (roomTypeId: string) => {
     setVisiblePopover(prev => ({ ...prev, [roomTypeId]: false }));
   };
 
-  // 处理跳转到房型详细页面的函数
   const handleRoomTypeClick = (roomTypeId: string) => {
-    navigate(`/rooms/${roomTypeId}`); // 假设房型详细页面的路径是 /room/:roomTypeId
+    navigate(`/rooms/${roomTypeId}`);
   };
 
-  const handleAddToCart = (roomTypeId: string) => {
+  const handleAddToCart = async (roomTypeId: string) => {
     const dates = selectedDates[roomTypeId];
     if (!dates || !dates[0] || !dates[1]) {
       alert("Please select check-in and check-out dates.");
       return;
     }
 
-    dispatch(addShoppingCartItem({
-      jwt,
-      roomTypeId,
-      checkInDate: dates[0].format('YYYY-MM-DD'),
-      checkOutDate: dates[1].format('YYYY-MM-DD')
-    }));
+    try {
+      await dispatch(addShoppingCartItem({
+        jwt,
+        roomTypeId,
+        checkInDate: dates[0].format('YYYY-MM-DD'),
+        checkOutDate: dates[1].format('YYYY-MM-DD')
+      })).unwrap();
+
+      // Reset the selected dates for the room type after adding to cart
+      setSelectedDates(prev => ({ ...prev, [roomTypeId]: null }));
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    }
   };
 
-  // 表格的列定义
   const columns = [
     {
       title: 'Accommodation Type',
@@ -70,8 +73,8 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
       key: 'roomTypeName',
       render: (roomTypeName: string, record: Room) => (
         <span
-          style={{ color: '#1890ff', cursor: 'pointer' }} // 鼠标悬停时显示手形光标
-          onClick={() => handleRoomTypeClick(record.roomTypeId)} // 点击房型名称时触发跳转
+          style={{ color: '#1890ff', cursor: 'pointer' }}
+          onClick={() => handleRoomTypeClick(record.roomTypeId)}
         >
           {roomTypeName}
         </span>
@@ -82,7 +85,7 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
       dataIndex: 'roomTypeName',
       key: 'guests',
       render: (roomTypeName: string) => {
-        let guestsCount = 1; // 默认是 1 个客人
+        let guestsCount = 1;
 
         switch (true) {
           case roomTypeName.toLowerCase().includes('double'):
@@ -95,7 +98,7 @@ const RoomTable: React.FC<{ hotelId: string }> = ({ hotelId }) => {
             guestsCount = 4;
             break;
           case roomTypeName.toLowerCase().includes('suite'):
-            guestsCount = 4; // 假设套房可以容纳 4 人
+            guestsCount = 4;
             break;
           default:
             guestsCount = 1;

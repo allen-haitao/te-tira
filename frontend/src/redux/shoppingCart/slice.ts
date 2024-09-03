@@ -70,22 +70,6 @@ export const addShoppingCartItem = createAsyncThunk(
   }
 );
 
-export const checkout = createAsyncThunk(
-  "shoppingCart/checkout",
-  async (jwt: string, thunkAPI) => {
-    const { data } = await axios.post(
-      `http://127.0.0.1:3000/cart/checkout`,
-      null,
-      {
-        headers: {
-          Authorization: `bearer ${jwt}`,
-        },
-      }
-    );
-    return data;
-  }
-);
-
 export const clearShoppingCartItem = createAsyncThunk(
   "shoppingCart/clearShoppingCartItem",
   async (parameters: { jwt: string; keys: string[] }, thunkAPI) => {
@@ -106,6 +90,46 @@ export const clearShoppingCartItem = createAsyncThunk(
     }
   }
 );
+
+export const checkout = createAsyncThunk(
+  "shoppingCart/checkout",
+  async (jwt: string, thunkAPI) => {
+    const { data } = await axios.post(
+      `http://127.0.0.1:3000/cart/checkout`,
+      null,
+      {
+        headers: {
+          Authorization: `bearer ${jwt}`,
+        },
+      }
+    );
+    return data;
+  }
+);
+
+/*
+export const clearShoppingCartItem = createAsyncThunk(
+  "shoppingCart/clearShoppingCartItem",
+  async (parameters: { jwt: string; keys: string[] }, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:3000/cart/remove`, // 使用 POST 方法和路径 /cart/remove
+        { keys: parameters.keys }, // 请求体中包含要删除的 keys 数组
+        {
+          headers: {
+            Authorization: `bearer ${parameters.jwt}`,
+          },
+        }
+      );
+
+      return parameters.keys; // 将 keys 返回以便在 fulfilled 中使用
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+*/
 
 export const shoppingCartSlice = createSlice({
   name: "shoppingCart",

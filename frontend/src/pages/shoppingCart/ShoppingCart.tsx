@@ -44,23 +44,28 @@ export const ShoppingCartPage: React.FC = () => {
 
   const productLoading = useSelector((state) => state.productDetail.loading);
 
-  // 用于存储每个产品的详细信息
   const [productDetails, setProductDetails] = useState<Record<string, any>>({});
   const [loadingDetails, setLoadingDetails] = useState(true);
 
   useEffect(() => {
-    dispatch(getShoppingCart(jwt));
+    if (jwt) {
+      dispatch(getShoppingCart(jwt)); // 确保获取最新的购物车状态
+    }
   }, [dispatch, jwt]);
 
   useEffect(() => {
+    if (shoppingCartItems.length === 0) {
+      setLoadingDetails(false); // 如果购物车为空，停止加载状态
+      return;
+    }
+
     const fetchProductDetails = async () => {
       setLoadingDetails(true);
 
-      // 遍历购物车中的所有项目，逐一获取产品详细信息
       const promises = shoppingCartItems.map(async (item) => {
         if (!productDetails[item.hotelId]) {
           try {
-            const actionResult = await dispatch(getProductDetail(item.hotelId)).unwrap(); // 使用 unwrap 获取 action payload
+            const actionResult = await dispatch(getProductDetail(item.hotelId)).unwrap();
             setProductDetails((prev) => ({
               ...prev,
               [item.hotelId]: actionResult,
@@ -75,9 +80,7 @@ export const ShoppingCartPage: React.FC = () => {
       setLoadingDetails(false);
     };
 
-    if (shoppingCartItems.length > 0) {
-      fetchProductDetails();
-    }
+    fetchProductDetails();
   }, [dispatch, shoppingCartItems, productDetails]);
 
   if (loading || productLoading || loadingDetails) {
@@ -95,19 +98,18 @@ export const ShoppingCartPage: React.FC = () => {
     );
   }
 
-  // 合并购物车数据和产品详情数据
   const mergedShoppingCartData = shoppingCartItems.map((item, index) => {
-    const hotel = productDetails[item.hotelId] || {}; // 获取当前产品的详细信息
+    const hotel = productDetails[item.hotelId] || {};
 
     return {
-      key: `${item.roomTypeId}-${index}`, // 使用 roomTypeId 和 index 组合生成唯一 key
+      key: `${item.roomTypeId}-${index}`,
       RoomTypeName: item.roomTypeName,
       roomTypeId: item.roomTypeId,
       price: item.totalPrice,
       checkInDate: item.checkInDate,
       checkOutDate: item.checkOutDate,
       nights: item.nights,
-      HotelName: hotel.HotelName || '', // 确保如果没有数据时不会出现undefined
+      HotelName: hotel.HotelName || '',
       HotelRating: hotel.HotelRating || '',
       cityName: hotel.cityName || '',
       Description: `Check-in: ${item.checkInDate}, Check-out: ${item.checkOutDate}, Nights: ${item.nights}`,
@@ -116,7 +118,33 @@ export const ShoppingCartPage: React.FC = () => {
     };
   });
 
-  console.log('Final shopping cart data for rendering:', mergedShoppingCartData);
+  const handleCheckout = async () => {
+    if (shoppingCartItems.length <= 0) {
+      return;
+    }
+
+    try {
+      await dispatch(checkout(jwt)).unwrap();
+      await dispatch(getShoppingCart(jwt));
+      navigate("/booking", {
+        state: {
+          products: mergedShoppingCartData, // 只传递购物车中的Item信息
+        },
+      });
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
+  };
+
+  // 更新Clear逻辑
+  const handleClearCart = async () => {
+    try {
+      await dispatch(checkout(jwt)).unwrap();
+      await dispatch(getShoppingCart(jwt));
+    } catch (error) {
+      console.error("Clear cart failed:", error);
+    }
+  };
 
   return (
     <MainLayout>
@@ -126,7 +154,7 @@ export const ShoppingCartPage: React.FC = () => {
           <div className={styles["product-list-container"]}>
             {mergedShoppingCartData.length > 0 ? (
               <ProductList
-                data={mergedShoppingCartData} 
+                data={mergedShoppingCartData}
                 onDelete={(key) => {
                   dispatch(clearShoppingCartItem({
                     jwt,
@@ -145,22 +173,9 @@ export const ShoppingCartPage: React.FC = () => {
             <div className={styles["payment-card-container"]}>
               <PaymentCard
                 loading={loading}
-                price={mergedShoppingCartData.reduce((total, item) => total + item.price, 0)}
-                onCheckout={() => {
-                  if (shoppingCartItems.length <= 0) {
-                    return;
-                  }
-                  dispatch(checkout(jwt));
-                  navigate("/placeOrder");
-                }}
-                onShoppingCartClear={() => {
-                  dispatch(
-                    clearShoppingCartItem({
-                      jwt,
-                      keys: shoppingCartItems.map((item, index) => `${item.roomTypeId}-${index}`), // 使用合适的键值格式
-                    })
-                  );
-                }}
+                price={mergedShoppingCartData.reduce((total, item) => total + item.price, 0)} // 显示总金额但不传递
+                onCheckout={handleCheckout}
+                onShoppingCartClear={handleClearCart} // 调用handleClearCart方法
               />
             </div>
           </Affix>
