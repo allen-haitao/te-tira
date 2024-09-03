@@ -1,22 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { List, Rate, Space, Image, Tag, Typography } from "antd";
-import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
+import { List, Rate, Space, Image, Tag, Typography, Button, Row, Col } from "antd";
+import { MessageOutlined, LikeOutlined, StarOutlined, DeleteOutlined } from "@ant-design/icons";
+
+import hotel1 from "../../assets/images/hotel_1.jpg";
 
 const { Text } = Typography;
 
-interface Product {
-  departureCity?: string;
-  description?: string;
-  discountPresent?: number;
-  id: string;
-  originalPrice?: number;
-  price: number;
-  rating?: number;
-  title: string;
-  touristRoutePictures?: any[];
-  travelDays?: string;
-  tripType?: string;
+export interface Product {
+  key: string;
+  RoomTypeName: string; // 房间类型名称
+  roomTypeId: string; // 房间类型ID
+  HotelName: string; // 酒店名称
+  cityName: string; // 城市名称
+  price: number; // 价格
+  checkInDate: string; // 入住日期
+  checkOutDate: string; // 退房日期
+  nights: number; // 夜晚数
+  HotelRating: number | string; // 酒店星级
+  Description?: string; // 描述
+  HotelFacilities?: string; // 酒店设施
+  Attractions?: string; // 景点
 }
 
 interface PropsType {
@@ -27,36 +31,52 @@ interface PropsType {
     totalCount: number;
   };
   onPageChange?: (nextPage: number, pageSize: number) => void;
+  onDelete?: (roomTypeId: string) => void; // 新增 onDelete prop，用于删除条目
 }
+
+const convertRating = (rating: string | number): number => {
+  if (typeof rating === 'number') return rating; 
+  switch (rating) {
+    case "OneStar":
+      return 1;
+    case "TwoStar":
+      return 2;
+    case "ThreeStar":
+      return 3;
+    case "FourStar":
+      return 4;
+    case "FiveStar":
+      return 5;
+    default:
+      return 0; 
+  }
+};
 
 const listData = (productList: Product[]) =>
   productList.map((p) => ({
-    id: p.id,
-    title: p.title,
-    description: p.description,
+    key: p.key,
+    id: p.roomTypeId,
+    title: `${p.RoomTypeName}`, // 显示房间类型名称，酒店名称和城市名称
+    description: `Check-in: ${p.checkInDate}, Check-out: ${p.checkOutDate}, Nights: ${p.nights}`, // 显示预定时间段和时长
     tags: (
       <>
-        {p.departureCity && <Tag color="#f50">{p.departureCity} 出发</Tag>}
-        {p.travelDays && <Tag color="#108ee9">{p.travelDays} 天</Tag>}
-        {p.discountPresent && <Tag color="#87d068">超低折扣</Tag>}
-        {p.tripType && <Tag color="#2db7f5">{p.tripType}</Tag>}
+        {p.HotelName && <Tag color="#2db7f5">{p.HotelName}</Tag>}
+        {p.cityName && <Tag color="#f50">{p.cityName}</Tag>}
       </>
     ),
-    imgSrc: p.touristRoutePictures?.[0]?.url, // 使用可选链处理可能的 undefined
+    imgSrc: hotel1,
     price: p.price,
-    originalPrice: p.originalPrice,
-    discountPresent: p.discountPresent,
-    rating: p.rating,
+    rating: p.HotelRating,
   }));
 
-const IconText = ({ icon, text }) => (
+const IconText = ({ icon, text }: { icon: any; text: string | number }) => (
   <Space>
     {React.createElement(icon)}
     {text}
   </Space>
 );
 
-export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange }) => {
+export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange, onDelete }) => {
   if (!data) {
     return <div>No products available</div>;
   }
@@ -81,41 +101,41 @@ export const ProductList: React.FC<PropsType> = ({ data, paging, onPageChange })
       footer={
         paging && (
           <div>
-            搜索总路线: <Text strong>{paging.totalCount}</Text> 条
+            Total: <Text strong>{paging.totalCount}</Text> items
           </div>
         )
       }
       renderItem={(item) => (
         <List.Item
-          key={item.title}
+          key={item.key} 
           actions={[
             <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
             <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
             <>
-              <Rate defaultValue={3} />
-              <Text strong className="ant-rate-text">{item.rating ?? 0}</Text>
+              <Rate allowHalf disabled defaultValue={convertRating(item.rating ?? 0)} />
+              <Text strong className="ant-rate-text">{convertRating(item.rating ?? 0)} Stars</Text>
             </>,
           ]}
           extra={<Image width={272} height={172} alt="image" src={item.imgSrc || ''} />}
         >
           <List.Item.Meta
             title={
-              <>
-                {item.discountPresent ? (
-                  <>
-                    <Text style={{ fontSize: 20, fontWeight: 400 }} delete>
-                      ¥ {item.originalPrice || item.price}
-                    </Text>
-                    <Text type="danger" style={{ fontSize: 20, fontWeight: 400 }}>
-                      {" "}
-                      ¥ {item.price}
-                    </Text>
-                  </>
-                ) : (
-                  <Text style={{ fontSize: 20, fontWeight: 400 }}>¥ {item.price}</Text>
-                )}
-                <Link to={`/detail/${item.id}`}> {item.title}</Link>
-              </>
+              <Row justify="space-between" align="middle">
+                <Col>
+                  <Text style={{ fontSize: 20, fontWeight: 400 }}>$ {item.price}</Text>
+                  <Link to={`/detail/${item.id}`}> {item.title}</Link>
+                </Col>
+                <Col>
+                  <Button
+                    icon={<DeleteOutlined />}
+                    type="link"
+                    onClick={() => onDelete && onDelete(item.key)} // 删除按钮，调用 onDelete prop
+                    style={{ float: "right" }}
+                  >
+                    Delete
+                  </Button>
+                </Col>
+              </Row>
             }
             description={item.tags}
           />

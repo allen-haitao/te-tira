@@ -61,6 +61,7 @@ export const DetailPage: React.FC = () => {
               <ProductIntro
                 title={product.HotelName}
                 price={product.price}
+                city={product.cityName}
                 address={product.Address}
                 location={product.Map}
                 contact={product.PhoneNumber}

@@ -24,12 +24,12 @@ interface Item {
 
 const columns: ColumnsType<Item> = [
   {
-    title: "项目",
+    title: "Item",
     dataIndex: "item",
     key: "item",
   },
   {
-    title: "金额",
+    title: "Amount",
     dataIndex: "amount",
     key: "amount",
   },
@@ -37,7 +37,6 @@ const columns: ColumnsType<Item> = [
 
 interface PropsType {
   loading: boolean;
-  originalPrice: number;
   price: number;
   onShoppingCartClear: () => void;
   onCheckout: () => void;
@@ -45,7 +44,6 @@ interface PropsType {
 
 export const PaymentCard: React.FC<PropsType> = ({
   loading,
-  originalPrice,
   price,
   onShoppingCartClear,
   onCheckout,
@@ -53,15 +51,10 @@ export const PaymentCard: React.FC<PropsType> = ({
   const paymentData: Item[] = [
     {
       key: 1,
-      item: "原价",
-      amount: <Text delete>¥ {originalPrice}</Text>,
-    },
-    {
-      key: 3,
-      item: "现价",
+      item: "price",
       amount: (
         <Title type="danger" level={2}>
-          ¥ {price}
+          $ {price}
         </Title>
       ),
     },
@@ -73,17 +66,17 @@ export const PaymentCard: React.FC<PropsType> = ({
       actions={[
         <Button type="primary" danger onClick={onCheckout} loading={loading}>
           <CheckCircleOutlined />
-          下单支付
+          Payment
         </Button>,
         <Button onClick={onShoppingCartClear} loading={loading}>
           <DeleteOutlined />
-          清空
+          Clear
         </Button>,
       ]}
     >
       <Skeleton loading={loading} active>
         <Meta
-          title={<Title level={2}>总计</Title>}
+          title={<Title level={2}>Total</Title>}
           description={
             <Table<Item>
               columns={columns}

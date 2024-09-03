@@ -20,8 +20,9 @@ export const getProductDetail = createAsyncThunk(
     const { data } = await axios.get(
       `http://127.0.0.1:3000/hotels/${hotelId}`
     );
+    console.log('API response for getProductDetail:', data);  // 打印API响应
     return data;
-  }
+  } 
 );
 
 export const productDetailSlice = createSlice({
@@ -34,6 +35,8 @@ export const productDetailSlice = createSlice({
       state.loading = true;
     },
     [getProductDetail.fulfilled.type]: (state, action) => {
+      console.log('Product detail fetched successfully:', action.payload);  // 打印获取的产品详情
+      state.data = action.payload;  // 假设API返回的是一个对象
       state.data = action.payload;
       state.loading = false;
       state.error = null;

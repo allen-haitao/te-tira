@@ -1,22 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ShoppingCart.module.css";
 import { MainLayout } from "../../layouts/mainLayout";
-import { Row, Col, Affix } from "antd";
+import { Row, Col, Affix, Spin } from "antd";
 import { ProductList, PaymentCard } from "../../components";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
 import { clearShoppingCartItem, checkout, getShoppingCart } from "../../redux/shoppingCart/slice";
+import { getProductDetail } from "../../redux/productDetail/slice";
 import { useNavigate } from "react-router-dom";
-import { getRoomById } from "../../redux/room/slice";
 
 interface CartItem {
-  userId: string;
+  checkOutDate: string;
+  totalPrice: number;
+  nights: number;
+  roomTypeName: string;
+  hotelId: string;
+  checkInDate: string;
   roomTypeId: string;
+  pricePerNight: number;
+}
+
+interface Product {
+  key: string;
+  RoomTypeName: string;
+  roomTypeId: string;
+  price: number;
   checkInDate: string;
   checkOutDate: string;
-  roomTypeName?: string; // 添加房型名称字段
-  price?: number; // 添加房型价格字段
-  originalPrice?: number; // 添加原始价格字段
-  discountPresent?: number; // 添加折扣字段
+  nights: number;
+  HotelName: string;
+  HotelRating: string;
+  cityName: string;
+  Description: string;
+  HotelFacilities: string;
+  Attractions: string;
 }
 
 export const ShoppingCartPage: React.FC = () => {
@@ -26,46 +42,81 @@ export const ShoppingCartPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const productLoading = useSelector((state) => state.productDetail.loading);
+
+  // 用于存储每个产品的详细信息
+  const [productDetails, setProductDetails] = useState<Record<string, any>>({});
+  const [loadingDetails, setLoadingDetails] = useState(true);
+
   useEffect(() => {
-    // 首先加载购物车数据
     dispatch(getShoppingCart(jwt));
+  }, [dispatch, jwt]);
 
-    // 使用 Promise.all 加载房间详情
-    const loadRoomDetails = async () => {
-      try {
-        const roomDetailsPromises = shoppingCartItems.map((item) =>
-          dispatch(getRoomById(item.roomTypeId)).then((response) => {
-            const roomDetails = response.payload as any;
-            item.roomTypeName = roomDetails.roomTypeName;
-            item.price = roomDetails.price;
-            item.originalPrice = roomDetails.originalPrice || roomDetails.price;
-            item.discountPresent = roomDetails.discountPresent;
-          })
-        );
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      setLoadingDetails(true);
 
-        await Promise.all(roomDetailsPromises);
-      } catch (error) {
-        console.error("Error loading room details", error);
-      }
+      // 遍历购物车中的所有项目，逐一获取产品详细信息
+      const promises = shoppingCartItems.map(async (item) => {
+        if (!productDetails[item.hotelId]) {
+          try {
+            const actionResult = await dispatch(getProductDetail(item.hotelId)).unwrap(); // 使用 unwrap 获取 action payload
+            setProductDetails((prev) => ({
+              ...prev,
+              [item.hotelId]: actionResult,
+            }));
+          } catch (error) {
+            console.error(`Failed to fetch details for hotelId ${item.hotelId}`, error);
+          }
+        }
+      });
+
+      await Promise.all(promises);
+      setLoadingDetails(false);
     };
 
     if (shoppingCartItems.length > 0) {
-      loadRoomDetails();
+      fetchProductDetails();
     }
-  }, [dispatch, jwt, shoppingCartItems]);
+  }, [dispatch, shoppingCartItems, productDetails]);
 
-  const shoppingCartData = shoppingCartItems.map((item) => ({
-    id: item.roomTypeId,
-    title: item.roomTypeName || 'Default Room',
-    description: `Check-in: ${item.checkInDate}, Check-out: ${item.checkOutDate}`,
-    price: item.price || 0,
-    originalPrice: item.originalPrice || item.price || 0,
-    discountPresent: item.discountPresent || 1,
-    departureCity: '',
-    travelDays: '',
-    touristRoutePictures: [],
-    rating: 5, // 假设默认评级为5
-  }));
+  if (loading || productLoading || loadingDetails) {
+    return (
+      <Spin
+        size="large"
+        style={{
+          marginTop: 200,
+          marginBottom: 200,
+          marginLeft: "auto",
+          marginRight: "auto",
+          width: "100%",
+        }}
+      />
+    );
+  }
+
+  // 合并购物车数据和产品详情数据
+  const mergedShoppingCartData = shoppingCartItems.map((item, index) => {
+    const hotel = productDetails[item.hotelId] || {}; // 获取当前产品的详细信息
+
+    return {
+      key: `${item.roomTypeId}-${index}`, // 使用 roomTypeId 和 index 组合生成唯一 key
+      RoomTypeName: item.roomTypeName,
+      roomTypeId: item.roomTypeId,
+      price: item.totalPrice,
+      checkInDate: item.checkInDate,
+      checkOutDate: item.checkOutDate,
+      nights: item.nights,
+      HotelName: hotel.HotelName || '', // 确保如果没有数据时不会出现undefined
+      HotelRating: hotel.HotelRating || '',
+      cityName: hotel.cityName || '',
+      Description: `Check-in: ${item.checkInDate}, Check-out: ${item.checkOutDate}, Nights: ${item.nights}`,
+      HotelFacilities: hotel.HotelFacilities || '',
+      Attractions: hotel.Attractions || '',
+    };
+  });
+
+  console.log('Final shopping cart data for rendering:', mergedShoppingCartData);
 
   return (
     <MainLayout>
@@ -73,7 +124,19 @@ export const ShoppingCartPage: React.FC = () => {
         {/* 购物车清单 */}
         <Col span={16}>
           <div className={styles["product-list-container"]}>
-            <ProductList data={shoppingCartData} />
+            {mergedShoppingCartData.length > 0 ? (
+              <ProductList
+                data={mergedShoppingCartData} 
+                onDelete={(key) => {
+                  dispatch(clearShoppingCartItem({
+                    jwt,
+                    keys: [key]
+                  }));
+                }}
+              />
+            ) : (
+              <div>No products in the shopping cart.</div>  // 当购物车为空时，显示占位文本
+            )}
           </div>
         </Col>
         {/* 支付卡组件 */}
@@ -82,12 +145,7 @@ export const ShoppingCartPage: React.FC = () => {
             <div className={styles["payment-card-container"]}>
               <PaymentCard
                 loading={loading}
-                originalPrice={shoppingCartData
-                  .map((item) => item.originalPrice || 0)
-                  .reduce((a, b) => a + b, 0)}
-                price={shoppingCartData
-                  .map((item) => (item.price || 0) * (item.discountPresent ? item.discountPresent : 1))
-                  .reduce((a, b) => a + b, 0)}
+                price={mergedShoppingCartData.reduce((total, item) => total + item.price, 0)}
                 onCheckout={() => {
                   if (shoppingCartItems.length <= 0) {
                     return;
@@ -99,7 +157,7 @@ export const ShoppingCartPage: React.FC = () => {
                   dispatch(
                     clearShoppingCartItem({
                       jwt,
-                      itemIds: shoppingCartItems.map((item) => parseInt(item.roomTypeId, 10)), // 如果 roomTypeId 是 string，可能需要转换为 number
+                      keys: shoppingCartItems.map((item, index) => `${item.roomTypeId}-${index}`), // 使用合适的键值格式
                     })
                   );
                 }}

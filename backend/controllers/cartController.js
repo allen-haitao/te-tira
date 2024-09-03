@@ -130,6 +130,7 @@ exports.addItem = async (req, res) => {
  *       400:
  *         description: Some error happened
  */
+
 exports.removeItem = async (req, res) => {
     try {
         const { roomTypeId } = req.body;
@@ -141,6 +142,7 @@ exports.removeItem = async (req, res) => {
         res.status(400).send(err.message);
     }
 };
+
 
 /**
  * @swagger

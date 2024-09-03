@@ -10,6 +10,7 @@ import hotel4 from "../../assets/images/hotel_4.jpg";
 
 interface PropsType {
   title: string;
+  city: string;
   address: string | number;
   contact: number | string;
   location: string;
@@ -42,12 +43,12 @@ interface RowType {
 
 export const ProductIntro: React.FC<PropsType> = ({
   title,
+  city,
   address,
   contact,
   location,
   price,
   rating,
-  pictures,
 }) => {
   
   
@@ -72,8 +73,8 @@ export const ProductIntro: React.FC<PropsType> = ({
   const tableDataSource: RowType[] = [
     {
       key: 0,
-      title: "Location",
-      description: location,
+      title: "Address",
+      description: address,
     },
     {
       key: 1,
@@ -97,7 +98,7 @@ export const ProductIntro: React.FC<PropsType> = ({
   return (
     <div className={styles["intro-container"]}>
       <Typography.Title level={4}>{title}</Typography.Title>
-      <Typography.Text>{address}</Typography.Text>
+      <Typography.Text>{city}</Typography.Text>
       <div className={styles["intro-detail-content"]}>
         <Typography.Text style={{ marginLeft: 20 }}>
           Starting at

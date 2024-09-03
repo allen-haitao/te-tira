@@ -87,7 +87,7 @@ export const RoomPage: React.FC = () => {
           <div className={styles["product-intro-container"]}>
             <Row>
               <Col span={13}>
-                <ProductIntro
+                {/*<ProductIntro
                   title={selectedRoom.roomTypeName}
                   price={selectedRoom.price}
                   address={selectedRoom.hotelId}  // 假设hotelId代表地址，需要根据实际情况更改
@@ -95,7 +95,7 @@ export const RoomPage: React.FC = () => {
                   contact={"N/A"}  // 假设没有联系方式字段
                   rating={4.5}  // 假设没有评分字段，静态赋值
                   pictures={[]}  // 假设没有图片字段
-                />
+                />*/}
               </Col>
               <Col span={11}>
                 <RangePicker

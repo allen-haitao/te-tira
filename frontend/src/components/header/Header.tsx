@@ -119,7 +119,7 @@ export const Header: React.FC = () => {
               <Spin spinning={shoppingCartLoading}>
                 <ShoppingCartOutlined className={styles["button-icon"]} />
                 <Typography.Text className={styles["selected-item"]}>
-                  {shoppingCartItems.length}
+                {shoppingCartItems?.length || 0}
                 </Typography.Text>
               </Spin>
             </Col>

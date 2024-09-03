@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// 更新后的 CartItem 接口，包含所有字段
 interface CartItem {
-  userId: string;
-  roomTypeId: string;
-  checkInDate: string;
   checkOutDate: string;
+  totalPrice: number;
+  nights: number;
+  roomTypeName: string;
+  hotelId: string;
+  checkInDate: string;
+  roomTypeId: string;
+  pricePerNight: number;
 }
 
 interface ShoppingCartState {
@@ -20,34 +25,44 @@ const initialState: ShoppingCartState = {
   error: null,
 };
 
+// 更新 getShoppingCart async thunk
 export const getShoppingCart = createAsyncThunk(
   "shoppingCart/getShoppingCart",
   async (jwt: string, thunkAPI) => {
-    const { data } = await axios.get(
-      `http://127.0.0.1:3000/cart`,
-      {
-        headers: {
-          Authorization: `bearer ${jwt}`,
-        },
-      }
-    );
-    return data.shoppingCartItems;
+    const { data } = await axios.get(`http://127.0.0.1:3000/cart`, {
+      headers: {
+        Authorization: `bearer ${jwt}`,
+      },
+    });
+    return data.items; // 假设返回的数据结构为 data.items
   }
 );
 
 export const addShoppingCartItem = createAsyncThunk(
   "shoppingCart/addShoppingCartItem",
-  async ({ jwt, roomTypeId, checkInDate, checkOutDate }: { jwt: string; roomTypeId: string; checkInDate: string; checkOutDate: string }, thunkAPI) => {
+  async (
+    {
+      jwt,
+      roomTypeId,
+      checkInDate,
+      checkOutDate,
+    }: { jwt: string; roomTypeId: string; checkInDate: string; checkOutDate: string },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.post("http://127.0.0.1:3000/cart/add", {
-        roomTypeId,
-        checkInDate,
-        checkOutDate
-      }, {
-        headers: {
-          Authorization: `Bearer ${jwt}`
+      const response = await axios.post(
+        "http://127.0.0.1:3000/cart/add",
+        {
+          roomTypeId,
+          checkInDate,
+          checkOutDate,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${jwt}`,
+          },
         }
-      });
+      );
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -73,17 +88,22 @@ export const checkout = createAsyncThunk(
 
 export const clearShoppingCartItem = createAsyncThunk(
   "shoppingCart/clearShoppingCartItem",
-  async (parameters: { jwt: string; itemIds: number[] }, thunkAPI) => {
-    return await axios.delete(
-      `http://127.0.0.1:3000/cart/remove(${parameters.itemIds.join(
-        ","
-      )})`,
-      {
-        headers: {
-          Authorization: `bearer ${parameters.jwt}`,
-        },
-      }
-    );
+  async (parameters: { jwt: string; keys: string[] }, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:3000/cart/remove`, // 使用 POST 方法和路径 /cart/remove
+        { keys: parameters.keys }, // 请求体中包含要删除的 keys 数组
+        {
+          headers: {
+            Authorization: `bearer ${parameters.jwt}`,
+          },
+        }
+      );
+
+      return parameters.keys; // 将 keys 返回以便在 fulfilled 中使用
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -93,6 +113,18 @@ export const shoppingCartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getShoppingCart.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getShoppingCart.fulfilled, (state, action: PayloadAction<CartItem[]>) => {
+        state.items = action.payload || []; 
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getShoppingCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(addShoppingCartItem.pending, (state) => {
         state.loading = true;
       })
@@ -104,6 +136,21 @@ export const shoppingCartSlice = createSlice({
       .addCase(addShoppingCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(clearShoppingCartItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(clearShoppingCartItem.fulfilled, (state, action: PayloadAction<string[]>) => {
+        const keysToRemove = action.payload; // 直接从 payload 中获取 keys
+        state.items = state.items.filter((item, index) => !keysToRemove.includes(`${item.roomTypeId}-${index}`)); // 根据 keys 过滤
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(clearShoppingCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
+
+export default shoppingCartSlice.reducer;
