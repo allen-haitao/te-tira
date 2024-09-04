@@ -9,6 +9,7 @@ const Room = require('../models/room');
  *       type: object
  *       required:
  *         - userId
+ *         - itemKey 
  *         - roomTypeId
  *         - checkInDate
  *         - checkOutDate
@@ -16,6 +17,9 @@ const Room = require('../models/room');
  *         userId:
  *           type: string
  *           description: The ID of the user
+ **         itemKey:
+ *           type: string
+ *           description: The key of the cart item
  *         roomTypeId:
  *           type: string
  *           description: The ID of the room type to add to the cart
@@ -28,7 +32,7 @@ const Room = require('../models/room');
  *           format: date
  *           description: The check-out date
  *       example:
- *         userId: exampleUserId
+ *         itemKey: exampleItemKey
  *         roomTypeId: exampleRoomTypeId
  *         checkInDate: 2024-07-01
  *         checkOutDate: 2024-07-05
@@ -132,10 +136,10 @@ exports.addItem = async (req, res) => {
  */
 exports.removeItem = async (req, res) => {
     try {
-        const { roomTypeId } = req.body;
+        const { itemKey } = req.body;
         const userId = req.userId;
 
-        await Cart.removeItem(userId, roomTypeId);
+        await Cart.removeItem(userId, itemKey);
         res.send('Item removed from cart');
     } catch (err) {
         res.status(400).send(err.message);

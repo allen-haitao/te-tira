@@ -52,6 +52,7 @@ const Cart = {
 
     const cartItem = {
       roomTypeId: room.roomTypeId,
+      itemKey: uuidv4(),
       roomTypeName: room.roomTypeName,
       hotelId: room.hotelId,
       hotelName: room.hotelName,
@@ -73,13 +74,13 @@ const Cart = {
     return dynamodb.put(params).promise();
   },
 
-  async removeItem(userId, roomTypeId) {
+  async removeItem(userId, itemKey) {
     const cart = await this.getByUserId(userId);
     if (!cart) {
       throw new Error('Cart not found');
     }
 
-    const itemIndex = cart.items.findIndex(item => item.roomTypeId === roomTypeId);
+    const itemIndex = cart.items.findIndex(item => item.itemKey === itemKey);
     if (itemIndex === -1) {
       throw new Error('Item not found in cart');
     }

@@ -11,13 +11,17 @@ const authMiddleware = require('../middleware/auth');
  *       type: object
  *       required:
  *         - userId
+ *         - itemKey
  *         - roomTypeId
  *         - checkInDate
  *         - checkOutDate
  *       properties:
  *         userId:
  *           type: string
- *           description: The ID of the user
+ *           description: The ID of the user, not required, the backend get it in token.
+ *         itemKey:
+ *           type: string
+ *           description: The key of the cart item, backend generated, only require on remove API
  *         roomTypeId:
  *           type: string
  *           description: The ID of the room type to add to the cart
@@ -49,6 +53,7 @@ const authMiddleware = require('../middleware/auth');
  *           description: The total price for this booking
  *       example:
  *         userId: exampleUserId
+ *         itemKey: exampleItemKey
  *         roomTypeId: exampleRoomTypeId
  *         roomTypeName: Deluxe
  *         hotelId: exampleHotelId
