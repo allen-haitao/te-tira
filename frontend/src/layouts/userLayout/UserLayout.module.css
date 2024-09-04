@@ -1,0 +1,123 @@
+.user-layout-container {
+    position: relative;
+    height: 100vh;
+    background-color: #00247d !important;
+    overflow: hidden;
+    background-size: 100% !important;  
+    background-repeat: no-repeat;
+    background-position: center 110px;
+}
+
+.language {
+    float: right;
+    text-align: center;
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: right;
+    margin-top: 2%;
+    margin-right: 2%;
+}
+
+  .language-button {
+    color: white !important;
+    padding-bottom: 15px;
+    border-radius: 50%;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .selected-item {
+    display: block;
+    color: white !important;
+    font-size: 14px;
+    text-align: center;
+    width: 100%; /* 确保文本宽度与父元素一致 */
+    margin-top: -10px;
+    font-family: 'Julius Sans One', sans-serif;
+  }
+  
+  .menu-list {
+    position: absolute;
+    left: 50%; /* 菜单从按钮的中心开始对齐 */
+    transform: translateX(-50%); /* 水平居中对齐图标 */
+    margin-top: 5%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none; /* 初始状态下隐藏菜单 */
+    flex-direction: column;
+    font-family: 'Julius Sans One', sans-serif !important;
+  }
+
+  .language:hover .menu-list, 
+  .language:focus-within .menu-list {
+    display: flex; /* 当按钮被点击或悬停时显示菜单 */
+  }
+
+  .dropdown-item {
+    display: block;
+    padding: 5px 10px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    background-color: inherit;
+    transition: background-color 0.2s;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .content {
+    display: flex; /* 启用 Flexbox 布局 */
+    flex-direction: column; /* 垂直排列子元素 */
+    align-items: center; /* 水平居中对齐 */
+    justify-content: center; /* 垂直居中对齐 */
+    height: 100%; /* 确保容器有足够的高度来居中对齐 */
+}
+
+.content-header {
+  display: flex; /* 使用 Flexbox 布局 */
+  align-items: center; /* 垂直居中对齐子元素 */
+  justify-content: flex-start; /* 水平居中对齐子元素 */
+  flex-direction: row; /* 水平排列子元素 */
+  width: auto; /* 自动宽度，以适应内容 */
+}
+
+.image-container {
+  display: flex; /* 使用 Flexbox 布局以便居中图像 */
+  align-items: center; /* 垂直居中 */
+  justify-content: flex-start; /* 水平居中 */
+  width: 120px; /* 设置固定宽度以保持图像大小 */
+  height: 70px; /* 设置固定高度以保持图像大小 */
+}
+
+.image {
+  width: 100%; /* 根据容器的大小自动调整 */
+  height: 100%; /* 根据容器的大小自动调整 */
+  object-fit: contain; /* 确保图像按比例缩放 */
+}
+
+.title-container {
+  display: flex; /* 使用 Flexbox 布局以便居中图像 */
+  align-items: center; /* 垂直居中 */
+  justify-content: flex-end; /* 水平居中 */
+}
+
+.title {
+  color: #f0f0f0;
+  font-family: 'Julius Sans One', sans-serif !important;
+  font-size: 33px !important;
+  font-weight: bold !important;
+}
+
+.desc {
+  margin-bottom: 1%;
+  color: #f0f0f0;
+  font-family: 'Julius Sans One', sans-serif;
+  font-size: 16px !important;
+  text-align: center; /* 居中对齐文本 */
+}

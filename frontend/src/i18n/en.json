@@ -1,0 +1,34 @@
+{
+    "header": {
+        "new_language": "new language",
+        "help": "Help",
+        "register":"Register",
+        "login":"Login",
+        "shoppingcart": "Shopping Cart",
+        "logout": "Logout",
+        "welcome": "Welcome back"
+    },
+
+    "footer": {
+        "detail" : "All rights reserved @ Te Tira"
+    },
+
+    "search": {
+        "search-title": "Find your next stay",
+        "search-subtitle": "Search low prices on hotels, homes and much more...",
+        "search-input1": "Where are you going?", 
+        "search-input2": "Check-in date - Check-out date", 
+        "search-input3": "2 adults · 0 children · 1 room", 
+        "search-button": "Search"      
+    },
+    
+    "page-content": {
+        "offers": "Offers",
+        "offers_subtitle": "Promotions, deals and special offers for you",
+        "find_best_deal": "Find Your Best Deal",
+        "search_highest_rated": "Search for Highest Rated",
+        "hot_recommended": "Hot Recommended",
+        "new_arrival": "New arrival",
+        "attractions_nearby": "Nearby Attractions"
+    }
+}

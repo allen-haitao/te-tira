@@ -1,0 +1,168 @@
+.app-header {
+    background-color: #00247d !important;
+  }
+  
+  .top-header {
+    height: 120px;
+    width: 1230px;
+    margin: 0 auto;
+    padding-left: 2%;
+    padding-bottom: 2%;
+    position: relative;
+    
+  }
+
+  .logo-header {
+    width: 26%;    
+  }
+
+  .title {
+    color: white !important;
+    font-family: 'Julius Sans One', sans-serif !important;
+    font-size: 30px !important;
+    font-weight: bold !important;
+    margin-top: 15px !important;
+    margin-bottom: auto !important;
+    cursor: pointer;
+    transform: translateZ(0); /* 确保3D效果正确应用 */
+	  transition: transform 0.25s ease-out; /* 控制 transform 属性的过渡效果 */
+  }
+
+  .title:hover {
+    transform: scale(1.05); /* 鼠标悬停时，放大元素 */
+  }
+
+  .slogan {
+    color: white !important;
+    font-family: 'Julius Sans One', sans-serif;
+    font-size: 16px !important;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 3.5s steps(20, end) infinite, blink-caret 0.75s step-end infinite;
+    margin-top: auto !important;
+  }
+  
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #f5f5f5; }
+  }
+
+  .header-image {
+    position: relative;
+    top: 15px;
+    width: 10%;
+    height: 80px;
+  }
+
+  .image {
+    position: absolute;
+    height: 100%; /* 根据容器的大小自动调整 */
+    width: 100%;
+    transform: scale(1); /* 保持原始比例 */
+  }
+
+  .top-button {
+    width: 30%;
+    text-align: center;
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between;
+    padding: 0 5%;
+    margin: auto 1%;
+    margin-top: 2%;
+  }
+
+  .button-icon {
+    color: white !important;
+    padding-bottom: 15px;
+    border-radius: 50%;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .selected-item {
+    display: block;
+    color: white !important;
+    font-size: 14px;
+    text-align: center;
+    width: 100%; /* 确保文本宽度与父元素一致 */
+    margin-top: -10px;
+    font-family: 'Julius Sans One', sans-serif;
+  }
+  
+  .menu-list {
+    position: absolute;
+    left: 50%; /* 菜单从按钮的中心开始对齐 */
+    transform: translateX(-50%); /* 水平居中对齐图标 */
+    margin-top: 10%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none; /* 初始状态下隐藏菜单 */
+    flex-direction: column;
+    font-family: 'Julius Sans One', sans-serif !important;
+  }
+
+  .top-button:hover .menu-list, 
+  .top-button:focus-within .menu-list {
+    display: flex; /* 当按钮被点击或悬停时显示菜单 */
+  }
+
+  .dropdown-item {
+    display: block;
+    padding: 5px 10px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    background-color: inherit;
+    transition: background-color 0.2s;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .auth-container {
+    top: 10px;
+    width: 30%;
+    text-align: center; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: auto;
+  }
+
+  .cart-button {
+    width: 100%;
+  }
+
+  .logged-in-user {
+    color: white !important;
+    font-size: 12px;
+    font-family: 'Julius Sans One', sans-serif;
+  }
+
+  .user-auth {
+    gap: 5%;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .auth-btn {
+    border-radius: 5px !important;
+    padding: 0 20px !important; 
+    height: 40px !important; 
+    color:#00247d;
+    font-size: 16px !important;
+    font-weight: bold;
+    margin-left: 5%;
+  }

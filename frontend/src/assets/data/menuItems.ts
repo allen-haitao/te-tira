@@ -1,0 +1,18 @@
+export const menuItems = [
+    { key: "1", label: "Home" },
+    { key: "2", label: "Weekend Tours" },
+    { key: "3", label: "Group Tours" },
+    { key: "4", label: "Individual Travel" },
+    { key: "5", label: "Private Tours" },
+    { key: "6", label: "Cruises" },
+    { key: "7", label: "Hotel + Attractions" },
+    { key: "8", label: "Local Activities" },
+    { key: "9", label: "Themed Tours" },
+    { key: "10", label: "Customized Tours" },
+    { key: "11", label: "Study Tours" },
+    { key: "12", label: "Visa" },
+    { key: "13", label: "Corporate Travel" },
+    { key: "14", label: "Luxury Travel" },
+    { key: "15", label: "Outdoor Adventures" },
+    { key: "16", label: "Insurance" },
+  ];

@@ -1,0 +1,33 @@
+{
+    "header": {
+        "new_language": "新语言",
+        "help": "帮助",
+        "register": "注册",
+        "login": "登录",
+        "shoppingcart": "购物车",
+        "logout": "退出",
+        "welcome": "欢迎光临"
+    },
+    "footer": {
+        "detail": "版权所有 @ Te Tira"
+    },
+
+    "search": {
+        "search-title": "寻找你的下一个住宿",
+        "search-subtitle": "搜索酒店、住宅等低价信息...",
+        "search-input1": "你要去哪里？",
+        "search-input2": "入住日期 - 退房日期",
+        "search-input3": "2位成人 · 0位儿童 · 1间房",
+        "search-button": "搜索"    
+    },
+
+    "page-content": {
+        "offers": "优惠",
+        "offers_subtitle": "为你提供的促销、优惠和特别优惠",
+        "find_best_deal": "寻找最佳优惠",
+        "search_highest_rated": "搜索评分最高的",
+        "hot_recommended": "热门推荐",
+        "new_arrival": "新品上市",
+        "attractions_nearby": "周边景点"
+    }
+}

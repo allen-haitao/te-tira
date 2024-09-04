@@ -1,0 +1,61 @@
+.offerCard {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative; /* 使内部元素可以使用绝对定位 */
+  height: 150px; /* 保持卡片的固定高度 */
+  width: 98%;
+  display: flex;
+  align-items: flex-start; /* 子元素从上方开始布局 */
+  justify-content: space-between; /* 子元素水平布局，可以灵活调整 */
+}
+
+.offerInfo {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: 1%;
+  position: relative; /* 保持相对定位 */
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  width: 50%; /* 占用一半宽度 */
+}
+
+.offerText {
+  position: absolute;
+  top: 1%;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%; /* 占用一半宽度 */
+}
+
+.imageWrapper {
+  position: absolute;
+  margin: 15%;
+  display: flex;
+}
+
+.offerImage {
+  max-width: 100%;
+  max-height: 86%;
+  display: block;
+}
+
+.offerButton {
+  position: absolute;
+  bottom: 10px; /* 使按钮靠近Offer Card的左下角 */
+  left: 10px;
+  z-index: 2; /* 确保按钮位于图片和文本上方 */
+  pointer-events: auto; /* 确保按钮可以点击 */
+}
