@@ -1,5 +1,4 @@
 node_modules
 
-/backend/
-
-.DS_Store
+backend/hotels.csv
+frontend/package-lock.json
