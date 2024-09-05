@@ -22,3 +22,13 @@
 	margin-bottom: 30px;
 	padding-bottom: 30px;
 }
+
+.mapContainer {
+    margin-top: 15%;
+	margin-right: 2%;
+  }
+
+.map {
+width: 98%;
+height: 330px; /* 可以根据需要调整地图的高度 */
+}

@@ -1,14 +1,13 @@
-// DetailPage.tsx
 import React, { useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { ProductIntro } from "../../components";
-import { Spin, Row, Col, Divider, Typography, Anchor, Menu, DatePicker, Space, Button } from "antd";
+import { Spin, Row, Col, Divider, Typography, Anchor, Menu, DatePicker, Button } from "antd";
 import styles from "./DetailPage.module.css";
 import { getProductDetail } from "../../redux/productDetail/slice";
 import { useSelector, useAppDispatch } from "../../redux/hooks";
-import { useTranslation } from "react-i18next";
 import { MainLayout } from "../../layouts/mainLayout";
 import RoomTable from './RoomTable';
+import Map from './Map';
 import Comments from "./Comments";
 
 const { RangePicker } = DatePicker;
@@ -63,14 +62,14 @@ export const DetailPage: React.FC = () => {
                 price={product.price}
                 city={product.cityName}
                 address={product.Address}
-                location={product.Map}
+                location={product.Map} // 将 product.Map 作为位置传递给 ProductIntro
                 contact={product.PhoneNumber}
                 rating={product.HotelRating}
                 pictures={[]}
               />
             </Col>
             <Col span={11}>
-              <RangePicker open style={{ marginTop: 20 }} />
+              <Map location={product.Map} /> {/* 将位置传递给 Map 组件 */}
             </Col>
           </Row>
         </div>
@@ -139,5 +138,5 @@ export const DetailPage: React.FC = () => {
         </div>
       </div>
     </MainLayout>
-  )
+  );
 };
